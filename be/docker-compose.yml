@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  crm-db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=crmDb
+    ports:
+      - 3307:3306
+    networks:
+      - uit
+    volumes:
+      - crmDb:/var/lib/mysql
+volumes:
+  crmDb:
+networks:
+  uit:
+    driver: bridge
+
