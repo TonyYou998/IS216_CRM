@@ -42,4 +42,17 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "id")
     private Set<ProjectEmployee> lstProjectEmployee=new HashSet<>();
+
+    public User(String username, String password, Role role, String phone, String fullName, String address, String email) {
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.phone = phone;
+        this.fullName = fullName;
+        this.address = address;
+        this.email = email;
+    }
+
+    public User() {
+    }
 }

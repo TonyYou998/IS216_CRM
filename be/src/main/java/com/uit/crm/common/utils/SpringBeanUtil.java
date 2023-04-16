@@ -1,6 +1,7 @@
 package com.uit.crm.common.utils;
 
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.ApplicationContext;
 
 public class SpringBeanUtil {
@@ -12,4 +13,6 @@ public class SpringBeanUtil {
     public static ApplicationContext getApplicationContext(){
         return ApplicationContextFactory.getApplicationContext();
     }
+
+
 }

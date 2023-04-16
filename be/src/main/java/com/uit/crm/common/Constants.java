@@ -8,4 +8,8 @@ public class Constants {
     public static final String REQUEST_MAPPING_USER = "/user";
     public static final int BCRYPT = 12;
     public static final String LOGIN = "/login";
+    public static final String CREATE_ADMIN = "/account/create-admin";
+
+
+    public static final String CREATE_PROJECT = "/project/create";
 }

@@ -1,5 +1,6 @@
 package com.uit.crm.user.service.impl;
 
+import com.uit.crm.user.dto.UserDetailsDto;
 import com.uit.crm.user.model.User;
 import com.uit.crm.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -23,9 +24,11 @@ public class UserDetailServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user=repository.findByEmail(username);
         Set<GrantedAuthority> authorities=new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole().getRoleName()));
-        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),authorities);
+        authorities.add(new SimpleGrantedAuthority("ROLE_"+ user.getRole().getRoleName()));
 
+//        return new org.springframework.security.core.userdetails.User(user.getUsername(),user.getPassword(),authorities);
+        return new UserDetailsDto(user.getUsername(),user.getPassword(),user.getEmail(),authorities);
     }
+
 
 }

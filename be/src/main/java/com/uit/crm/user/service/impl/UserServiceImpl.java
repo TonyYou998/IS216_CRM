@@ -33,21 +33,43 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto createUser(UserDto dto) {
         Role role= SpringBeanUtil.getBean(RoleRepository.class).findByRoleName("Employee");
-
         User user=new User();
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());
         user.setFullName(dto.getFullName());
-//        user.setPassword(encoder.encode(dto.getPassword()));
         user.setPassword(SpringBeanUtil.getBean(PasswordEncoder.class).encode(dto.getPassword()));
         user.setAddress(dto.getAddress());
         user.setPhone(dto.getPhone());
         user.setFullName(dto.getFullName());
         user.setRole(role);
-//        userRepository.save(user);
         SpringBeanUtil.getBean(UserRepository.class).save(user);
         UserDto response= mapper.map(user,UserDto.class);
+        response.setRoleId(user.getRole().getId().toString());
         return response;
+
+    }
+
+    @Override
+    public UserDto createAdminAccount(UserDto request) {
+        Role role = SpringBeanUtil.getBean(RoleRepository.class).findByRoleName("Admin");
+        User u = new User();
+        UserDto response = null;
+        if (!role.getRoleName().isEmpty()) {
+            u.setFullName(request.getFullName());
+            u.setEmail(request.getEmail());
+            u.setAddress(request.getAddress());
+            u.setPhone(request.getPhone());
+            u.setUsername(request.getUsername());
+            u.setPassword(SpringBeanUtil.getBean(PasswordEncoder.class).encode(request.getPassword()));
+            u.setRole(role);
+            SpringBeanUtil.getBean(UserRepository.class).save(u);
+            response = mapper.map(u, UserDto.class);
+            response.setRoleId(u.getRole().getId().toString());
+            return response;
+        } else {
+            return response=mapper.map(u,UserDto.class);
+        }
+
 
     }
 
@@ -56,9 +78,11 @@ public class UserServiceImpl implements UserService {
         try {
             Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
             SecurityContextHolder.getContext().setAuthentication(auth);
+//            User u=SpringBeanUtil.getBean(UserRepository.class).findByEmail(request.getEmail());
             String token = jwtUtils.generateJwtToken(auth);
 
             response.setToken(token);
+
         } catch (Exception e) {
             LOGGER.error(e.getMessage());
         }

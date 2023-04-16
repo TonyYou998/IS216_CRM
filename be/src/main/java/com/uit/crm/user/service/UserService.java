@@ -4,4 +4,6 @@ import com.uit.crm.user.dto.UserDto;
 
 public interface UserService {
     UserDto createUser(UserDto dto);
+
+    UserDto createAdminAccount(UserDto request);
 }

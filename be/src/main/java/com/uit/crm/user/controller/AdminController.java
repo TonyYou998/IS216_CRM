@@ -13,15 +13,17 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     @PostMapping(Constants.CREATE_USER)
-    public UserDto createUser(@RequestBody UserDto request){
+    public UserDto createUserAccount(@RequestBody UserDto request){
 
             UserDto response= SpringBeanUtil.getBean(UserService.class).createUser(request);
             return response;
 
     }
-    @GetMapping("/hello")
-    public Object hello(){
-        return "hello";
+    @PostMapping(Constants.CREATE_ADMIN)
+    public UserDto createAdminAccount(@RequestBody UserDto request){
+            UserDto response=SpringBeanUtil.getBean(UserService.class).createAdminAccount(request);
+            return response;
     }
+
 
 }
