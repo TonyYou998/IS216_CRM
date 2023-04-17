@@ -10,4 +10,5 @@ public class ProjectDto {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String leaderId;
+    private Long id;
 }

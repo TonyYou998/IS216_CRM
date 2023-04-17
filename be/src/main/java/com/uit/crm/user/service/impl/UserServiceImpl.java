@@ -2,6 +2,8 @@ package com.uit.crm.user.service.impl;
 
 import com.uit.crm.common.utils.JwtUtils;
 import com.uit.crm.common.utils.SpringBeanUtil;
+import com.uit.crm.project.dto.ProjectDto;
+import com.uit.crm.project.model.Project;
 import com.uit.crm.role.model.Role;
 import com.uit.crm.role.repository.RoleRepository;
 import com.uit.crm.user.dto.UserDto;
@@ -19,6 +21,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -70,6 +75,19 @@ public class UserServiceImpl implements UserService {
             return response=mapper.map(u,UserDto.class);
         }
 
+
+    }
+
+    @Override
+    public List<UserDto> getAllAccounts() {
+        List<UserDto> responses=new ArrayList<>();
+        List<User> lstUser=SpringBeanUtil.getBean(UserRepository.class).findAll();
+        for (User user : lstUser) {
+            UserDto dto= mapper.map(user, UserDto.class);
+            dto.setRoleId(user.getRole().getId().toString());
+            responses.add(dto);
+        }
+        return  responses;
 
     }
 

@@ -12,4 +12,7 @@ public class Constants {
 
 
     public static final String CREATE_PROJECT = "/project/create";
+    public static final String GET_ALL_PROJECTS = "/projects/get-all-project";
+
+    public static final String GET_ALL_ACCOUNTS = "/account/get-all";
 }

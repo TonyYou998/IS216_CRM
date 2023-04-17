@@ -11,6 +11,10 @@ import com.uit.crm.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class ProjectServiceImpl implements ProjectService {
@@ -33,5 +37,20 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         return  response;
+    }
+
+    @Override
+    public List<ProjectDto> getAllProject() {
+        List<ProjectDto> responses=new ArrayList<>();
+        List<Project> lstProject=SpringBeanUtil.getBean(ProjectRepository.class).findAll();
+        for (Project project : lstProject) {
+               ProjectDto dto=  mapper.map(project, ProjectDto.class);
+               dto.setLeaderId(Long.toString(project.getProjectLeader().getId()));
+               responses.add(dto);
+
+
+
+        }
+        return  responses;
     }
 }
