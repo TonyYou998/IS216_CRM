@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.ui.Login;
 import org.example.ui.LoginWindow;
 
 /**
@@ -10,8 +11,6 @@ public class App
 {
     public static void main( String[] args )
     {
-
-
-        new LoginWindow();
+        new Login(null);
     }
 }
