@@ -12,6 +12,20 @@ services:
       - uit
     volumes:
       - crmDb:/var/lib/mysql
+  crm-be:
+    image: tonyyou998/crm
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+    ports:
+      - 8080:8080
+    networks:
+      - uit
+    depends_on:
+      - crm-db
 volumes:
   crmDb:
 networks:

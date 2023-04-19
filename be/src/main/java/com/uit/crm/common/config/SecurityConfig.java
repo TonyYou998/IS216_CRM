@@ -37,6 +37,8 @@ public class SecurityConfig {
                 return http.authorizeHttpRequests()
                         .requestMatchers("/api/v1/admin/**")
                         .hasAnyRole("Admin")
+                        .requestMatchers("/api/v1/user/task/leader/create")
+                        .hasRole("Leader")
                         .requestMatchers("/api/v1/user/**")
                         .permitAll()
                         .and()

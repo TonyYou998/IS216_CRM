@@ -15,9 +15,10 @@ public class Task extends BaseEntity {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="assignee_id",nullable = true)
     private User assignedEmployeeId;
-    private boolean status;
+    private boolean status=false;
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="project_id")
+    @JoinColumn(name="project_id",nullable = false)
     private Project project;
 }

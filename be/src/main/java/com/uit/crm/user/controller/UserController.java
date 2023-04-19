@@ -1,9 +1,13 @@
 package com.uit.crm.user.controller;
 
 import com.uit.crm.common.Constants;
+import com.uit.crm.common.helper.ResponseHandler;
 import com.uit.crm.common.utils.SpringBeanUtil;
+import com.uit.crm.user.dto.GetUserDto;
 import com.uit.crm.user.dto.UserDto;
 import com.uit.crm.user.service.impl.UserServiceImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,9 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @PostMapping(Constants.LOGIN)
-    public UserDto login(@RequestBody UserDto request){
+    public ResponseEntity<Object> login(@RequestBody GetUserDto request){
         UserDto response= SpringBeanUtil.getBean(UserServiceImpl.class).login(request);
-        return response;
+        return ResponseHandler.getResponse(response, HttpStatus.OK);
+
     }
 
 }

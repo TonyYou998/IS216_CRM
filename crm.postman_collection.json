@@ -1,0 +1,186 @@
+{
+	"info": {
+		"_postman_id": "b7a20c34-10e3-4035-899e-9bbbcc939a14",
+		"name": "crm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "create user",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE4MjQ5MDAsImV4cCI6MTY4MTgyNTAwOH0.lYiX-tcbW9T2pAEAsaPKG2nfZMpfaRqgFjPZ-PR8tY4n-K4CxzDG3SrPAogCV0sL9ICSbV98nLGGm5PqoPoDdg",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"tanvuu9908\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"xxxx\",\r\n    \"fullName\":\"addasdas\",\r\n    \"address\":\"186 xxx\",\r\n    \"email\":\"tanvuu99080@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/admin/account/create-user"
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n \"username\":\"admin\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"xxxx\",\r\n    \"fullName\":\"addasdas\",\r\n    \"address\":\"186 xxx\",\r\n    \"email\":\"admin@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/user/login"
+			},
+			"response": []
+		},
+		{
+			"name": "create admin",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE3MTY3OTUsImV4cCI6MTY4MTcxNjkwM30.9JHNmVLRoC31iW9mG3mr0KRYzyx7UG5o6Mg7pxWMY5VkwE3QKPBo6e5j1nyE7I-1-D71RQKAjAQZ2k4CT6dx3g",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\":\"tanvuu998\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"xxxx\",\r\n    \"fullName\":\"addasdas\",\r\n    \"address\":\"186 xxx\",\r\n    \"email\":\"tanvuu998@gmail.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/admin/account/create-admin"
+			},
+			"response": []
+		},
+		{
+			"name": "create project",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"projectName\":\"p1\",\r\n \"startDate\": \"2023-04-14T15:30:00.000Z\",\r\n\"endDate\": \"2023-04-14T15:30:00.000Z\",\r\n    \"leaderId\":\"2\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/admin/project/create"
+			},
+			"response": []
+		},
+		{
+			"name": "get all project for admin",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE3NDA2MzcsImV4cCI6MTY4MTc0MDc0NX0.uNRCY0VRboGBKoUR03MXkBu_HEd-ZrekDzr0zs7UCZx9FblaK-7AdRtxEKsazRRpafRXJrwVYgvd1KJC53ZPXw",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/v1/admin/projects/get-all-project"
+			},
+			"response": []
+		},
+		{
+			"name": "get all user account",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE3NDQ3OTIsImV4cCI6MTY4MTc0NDkwMH0.ycGjF0rPW50kzYRKUvE7s5v5ECJWAUQNnGW3gdqyyBlWzx_g0Wiscwx-G4HAUa8MCAm30WBexwuJetbFY3OmIQ",
+						"type": "default"
+					}
+				],
+				"url": "http://localhost:8080/api/v1/admin/account/get-all"
+			},
+			"response": []
+		},
+		{
+			"name": "add employee to project",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE4MzYxNDUsImV4cCI6MTY4MTgzNjI1M30.mcH4UAfYe_JYAumRTHhK5KEi1j_cbX6C8M_2-HbBHdkLqh3n3ovd6XNM_Hf7wSv1CJWR_rhb8htXuksUwCAqhA",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/admin/project/add-employee?userId=2&projectId=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"admin",
+						"project",
+						"add-employee"
+					],
+					"query": [
+						{
+							"key": "userId",
+							"value": "2"
+						},
+						{
+							"key": "projectId",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create task",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE4MzYxNDUsImV4cCI6MTY4MTgzNjI1M30.mcH4UAfYe_JYAumRTHhK5KEi1j_cbX6C8M_2-HbBHdkLqh3n3ovd6XNM_Hf7wSv1CJWR_rhb8htXuksUwCAqhA",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"taskName\":\"hello\",\r\n    \"startDate\":\"2023-04-14T15:30:00\",\r\n     \"endDate\":\"2023-04-14T15:30:00\",\r\n     \"assigneeEmployeeId\":\"2\",\r\n     \"projectId\":\"1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8080/api/v1/user/task/create"
+			},
+			"response": []
+		}
+	]
+}

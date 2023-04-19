@@ -16,8 +16,11 @@ public class UserSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         Role r=SpringBeanUtil.getBean(RoleRepository.class).findById(Long.parseLong("2")).orElse(null);
+        Role r2=SpringBeanUtil.getBean(RoleRepository.class).findById(Long.parseLong("3")).orElse(null);
         User admin=new User("admin",SpringBeanUtil.getBean(PasswordEncoder.class).encode("1234"),r,"0123xxx","asdasd","dasdasda","admin@gmail.com");
+        User employee=new User("tanvuu",SpringBeanUtil.getBean(PasswordEncoder.class).encode("1234"),r2,"0123213xxx","asdasd","kalial","tanvuu998@gmail.com");
         SpringBeanUtil.getBean(UserRepository.class).save(admin);
+        SpringBeanUtil.getBean(UserRepository.class).save(employee);
 
     }
 }
