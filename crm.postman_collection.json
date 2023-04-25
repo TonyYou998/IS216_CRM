@@ -36,7 +36,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\r\n \"username\":\"admin\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"xxxx\",\r\n    \"fullName\":\"addasdas\",\r\n    \"address\":\"186 xxx\",\r\n    \"email\":\"admin@gmail.com\"\r\n}",
+					"raw": "{\r\n\r\n \"username\":\"tanvuu\",\r\n    \"password\":\"1234\",\r\n    \"phone\":\"xxxx\",\r\n    \"fullName\":\"addasdas\",\r\n    \"address\":\"186 xxx\",\r\n    \"email\":\"tanvuu998@gmail.com\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -75,10 +75,16 @@
 			"name": "create project",
 			"request": {
 				"method": "POST",
-				"header": [],
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE4NzQ5NzEsImV4cCI6MTY4MTg3NTA3OX0.nHZA39tm2QLkgHbV8XGTQUnX5KNOsMl-iUPusGGAEK80zgDT_sayWA69rIN5oPqSshZmJfJWAmtE7bpiwi5SiA",
+						"type": "default"
+					}
+				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"projectName\":\"p1\",\r\n \"startDate\": \"2023-04-14T15:30:00.000Z\",\r\n\"endDate\": \"2023-04-14T15:30:00.000Z\",\r\n    \"leaderId\":\"2\"\r\n}",
+					"raw": "{\r\n    \"projectName\":\"p1\",\r\n \"startDate\": \"2023-04-14T15:30:00.000Z\",\r\n\"endDate\": \"2023-04-14T15:30:00.000Z\",\r\n    \"leaderId\":\"1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -96,7 +102,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE3NDA2MzcsImV4cCI6MTY4MTc0MDc0NX0.uNRCY0VRboGBKoUR03MXkBu_HEd-ZrekDzr0zs7UCZx9FblaK-7AdRtxEKsazRRpafRXJrwVYgvd1KJC53ZPXw",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE4NDA0MTIsImV4cCI6MTY4MTg0MDUyMH0.BVhm-_oWtgaNIuc5rs45wap2T947fFdKbPRQj9Oyyfi68egG-qs-UGddo7d1TYuq7aM88K8R8vmYj515msycDA",
 						"type": "default"
 					}
 				],
@@ -111,7 +117,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE3NDQ3OTIsImV4cCI6MTY4MTc0NDkwMH0.ycGjF0rPW50kzYRKUvE7s5v5ECJWAUQNnGW3gdqyyBlWzx_g0Wiscwx-G4HAUa8MCAm30WBexwuJetbFY3OmIQ",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0xFQURFUiJdLCJlbWFpbCI6InRhbnZ1dTk5OEBnbWFpbC5jb20iLCJzdWIiOiJ0YW52dXUiLCJpYXQiOjE2ODIwODc4MzEsImV4cCI6MTY4MjA4NzkzOX0.fENMyO4TqSYo4CupBCLw4nSJ67IezIRzH14tF_7wQTZMK4HVMGjlnGromOPESnwHzD9eeo4mexa9iiJktY7tDw",
 						"type": "default"
 					}
 				],
@@ -126,7 +132,7 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE4MzYxNDUsImV4cCI6MTY4MTgzNjI1M30.mcH4UAfYe_JYAumRTHhK5KEi1j_cbX6C8M_2-HbBHdkLqh3n3ovd6XNM_Hf7wSv1CJWR_rhb8htXuksUwCAqhA",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE4NzQ5NzEsImV4cCI6MTY4MTg3NTA3OX0.nHZA39tm2QLkgHbV8XGTQUnX5KNOsMl-iUPusGGAEK80zgDT_sayWA69rIN5oPqSshZmJfJWAmtE7bpiwi5SiA",
 						"type": "default"
 					}
 				],
@@ -160,18 +166,21 @@
 		},
 		{
 			"name": "create task",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
 			"request": {
-				"method": "POST",
+				"method": "GET",
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0FkbWluIl0sImVtYWlsIjoiYWRtaW5AZ21haWwuY29tIiwic3ViIjoiYWRtaW4iLCJpYXQiOjE2ODE4MzYxNDUsImV4cCI6MTY4MTgzNjI1M30.mcH4UAfYe_JYAumRTHhK5KEi1j_cbX6C8M_2-HbBHdkLqh3n3ovd6XNM_Hf7wSv1CJWR_rhb8htXuksUwCAqhA",
+						"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlcyI6WyJST0xFX0xFQURFUiJdLCJlbWFpbCI6InRhbnZ1dTk5OEBnbWFpbC5jb20iLCJzdWIiOiJ0YW52dXUiLCJpYXQiOjE2ODIwODg0MjAsImV4cCI6MTY4MjA4ODUyOH0.A-4Zo8adjCq7ygMmxdOGCLTDZ9qYnr0-TBBbgBELERwEuP_3XB3QmMFMPBlxY5HctDPMT5D-PNhEgC7Oq6eqGw",
 						"type": "default"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"taskName\":\"hello\",\r\n    \"startDate\":\"2023-04-14T15:30:00\",\r\n     \"endDate\":\"2023-04-14T15:30:00\",\r\n     \"assigneeEmployeeId\":\"2\",\r\n     \"projectId\":\"1\"\r\n}",
+					"raw": "{\r\n    \"taskName\":\"demo1\",\r\n     \"startDate\": \"2023-04-14T15:30:00.000Z\",\r\n    \"endDate\": \"2023-04-14T15:30:00.000Z\",\r\n    \"assigneeEmployeeId\":\"2\",\r\n    \"projectId\":\"1\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"

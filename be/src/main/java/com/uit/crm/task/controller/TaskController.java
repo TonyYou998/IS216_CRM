@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(Constants.BASE_URL+Constants.REQUEST_MAPPING_USER)
 public class TaskController {
 
-    @PostMapping(Constants.REQUEST_MAPPING_TASK+ Constants.CREATE_TASK)
+    @PostMapping(Constants.REQUEST_MAPPING_TASK+Constants.LEADER+Constants.CREATE_TASK)
     public ResponseEntity<Object> createTask(@RequestBody TaskDto request){
         TaskDto response= SpringBeanUtil.getBean(TaskService.class).createTask(request);
         if(response!=null)

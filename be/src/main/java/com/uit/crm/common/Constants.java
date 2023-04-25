@@ -18,4 +18,5 @@ public class Constants {
     public static final String ADD_EMPLOYEE = "/project/add-employee";
     public static final String REQUEST_MAPPING_TASK = "/task";
     public static final String CREATE_TASK = "/create";
+    public static final String LEADER = "/leader";
 }

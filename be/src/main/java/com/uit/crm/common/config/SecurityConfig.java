@@ -34,17 +34,15 @@ public class SecurityConfig {
                 http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 http.csrf().disable();
                 http.addFilterBefore(SpringBeanUtil.getBean(JwtAuthorizationFilter.class), UsernamePasswordAuthenticationFilter.class);
-                return http.authorizeHttpRequests()
-                        .requestMatchers("/api/v1/admin/**")
-                        .hasAnyRole("Admin")
-                        .requestMatchers("/api/v1/user/task/leader/create")
-                        .hasRole("Leader")
-                        .requestMatchers("/api/v1/user/**")
-                        .permitAll()
-                        .and()
-                        .build();
-
-
+            http.authorizeHttpRequests(authorize->authorize
+                    .requestMatchers("/api/v1/admin/**")
+                    .hasRole("ADMIN")
+                    .requestMatchers("/api/v1/user/task/leader/**")
+                    .hasRole("LEADER")
+                    .anyRequest()
+                    .permitAll()
+            );
+            return http.build();
     }
     @Bean
     PasswordEncoder passwordEncoder (){

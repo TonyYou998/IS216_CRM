@@ -14,9 +14,9 @@ public class RoleSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Role r1=new Role("Employee");
-        Role r2=new Role("Admin");
-        Role r3=new Role("Leader");
+        Role r1=new Role("EMPLOYEE");
+        Role r2=new Role("ADMIN");
+        Role r3=new Role("LEADER");
         repository.save(r1);
         repository.save(r2);
         repository.save(r3);
