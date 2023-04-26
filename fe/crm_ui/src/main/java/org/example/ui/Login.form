@@ -56,7 +56,7 @@
                 </constraints>
                 <properties>
                   <font name="Arial" size="16" style="0"/>
-                  <text value="Username:"/>
+                  <text value="Email:"/>
                 </properties>
               </component>
               <component id="7d101" class="javax.swing.JTextField" binding="tf_username">
