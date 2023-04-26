@@ -92,4 +92,22 @@ public class ProjectServiceImpl implements ProjectService {
 
         return null;
     }
+
+    @Override
+    public ProjectDto addLeaderToProject(String projectId, String leaderId) {
+        try{
+            User u=SpringBeanUtil.getBean(UserRepository.class).findById(Long.parseLong(leaderId)).orElse(null);
+            Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
+            assert  u.getRole().getRoleName()!="LEADER":"roleName must be LEADER";
+            if(u!=null && p!=null){
+                p.setProjectLeader(u);
+                return mapper.map(p,ProjectDto.class);
+            }
+        }
+        catch (AssertionError e){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(ProjectServiceImpl.class).info(e.getMessage());
+            return null;
+        }
+
+    }
 }

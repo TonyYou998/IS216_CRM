@@ -13,4 +13,6 @@ public interface ProjectService {
     List<ProjectDto> getAllProject();
 
     ProjectEmployeeDto addEmployee(String userId, String projectId);
+
+    ProjectDto addLeaderToProject(String projectId, String leaderId);
 }
