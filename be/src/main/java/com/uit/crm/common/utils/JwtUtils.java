@@ -5,15 +5,12 @@ import io.jsonwebtoken.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Component
 public class JwtUtils {
     private Long jwtExpiration = 108000L;
@@ -44,6 +41,13 @@ public class JwtUtils {
         String header=request.getHeader(authHeader);
         if(StringUtils.hasText(header)&&header.startsWith(tokenPrefix)){
             return header.substring(tokenPrefix.length());
+        }
+        return null;
+
+    }
+    public String getTokenFromHeader(String authHeader){
+        if(StringUtils.hasText(authHeader) && authHeader.startsWith(tokenPrefix)){
+            return authHeader.substring(tokenPrefix.length());
         }
         return null;
 

@@ -1,5 +1,6 @@
 package com.uit.crm.project.service.impl;
 
+import com.uit.crm.common.utils.JwtUtils;
 import com.uit.crm.common.utils.LoggerUtil;
 import com.uit.crm.common.utils.SpringBeanUtil;
 import com.uit.crm.project.dto.ProjectDto;
@@ -17,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -108,6 +110,34 @@ public class ProjectServiceImpl implements ProjectService {
             SpringBeanUtil.getBean(LoggerUtil.class).logger(ProjectServiceImpl.class).info(e.getMessage());
             return null;
         }
+        return  null;
+    }
+
+    @Override
+    public List<ProjectDto> findByUser(String request) {
+        try {
+            String token= SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(request);
+            if(token==null)
+                return null;
+            String email= SpringBeanUtil.getBean(JwtUtils.class).getEmailFromToken(token);
+            User u=SpringBeanUtil.getBean(UserRepository.class).findByEmail(email);
+            List<ProjectDto> lstResponse=new LinkedList<>();
+            assert u!=null:"userId is not exists";
+            if(u!=null){
+                List<Project> lstProject= SpringBeanUtil.getBean(ProjectRepository.class).findByUser(Integer.parseInt(u.getId().toString()));
+                for(Project p:lstProject){
+                    ProjectDto response=mapper.map(p,ProjectDto.class);
+                    lstResponse.add(response);
+                }
+
+            }
+            return lstResponse;
+        }
+        catch (AssertionError e){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(ProjectService.class).info(e.getMessage());
+            return null;
+        }
+
 
     }
 }

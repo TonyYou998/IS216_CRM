@@ -10,6 +10,7 @@ import com.uit.crm.user.model.User;
 import com.uit.crm.user.service.UserService;
 
 import com.uit.crm.common.utils.SpringBeanUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -50,7 +51,7 @@ public class AdminController {
     @PatchMapping(Constants.ADD_LEADER_TO_PROJECT+Constants.PROJECT_ID)
     public ResponseEntity<Object> addLeaderToProject(@RequestParam("projectId") String projectId,@RequestParam("leaderId") String leaderId){
         ProjectDto response=SpringBeanUtil.getBean(ProjectService.class).addLeaderToProject(projectId,leaderId);
-
+        return  ResponseHandler.getResponse(response, HttpStatus.OK);
     }
 
 

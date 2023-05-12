@@ -27,8 +27,11 @@ public class SecurityConfig {
             http.authorizeHttpRequests(authorize->authorize
                     .requestMatchers("/api/v1/admin/**")
                     .hasRole("ADMIN")
+//                    .requestMatchers("/api/v1/user/**")
+//                    .authenticated()
                     .requestMatchers("/api/v1/user/task/leader/**")
                     .hasRole("LEADER")
+
                     .anyRequest()
                     .permitAll()
             );
