@@ -9,15 +9,17 @@ import retrofit2.Response;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class ProjectsScreen extends JDialog {
 
     private JPanel panel_projects_screen;
+    private  GetProjectResponse[] lstProject;
 
-    public ProjectsScreen(JFrame parent, String token) {
+    public ProjectsScreen(JFrame parent, String token) throws IOException {
         super(parent);
-
-        CallApiGetAllProject(token);
+//        list project get from backend
+        lstProject= CallApiGetAllProject(token);
         setTitle("ProjectScreen");
         setContentPane(panel_projects_screen);
         setMinimumSize(new Dimension(800,500));
@@ -28,18 +30,30 @@ public class ProjectsScreen extends JDialog {
 
     }
 
-    private void CallApiGetAllProject(String token) {
-        Call<MyResponse<GetProjectResponse>> getProjectResponseCall= ApiClient.callApi().getProjectResponseCall(token);
-        getProjectResponseCall.enqueue(new Callback<MyResponse<GetProjectResponse>>() {
-            @Override
-            public void onResponse(Call<MyResponse<GetProjectResponse>> call, Response<MyResponse<GetProjectResponse>> response) {
+    private GetProjectResponse[] CallApiGetAllProject(String token) throws IOException {
+        Call<MyResponse<GetProjectResponse[]>> getProjectResponseCall= ApiClient.callApi().getProjectResponseCall("Bearer "+ token);
+        Response<MyResponse<GetProjectResponse[]>> response=getProjectResponseCall.execute();
+        if(response.isSuccessful()){
+            MyResponse<GetProjectResponse[]> myResponse=response.body();
+                return myResponse.getContent();
 
-            }
-
-            @Override
-            public void onFailure(Call<MyResponse<GetProjectResponse>> call, Throwable throwable) {
-
-            }
-        });
+        }
+        else {
+            System.out.println("call failed");
+            return new GetProjectResponse[]{};
+        }
+//        getProjectResponseCall.enqueue(new Callback<MyResponse<GetProjectResponse[]>>() {
+//            @Override
+//            public void onResponse(Call<MyResponse<GetProjectResponse[]>> call, Response<MyResponse<GetProjectResponse[]>> response) {
+//                System.out.println("success");
+//                System.out.println(response.body().getContent());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MyResponse<GetProjectResponse[]>> call, Throwable throwable) {
+//                System.out.println("failed");
+//                System.out.println(throwable.toString());
+//            }
+//        });
     }
 }

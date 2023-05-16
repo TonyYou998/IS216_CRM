@@ -11,10 +11,12 @@ import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.GET;
 
+import java.util.List;
+
 public interface CallService {
     @POST("login")
     Call<MyResponse<LoginResponse>> loginResponseCall(@Body LoginRequest loginRequest);
 
     @GET("user/all-project")
-    Call<MyResponse<GetProjectResponse>> getProjectResponseCall(@Header("Authorization") String getAllProjectRequest);
+    Call<MyResponse<GetProjectResponse[]>> getProjectResponseCall(@Header("Authorization") String getAllProjectRequest);
 }

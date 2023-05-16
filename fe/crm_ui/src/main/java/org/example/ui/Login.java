@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Base64;
 
 public class Login extends JDialog {
@@ -65,6 +66,7 @@ public class Login extends JDialog {
     public void callLoginApi(LoginRequest request){
 
         Call<MyResponse<LoginResponse>> loginResponseCall= ApiClient.callApi().loginResponseCall(request);
+
          loginResponseCall.enqueue(new Callback<MyResponse<LoginResponse>>() {
             @Override
             public void onResponse(Call<MyResponse<LoginResponse>> call, Response<MyResponse<LoginResponse>> response) {
@@ -89,7 +91,11 @@ public class Login extends JDialog {
                         new AdminScreen(null);
                     } else {
                         setVisible(false);
-                        new ProjectsScreen(null,token);
+                        try {
+                            new ProjectsScreen(null,token);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     }
                 }
 
