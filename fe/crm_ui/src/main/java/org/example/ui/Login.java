@@ -89,7 +89,7 @@ public class Login extends JDialog {
                         new AdminScreen(null);
                     } else {
                         setVisible(false);
-                        new ProjectsScreen(null);
+                        new ProjectsScreen(null,token);
                     }
                 }
 

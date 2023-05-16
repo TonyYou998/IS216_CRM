@@ -1,7 +1,7 @@
 package org.example;
 
 import org.example.ui.Login;
-import org.example.ui.LoginWindow;
+
 
 /**
  * Hello world!
