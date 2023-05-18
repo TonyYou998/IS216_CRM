@@ -7,7 +7,7 @@ public class AdminScreen extends JDialog {
 
     private JPanel panel_admin_screen;
 
-    public AdminScreen(JFrame parent) {
+    public AdminScreen(JFrame parent,String token) {
         super(parent);
         setTitle("AdminScreen");
         setContentPane(panel_admin_screen);
@@ -15,6 +15,8 @@ public class AdminScreen extends JDialog {
         setModal(true);
         setLocationRelativeTo(null);
         setVisible(true);
+
+        System.out.println(token);
     }
 
 }

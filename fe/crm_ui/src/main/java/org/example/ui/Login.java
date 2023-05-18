@@ -20,12 +20,13 @@ import java.util.Base64;
 
 public class Login extends JDialog {
     private JPanel panel_login;
-    private JTextField tf_username;
-    private JPasswordField tf_password;
+    private JLabel lb_pass;
     private JButton btn_login;
     private JPanel panel_image;
     private JLabel label_image;
     private JPanel panel_loginInfo;
+    private JTextField tf_email;
+    private JPasswordField tf_password;
     private String token;
 
 
@@ -47,8 +48,8 @@ public class Login extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                         if(e.getSource()==btn_login){
-                            String username= tf_username.getText();
-                            char[] password=tf_password.getPassword();
+                            String username= tf_email.getText();
+                            char[] password= tf_password.getPassword();
                             String visiblePassword=new String(password);
                            if(!username.isEmpty()&&!visiblePassword.isEmpty()){
                                LoginRequest request=new LoginRequest(username,visiblePassword);
@@ -57,7 +58,6 @@ public class Login extends JDialog {
                         }
             }
         });
-
         setVisible(true);
 
     }
@@ -88,8 +88,8 @@ public class Login extends JDialog {
 
                     if (roleObject.equals("ROLE_Admin")) {
                         setVisible(false);
-                        new AdminScreen(null);
-                    } else {
+                        new AdminScreen(null,token);
+                    } else if (roleObject.equals("ROLE_Leader")) {
                         setVisible(false);
                         try {
                             new ProjectsScreen(null,token);
@@ -108,7 +108,6 @@ public class Login extends JDialog {
         });
 
     }
-
 
 
 }
