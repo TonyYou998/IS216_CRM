@@ -3,19 +3,19 @@ package org.example.ui;
 import javax.swing.*;
 import java.awt.*;
 
-public class CreateTask extends JDialog {
-    private JTextField tf_taskname;
+public class CreateNewProject extends JDialog {
+    private JTextField tf_pjname;
     private JTextField tf_description;
     private JTextField tf_duedate;
-    private JComboBox cb_employee;
-    private JButton btn_save;
+    private JComboBox cb_leader;
+    private JButton btn_create;
     private JButton btn_cancel;
-    private JPanel panel_createtask;
+    private JPanel panel_createnewpj;
 
-    public CreateTask(JFrame parent) {
+    public CreateNewProject(JFrame parent) {
         super(parent);
-        setTitle("Create Task");
-        setContentPane(panel_createtask);
+        setTitle("Create new project");
+        setContentPane(panel_createnewpj);
         setMinimumSize(new Dimension(800,500));
         setModal(true);
         setLocationRelativeTo(null);

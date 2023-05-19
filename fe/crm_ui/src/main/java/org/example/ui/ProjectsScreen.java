@@ -1,10 +1,9 @@
 package org.example.ui;
 
-import org.example.dto.GetProjectResponse;
+import org.example.dto.GetAllProjectResponse;
 import org.example.dto.MyResponse;
 import org.example.utils.ApiClient;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 import javax.swing.*;
@@ -14,7 +13,7 @@ import java.io.IOException;
 public class ProjectsScreen extends JDialog {
 
     private JPanel panel_projects_screen;
-    private  GetProjectResponse[] lstProject;
+    private  GetAllProjectResponse[] lstProject;
 
     public ProjectsScreen(JFrame parent, String token) throws IOException {
         super(parent);
@@ -30,17 +29,17 @@ public class ProjectsScreen extends JDialog {
 
     }
 
-    private GetProjectResponse[] CallApiGetAllProject(String token) throws IOException {
-        Call<MyResponse<GetProjectResponse[]>> getProjectResponseCall= ApiClient.callApi().getProjectResponseCall("Bearer "+ token);
-        Response<MyResponse<GetProjectResponse[]>> response=getProjectResponseCall.execute();
+    private GetAllProjectResponse[] CallApiGetAllProject(String token) throws IOException {
+        Call<MyResponse<GetAllProjectResponse[]>> getProjectResponseCall= ApiClient.callApi().getAllProject("Bearer "+ token);
+        Response<MyResponse<GetAllProjectResponse[]>> response=getProjectResponseCall.execute();
         if(response.isSuccessful()){
-            MyResponse<GetProjectResponse[]> myResponse=response.body();
+            MyResponse<GetAllProjectResponse[]> myResponse=response.body();
                 return myResponse.getContent();
 
         }
         else {
             System.out.println("call failed");
-            return new GetProjectResponse[]{};
+            return new GetAllProjectResponse[]{};
         }
 //        getProjectResponseCall.enqueue(new Callback<MyResponse<GetProjectResponse[]>>() {
 //            @Override
