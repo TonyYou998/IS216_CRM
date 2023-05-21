@@ -5,10 +5,10 @@ import java.awt.*;
 
 public class AddEmployee extends JDialog {
     private JTextField tf_userid;
-    private JTextField tf_projectid;
     private JButton btn_save;
     private JButton btn_cancel;
     private JPanel panel_addemployee;
+    private JComboBox cb_pjid;
 
     public AddEmployee(JFrame parent) {
         super(parent);

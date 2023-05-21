@@ -23,7 +23,7 @@ public class CreateNewUser extends JDialog{
         super(parent);
         setTitle("Create new user");
         setContentPane(panel_createnewuser);
-        setMinimumSize(new Dimension(800,500));
+        setMinimumSize(new Dimension(500,300));
         setModal(true);
         setLocationRelativeTo(null);
 

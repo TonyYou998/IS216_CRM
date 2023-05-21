@@ -40,7 +40,7 @@ public class Login extends JDialog {
 
         //label_image.setSize(600,500);
         label_image.setBounds(200,0,500,500);
-        ImageIcon imageIcon = new ImageIcon("G:\\Oanhhh\\java\\IS216_CRM\\fe\\crm_ui\\src\\image\\Complete.png");
+        ImageIcon imageIcon = new ImageIcon("src/image/Complete.png");
         Image imgScale = imageIcon.getImage().getScaledInstance(label_image.getWidth(),label_image.getHeight(),Image.SCALE_SMOOTH);
         ImageIcon scaleIcon = new ImageIcon(imgScale);
         label_image.setIcon(scaleIcon);
@@ -86,11 +86,15 @@ public class Login extends JDialog {
                     String roleObject = roles.getAsString();
                     System.out.println(roleObject);
 
-                    if (roleObject.equals("ROLE_Admin")) {
+                    if (roleObject.equals("ROLE_ADMIN")) {
                         setVisible(false);
-                        new AdminScreen(null,token);
-                    } else if (roleObject.equals("ROLE_Leader")) {
-                        setVisible(false);
+                        try {
+                            new AdminScreen(null,token);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else if (roleObject.equals("ROLE_LEADER")) {
+//                        setVisible(false);
                         try {
                             new ProjectsScreen(null,token);
                         } catch (IOException e) {
