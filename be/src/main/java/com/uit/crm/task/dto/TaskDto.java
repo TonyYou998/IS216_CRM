@@ -12,4 +12,5 @@ public class TaskDto {
     private String assigneeEmployeeId;
     private boolean status;
     private String projectId;
+    private  Long id;
 }

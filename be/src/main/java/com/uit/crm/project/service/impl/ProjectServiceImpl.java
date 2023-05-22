@@ -127,6 +127,7 @@ public class ProjectServiceImpl implements ProjectService {
                 List<Project> lstProject= SpringBeanUtil.getBean(ProjectRepository.class).findByUser(Integer.parseInt(u.getId().toString()));
                 for(Project p:lstProject){
                     ProjectDto response=mapper.map(p,ProjectDto.class);
+                    response.setLeaderId(p.getProjectLeader().getId().toString());
                     lstResponse.add(response);
                 }
 

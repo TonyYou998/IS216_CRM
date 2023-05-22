@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+
 @AllArgsConstructor
 @Component
 public class RoleSeeder implements CommandLineRunner {
@@ -14,11 +16,13 @@ public class RoleSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Role r1=new Role("EMPLOYEE");
-        Role r2=new Role("ADMIN");
-        Role r3=new Role("LEADER");
-        repository.save(r1);
-        repository.save(r2);
-        repository.save(r3);
+        if(Arrays.asList(args).contains("--seed-data")) {
+            Role r1 = new Role("EMPLOYEE");
+            Role r2 = new Role("ADMIN");
+            Role r3 = new Role("LEADER");
+            repository.save(r1);
+            repository.save(r2);
+            repository.save(r3);
+        }
     }
 }

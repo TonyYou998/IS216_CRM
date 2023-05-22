@@ -42,18 +42,6 @@ public class ProjectsScreen extends JDialog {
             System.out.println("call failed");
             return new GetProjectResponse[]{};
         }
-//        getProjectResponseCall.enqueue(new Callback<MyResponse<GetProjectResponse[]>>() {
-//            @Override
-//            public void onResponse(Call<MyResponse<GetProjectResponse[]>> call, Response<MyResponse<GetProjectResponse[]>> response) {
-//                System.out.println("success");
-//                System.out.println(response.body().getContent());
-//            }
-//
-//            @Override
-//            public void onFailure(Call<MyResponse<GetProjectResponse[]>> call, Throwable throwable) {
-//                System.out.println("failed");
-//                System.out.println(throwable.toString());
-//            }
-//        });
+
     }
 }

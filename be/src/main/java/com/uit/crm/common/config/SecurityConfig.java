@@ -29,8 +29,10 @@ public class SecurityConfig {
                     .hasRole("ADMIN")
 //                    .requestMatchers("/api/v1/user/**")
 //                    .authenticated()
+//                            .requestMatchers("/api/v1/user/task")
+//                            .authenticated()
                     .requestMatchers("/api/v1/user/task/leader/**")
-                    .hasRole("LEADER")
+                            .hasAnyRole("LEADER","ADMIN")
 
                     .anyRequest()
                     .permitAll()

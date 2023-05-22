@@ -22,4 +22,6 @@ public class Constants {
     public static final String ADD_LEADER_TO_PROJECT = "/add-leader";
     public static final String PROJECT_ID = "/project";
     public static final String GET_ALL_PROJECTS_BY_USER_ID = "/all-project";
+    public static final String ASSIGN_TASK = "/assign-task";
+    public static final String GET_TASK_BY_PROJECT_ID = "/project";
 }
