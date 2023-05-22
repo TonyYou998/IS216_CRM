@@ -163,7 +163,7 @@ public class AdminScreen extends JDialog {
                 case 1 -> listPj.get(rowIndex).getProjectName();
                 case 2 -> listPj.get(rowIndex).getStartDate();
                 case 3 -> listPj.get(rowIndex).getEndDate();
-                case 4 -> listPj.get(rowIndex).getLeaderId();
+                case 4 -> listPj.get(rowIndex).getLeaderName();
                 default -> "-";
             };
         }

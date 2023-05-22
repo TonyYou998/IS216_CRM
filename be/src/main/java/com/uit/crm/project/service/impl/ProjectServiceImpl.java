@@ -58,7 +58,9 @@ public class ProjectServiceImpl implements ProjectService {
         List<Project> lstProject=SpringBeanUtil.getBean(ProjectRepository.class).findAll();
         for (Project project : lstProject) {
                ProjectDto dto=  mapper.map(project, ProjectDto.class);
-               dto.setLeaderId(Long.toString(project.getProjectLeader().getId()));
+              dto.setLeaderId(Long.toString(project.getProjectLeader().getId()));
+              dto.setLeaderName(project.getProjectLeader().getUsername());
+
                responses.add(dto);
         }
         return  responses;

@@ -9,5 +9,6 @@ public class GetAllProjectResponse {
     String endDate;
     String leaderId;
     Long id;
+    String leaderName;
 //    List<Object> lstObject=new ArrayList<>();
 }

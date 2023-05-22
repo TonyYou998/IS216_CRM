@@ -11,4 +11,5 @@ public class ProjectDto  {
     private LocalDateTime endDate;
     private String leaderId;
     private Long id;
+    private String leaderName;
 }

@@ -45,7 +45,7 @@ public class TaskController {
         return  ResponseHandler.getResponse("Internal server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
     public ResponseEntity<Object> getTaskByUserId(){
-
+        return  null;
     }
 
 }
