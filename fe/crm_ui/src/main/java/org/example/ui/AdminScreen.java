@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdminScreen extends JDialog {
@@ -41,6 +42,8 @@ public class AdminScreen extends JDialog {
     List<GetAllProjectResponse> listPj;
 
     List<GetAllUserAccountResponse> listUser;
+
+    List<String> listRole = new ArrayList<>();
 
 
     public AdminScreen(JFrame parent,String token) throws IOException {
@@ -79,7 +82,7 @@ public class AdminScreen extends JDialog {
         btn_user_add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateNewUser(null);
+                new CreateNewUser(null,token);
             }
         });
 
@@ -117,6 +120,12 @@ public class AdminScreen extends JDialog {
             public void onResponse(Call<List<GetAllUserAccountResponse>> call, Response<List<GetAllUserAccountResponse>> response) {
                 if(response.isSuccessful()){
                     listUser = response.body();
+                    for(int i=0;i<listUser.size();i++) {
+                        if(listUser.get(i).getRoleId().equals("1")) {listRole.add("Employee");}
+                        else if(listUser.get(i).getRoleId().equals("2")) {listRole.add("Admin");}
+                        else if(listUser.get(i).getRoleId().equals("3")) {listRole.add("Leader");}
+                    }
+
                     UserTable userTable = new UserTable();
                     tableUser.setModel(userTable);
                 }
@@ -182,7 +191,7 @@ public class AdminScreen extends JDialog {
             return switch (columnIndex) {
                 case 0 -> listUser.get(rowIndex).getId();
                 case 1 -> listUser.get(rowIndex).getUsername();
-                case 2 -> listUser.get(rowIndex).getRoleId();
+                case 2 -> listRole.get(rowIndex);
                 case 3 -> listUser.get(rowIndex).getPhone();
                 case 4 -> listUser.get(rowIndex).getFullName();
                 case 5 -> listUser.get(rowIndex).getAddress();

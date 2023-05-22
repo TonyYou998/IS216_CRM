@@ -16,7 +16,7 @@ public class CreateNewProject extends JDialog {
         super(parent);
         setTitle("Create new project");
         setContentPane(panel_createnewpj);
-        setMinimumSize(new Dimension(500,300));
+        setMinimumSize(new Dimension(550,350));
         setModal(true);
         setLocationRelativeTo(null);
 

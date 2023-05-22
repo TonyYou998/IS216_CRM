@@ -11,8 +11,8 @@ public interface CallService {
     @POST("login")
     Call<MyResponse<LoginResponse>> loginResponseCall(@Body LoginRequest loginRequest);
 
-    @POST("admin/project/create")
-//    Call<MyResponse<LoginResponse>> loginResponseCall(@Body CreateProjectRequest createProjectRequest);
+    @POST("admin/account/create-user")
+    Call<CreateUserResponse> postCreateUser(@Body CreateUserRequest createUserRequest,@Header("Authorization") String token);
 
     @GET("user/all-project")
 //    Call<MyResponse<GetAllProjectResponse[]>> getAllProject(@Header("Authorization") String token);
