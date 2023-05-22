@@ -2,12 +2,8 @@ package org.example.dto;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Data
-public class GetProjectResponse {
+public class GetAllProjectResponse {
     String projectName;
     String startDate;
     String endDate;

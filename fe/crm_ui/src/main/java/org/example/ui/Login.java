@@ -20,12 +20,13 @@ import java.util.Base64;
 
 public class Login extends JDialog {
     private JPanel panel_login;
-    private JTextField tf_username;
-    private JPasswordField tf_password;
+    private JLabel lb_pass;
     private JButton btn_login;
     private JPanel panel_image;
     private JLabel label_image;
     private JPanel panel_loginInfo;
+    private JTextField tf_email;
+    private JPasswordField tf_password;
     private String token;
 
 
@@ -39,7 +40,7 @@ public class Login extends JDialog {
 
         //label_image.setSize(600,500);
         label_image.setBounds(200,0,500,500);
-        ImageIcon imageIcon = new ImageIcon("G:\\Oanhhh\\java\\IS216_CRM\\fe\\crm_ui\\src\\image\\Complete.png");
+        ImageIcon imageIcon = new ImageIcon("src/image/Complete.png");
         Image imgScale = imageIcon.getImage().getScaledInstance(label_image.getWidth(),label_image.getHeight(),Image.SCALE_SMOOTH);
         ImageIcon scaleIcon = new ImageIcon(imgScale);
         label_image.setIcon(scaleIcon);
@@ -47,8 +48,8 @@ public class Login extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                         if(e.getSource()==btn_login){
-                            String username= tf_username.getText();
-                            char[] password=tf_password.getPassword();
+                            String username= tf_email.getText();
+                            char[] password= tf_password.getPassword();
                             String visiblePassword=new String(password);
                            if(!username.isEmpty()&&!visiblePassword.isEmpty()){
                                LoginRequest request=new LoginRequest(username,visiblePassword);
@@ -57,7 +58,6 @@ public class Login extends JDialog {
                         }
             }
         });
-
         setVisible(true);
 
     }
@@ -86,11 +86,15 @@ public class Login extends JDialog {
                     String roleObject = roles.getAsString();
                     System.out.println(roleObject);
 
-                    if (roleObject.equals("ROLE_Admin")) {
+                    if (roleObject.equals("ROLE_ADMIN")) {
                         setVisible(false);
-                        new AdminScreen(null);
-                    } else {
-                        setVisible(false);
+                        try {
+                            new AdminScreen(null,token);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else if (roleObject.equals("ROLE_LEADER")) {
+//                        setVisible(false);
                         try {
                             new ProjectsScreen(null,token);
                         } catch (IOException e) {
@@ -108,7 +112,6 @@ public class Login extends JDialog {
         });
 
     }
-
 
 
 }
