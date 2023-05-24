@@ -15,11 +15,12 @@ import java.util.List;
 public class ProjectsScreen extends JDialog {
 
     private JPanel panel_projects_screen;
-    private  List<GetAllProjectResponse> lstProject;
+    private JPanel panel_listpj;
+    private JPanel panel_card;
+    private  List<GetAllProjectResponse> listProject;
 
     public ProjectsScreen(JFrame parent, String token) throws IOException {
         super(parent);
-        System.out.print("Bearer "+token);
 
         callApiPj(token);
 
@@ -28,18 +29,45 @@ public class ProjectsScreen extends JDialog {
         setMinimumSize(new Dimension(800,500));
         setModal(true);
         setLocationRelativeTo(null);
+
+//        JPanel cardview = new JPanel();
+//        cardview.setBackground(Color.yellow);
+//        cardview.setBounds(50,50,500,100);
+//        cardview.setLayout(new CardLayout());
+//
+//        add(cardview);
+
+
+
         setVisible(true);
 
 
     }
 
     public void callApiPj(String token) {
+        Call<MyResponse<List<GetAllProjectResponse>>> responseCall = ApiClient.callApi().getAllProject(token);
+        responseCall.enqueue(new Callback<MyResponse<List<GetAllProjectResponse>>>() {
+            @Override
+            public void onResponse(Call<MyResponse<List<GetAllProjectResponse>>> call, Response<MyResponse<List<GetAllProjectResponse>>> response) {
+                if(response.isSuccessful()) {
+                    MyResponse<List<GetAllProjectResponse>> listMyResponse = response.body();
+                    listProject = listMyResponse.getContent();
+                    if (listProject == null) {
+                        System.out.print("null");
+                    } else {
+                        System.out.print(listProject.size());
+                    }
 
-        // }
-        // else {
-        //     System.out.println("call failed");
-        //     return new GetProjectResponse[]{};
-        // }
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<MyResponse<List<GetAllProjectResponse>>> call, Throwable throwable) {
+                System.out.print("call failure user");
+
+            }
+        });
 
     }
 

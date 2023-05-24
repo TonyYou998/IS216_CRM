@@ -12,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,17 +55,8 @@ public class CreateNewUser extends JDialog{
 
                 String visiblePassword=new String(tf_password.getPassword());
 
-                CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),tf_dateofbirth.getText(),roleId);
+                CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),"",roleId);
                 callApiCreateUser(createUserRequest,token);
-//                if(e.getSource()==btn_create){
-//                    String username= tf_email.getText();
-//                    char[] password= tf_password.getPassword();
-//                    String visiblePassword=new String(password);
-//                    if(!username.isEmpty()&&!visiblePassword.isEmpty()){
-//                        LoginRequest request=new LoginRequest(username,visiblePassword);
-//                        callLoginApi(request);
-//                    }
-//                }
             }
         });
         setVisible(true);
@@ -79,7 +71,12 @@ public class CreateNewUser extends JDialog{
                 System.out.println("call ok");
                 if (response.isSuccessful()) {
                     CreateUserResponse createUserResponse = response.body();
-
+                    try {
+                        new AdminScreen(null,token);
+                        setVisible(false);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 

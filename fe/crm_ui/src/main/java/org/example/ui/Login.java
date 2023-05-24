@@ -94,9 +94,10 @@ public class Login extends JDialog {
                             throw new RuntimeException(e);
                         }
                     } else if (roleObject.equals("ROLE_LEADER")) {
-//                        setVisible(false);
+                        setVisible(false);
                         try {
-                            new ProjectsScreen(null,token);
+                            new TaskScreen(null,token);
+//                            new ProjectsScreen(null,token);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
