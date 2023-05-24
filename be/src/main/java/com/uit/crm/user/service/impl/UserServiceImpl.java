@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Service
@@ -88,6 +89,26 @@ public class UserServiceImpl implements UserService {
             responses.add(dto);
         }
         return  responses;
+
+    }
+
+    @Override
+    public List<UserDto> getAllLeaders() {
+        try{
+            Role r=SpringBeanUtil.getBean(RoleRepository.class).findById(Long.parseLong("3")).orElse(null);
+
+            List<User> lstUser=SpringBeanUtil.getBean(UserRepository.class).findAllByRole(r);
+            List<UserDto> lstDto=new LinkedList<>();
+            for(User u:lstUser){
+                UserDto dto=mapper.map(u,UserDto.class);
+                lstDto.add(dto);
+            }
+            return lstDto;
+        }
+        catch (Exception ex){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(UserServiceImpl.class).info(ex.getMessage());
+            return null;
+        }
 
     }
 

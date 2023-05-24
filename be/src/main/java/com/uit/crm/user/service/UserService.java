@@ -11,4 +11,6 @@ public interface UserService {
     UserDto createAdminAccount(GetUserDto request);
 
     List<UserDto> getAllAccounts();
+
+    List<UserDto> getAllLeaders();
 }

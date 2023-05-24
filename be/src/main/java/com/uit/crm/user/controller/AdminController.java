@@ -10,6 +10,7 @@ import com.uit.crm.user.model.User;
 import com.uit.crm.user.service.UserService;
 
 import com.uit.crm.common.utils.SpringBeanUtil;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,14 @@ public class AdminController {
     public ResponseEntity<Object> addLeaderToProject(@RequestParam("projectId") String projectId,@RequestParam("leaderId") String leaderId){
         ProjectDto response=SpringBeanUtil.getBean(ProjectService.class).addLeaderToProject(projectId,leaderId);
         return  ResponseHandler.getResponse(response, HttpStatus.OK);
+    }
+
+    @GetMapping(Constants.GET_ALL_LEADER)
+    public ResponseEntity<Object> getAllLeaders(){
+        List<UserDto> response=SpringBeanUtil.getBean(UserService.class).getAllLeaders();
+        if(response!=null)
+            return  ResponseHandler.getResponse(response,HttpStatus.OK);
+        return  ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 
