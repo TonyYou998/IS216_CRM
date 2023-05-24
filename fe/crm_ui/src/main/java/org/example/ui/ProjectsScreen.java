@@ -35,11 +35,6 @@ public class ProjectsScreen extends JDialog {
 
     public void callApiPj(String token) {
 
-        // }
-        // else {
-        //     System.out.println("call failed");
-        //     return new GetProjectResponse[]{};
-        // }
 
     }
 
