@@ -8,5 +8,5 @@ public class MyResponse<T> {
 //    @SerializedName("content")
     private T content;
 //    @SerializedName("content")
-    private String status;
+    private int status;
 }
