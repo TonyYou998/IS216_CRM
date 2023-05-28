@@ -22,7 +22,7 @@ public interface CallService {
     Call<CreateUserResponse> postCreateUser(@Body CreateUserRequest createUserRequest,@Header("Authorization") String token);
 
     @POST("user/task/leader/create")
-    Call<MyResponse<LoginResponse>> postCreateTask (@Body CreateTaskRequest createTaskRequest,@Header("Authorization") String token);
+    Call<MyResponse<CreateTaskResponse>> postCreateTask (@Body CreateTaskRequest createTaskRequest,@Header("Authorization") String token);
 
     @GET("user/all-project")
     Call<MyResponse<List<GetAllProjectResponse>>> getAllProject(@Header("Authorization") String token);
@@ -33,10 +33,11 @@ public interface CallService {
     @GET("admin/account/get-all")
     Call<List<GetAllUserAccountResponse>> getAllUser(@Header("Authorization") String token);
 
-    @GET("user/task/project{id}")
-    Call<MyResponse<List<GetTaskResponse>>> getTaskByProjectId(@Header("Authorization") String token,@Path("id") int id);
+    @GET("user/task/project")
+    Call<MyResponse<List<GetTaskResponse>>> getTaskByProjectId(@Header("Authorization") String token,@Query("id") int id);
 
     @GET("admin/leaders")
     Call<MyResponse<List<GetLeaderResponse>>> getLeaders(@Header("Authorization") String token);
-
+//    @GET("admin/leaders")
+//    Call<MyResponse<List<GetTaskResponse>>> getTaskByProjectId(@Header("Authorization") String token,@Query("id") int id);
 }

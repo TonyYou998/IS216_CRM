@@ -1,6 +1,5 @@
 package org.example.ui;
 
-import org.example.dto.GetAllProjectResponse;
 import org.example.dto.GetTaskResponse;
 import org.example.dto.MyResponse;
 import org.example.utils.ApiClient;
@@ -10,6 +9,7 @@ import retrofit2.Response;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -31,11 +31,17 @@ public class TaskScreen extends JDialog {
     private JPanel tp_backlog;
     private JPanel tp_inpro;
     private JPanel tp_done;
+    private JScrollPane table_user;
+    private JScrollPane table_task;
 
     private  List<GetTaskResponse> listAllTask;
 
+    String[] strColTask = {"TaskID","Task Name","Assignee","Start date", "End date","Status"};
+    String[] strColUser = {"Id","Username","RoleId","Phone", "Fullname","Address","Email"};
+
     public TaskScreen(JFrame parent,String token) throws IOException {
         super(parent);
+
         setTitle("Task Screen");
         setContentPane(panel_taskscreen);
         setMinimumSize(new Dimension(800,500));
@@ -76,8 +82,9 @@ public class TaskScreen extends JDialog {
                     System.out.print("null");
                 } else {
                     System.out.print(listAllTask.size());
+                    AllTaskTable allTaskTable = new AllTaskTable();
+                    table2.setModel(allTaskTable);
                 }
-
             }
 
             @Override
@@ -87,4 +94,36 @@ public class TaskScreen extends JDialog {
             }
         });
     }
+
+    private class AllTaskTable extends AbstractTableModel {
+
+        @Override
+        public String getColumnName(int column) {
+            return strColTask[column];
+        }
+
+        @Override
+        public int getRowCount() {
+            return listAllTask.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return strColTask.length;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return switch (columnIndex) {
+                case 0 -> listAllTask.get(rowIndex).getId();
+                case 1 -> listAllTask.get(rowIndex).getTaskName();
+                case 2 -> listAllTask.get(rowIndex).getAssigneeEmployeeId();
+                case 3 -> listAllTask.get(rowIndex).getStartDate();
+                case 4 -> listAllTask.get(rowIndex).getEndDate();
+                case 5 -> listAllTask.get(rowIndex).getStatus();
+                default -> "-";
+            };
+        }
+    }
+
 }
