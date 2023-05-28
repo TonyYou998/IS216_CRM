@@ -36,5 +36,7 @@ public interface CallService {
     @GET("user/task/project{id}")
     Call<MyResponse<List<GetTaskResponse>>> getTaskByProjectId(@Header("Authorization") String token,@Path("id") int id);
 
+    @GET("admin/leaders")
+    Call<MyResponse<List<GetLeaderResponse>>> getLeaders(@Header("Authorization") String token);
 
 }

@@ -74,7 +74,7 @@ public class AdminScreen extends JDialog {
         btn_pj_add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateNewProject(null);
+                new CreateNewProject(null,token);
 
             }
         });
