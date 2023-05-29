@@ -86,7 +86,7 @@ public class CreateNewUser extends JDialog{
         call.enqueue(new Callback<CreateUserResponse>() {
             @Override
             public void onResponse(Call<CreateUserResponse> call, Response<CreateUserResponse> response) {
-                System.out.println("call ok");
+//                System.out.println("call ok");
                 if (response.isSuccessful()) {
                     CreateUserResponse createUserResponse = response.body();
                     try {

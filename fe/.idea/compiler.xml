@@ -11,7 +11,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="crm_ui" target="11" />
+      <module name="crm_ui" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
