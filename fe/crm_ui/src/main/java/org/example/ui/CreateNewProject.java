@@ -9,6 +9,7 @@ import retrofit2.Response;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,19 +29,18 @@ public class CreateNewProject extends JDialog {
         super(parent);
 
         setTitle("Create new project");
-        this.token=token;
-        lstLeader= callApiGetAllLeader(token);
+        this.token = token;
+        lstLeader = callApiGetAllLeader(token);
         setLeader(lstLeader);
         setContentPane(panel_createnewpj);
-        setMinimumSize(new Dimension(550,350));
+        setMinimumSize(new Dimension(550, 350));
         setModal(true);
         setLocationRelativeTo(null);
 
 
-
         setVisible(true);
-
     }
+
 
         public void setLeader(List<GetLeaderResponse> lstLeader){
             for(GetLeaderResponse item:lstLeader){
