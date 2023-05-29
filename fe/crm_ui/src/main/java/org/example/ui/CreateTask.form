@@ -62,14 +62,6 @@
           <text value="Due date:"/>
         </properties>
       </component>
-      <component id="80236" class="javax.swing.JTextField" binding="tf_duedate">
-        <constraints>
-          <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
       <hspacer id="4001d">
         <constraints>
           <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
@@ -91,16 +83,22 @@
         </constraints>
         <properties/>
       </component>
-      <component id="32481" class="javax.swing.JButton" binding="btn_save">
+      <component id="82ac6" class="org.jdesktop.swingx.JXDatePicker" binding="dp_date">
+        <constraints>
+          <grid row="4" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="97739" class="javax.swing.JButton" binding="CREATEButton" default-binding="true">
         <constraints>
           <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <font name="Arial" size="18" style="1"/>
-          <text value="SAVE"/>
+          <text value="CREATE"/>
         </properties>
       </component>
-      <component id="5add3" class="javax.swing.JButton" binding="btn_cancel">
+      <component id="9fe74" class="javax.swing.JButton" binding="CANCELButton" default-binding="true">
         <constraints>
           <grid row="6" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -109,14 +107,14 @@
           <text value="CANCEL"/>
         </properties>
       </component>
-      <vspacer id="6c30e">
-        <constraints>
-          <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
-        </constraints>
-      </vspacer>
-      <vspacer id="390be">
+      <vspacer id="50d07">
         <constraints>
           <grid row="5" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
+        </constraints>
+      </vspacer>
+      <vspacer id="8545c">
+        <constraints>
+          <grid row="7" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
     </children>

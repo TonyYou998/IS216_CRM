@@ -85,14 +85,6 @@
           <text value="Date of birth:"/>
         </properties>
       </component>
-      <component id="fd8f" class="javax.swing.JTextField" binding="tf_dateofbirth">
-        <constraints>
-          <grid row="6" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-        </constraints>
-        <properties/>
-      </component>
       <component id="55082" class="javax.swing.JLabel">
         <constraints>
           <grid row="7" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -157,7 +149,13 @@
         </constraints>
         <properties/>
       </component>
-      <component id="d7c64" class="javax.swing.JButton" binding="btn_create">
+      <component id="f5c42" class="org.jdesktop.swingx.JXDatePicker" binding="dp_date">
+        <constraints>
+          <grid row="6" column="2" row-span="1" col-span="2" vsize-policy="3" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties/>
+      </component>
+      <component id="a7e4f" class="javax.swing.JButton" binding="CREATEButton" default-binding="true">
         <constraints>
           <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -166,7 +164,7 @@
           <text value="CREATE"/>
         </properties>
       </component>
-      <component id="84252" class="javax.swing.JButton" binding="btn_cancel">
+      <component id="be8df" class="javax.swing.JButton" binding="CANCELButton" default-binding="true">
         <constraints>
           <grid row="10" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -175,12 +173,12 @@
           <text value="CANCEL"/>
         </properties>
       </component>
-      <vspacer id="7d6cc">
+      <vspacer id="f3640">
         <constraints>
           <grid row="11" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>
       </vspacer>
-      <vspacer id="180c0">
+      <vspacer id="4f78a">
         <constraints>
           <grid row="9" column="3" row-span="1" col-span="1" vsize-policy="6" hsize-policy="1" anchor="0" fill="2" indent="0" use-parent-layout="false"/>
         </constraints>

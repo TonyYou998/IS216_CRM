@@ -2,7 +2,6 @@ package org.example.ui;
 
 import org.example.dto.CreateUserRequest;
 import org.example.dto.CreateUserResponse;
-import org.example.dto.LoginRequest;
 import org.example.utils.ApiClient;
 import org.jdesktop.swingx.JXDatePicker;
 import retrofit2.Call;
@@ -14,22 +13,27 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class CreateNewUser extends JDialog{
     private JTextField tf_username;
     private JTextField tf_fullname;
     private JPasswordField tf_password;
     private JTextField tf_email;
-    private JTextField tf_dateofbirth;
     private JTextField tf_phone;
     private JComboBox cb_role;
     private JPanel panel_createnewuser;
     private JTextField tf_address;
+    private JButton CREATEButton;
+    private JButton CANCELButton;
+    private JXDatePicker dp_date;
     private JButton btn_create;
 
-    private JButton btn_cancel;
+    DateFormat dateFormat;
+    String date;
+    Date currentDate = new Date();
 
     public CreateNewUser(JFrame parent, String token) {
         super(parent);
@@ -38,6 +42,8 @@ public class CreateNewUser extends JDialog{
         cb_role.addItem("Admin");
         cb_role.addItem("Leader");
 
+        dp_date.setFormats("dd/MM/yyyy");
+        dp_date.setDate(currentDate);
 
         setTitle("Create new user");
         setContentPane(panel_createnewuser);
@@ -45,7 +51,7 @@ public class CreateNewUser extends JDialog{
         setModal(true);
         setLocationRelativeTo(null);
 
-        btn_create.addActionListener(new ActionListener() {
+        CREATEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String valueComboBox = cb_role.getItemAt(cb_role.getSelectedIndex()).toString();
@@ -53,14 +59,24 @@ public class CreateNewUser extends JDialog{
                 if(valueComboBox.equals("Employee")) {roleId = "1";}
                 else if(valueComboBox.equals("Admin")) {roleId = "2";}
                 else if(valueComboBox.equals("Leader")) {roleId = "3";}
-                System.out.println(roleId);
 
                 String visiblePassword=new String(tf_password.getPassword());
 
-                CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),"",roleId);
+                dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                date = dateFormat.format(dp_date.getDate());
+
+                CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),date,roleId);
                 callApiCreateUser(createUserRequest,token);
             }
         });
+
+        CANCELButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+            }
+        });
+
         setVisible(true);
 
     }
