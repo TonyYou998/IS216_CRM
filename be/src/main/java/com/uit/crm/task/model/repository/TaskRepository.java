@@ -1,4 +1,4 @@
-package com.uit.crm.task.repository;
+package com.uit.crm.task.model.repository;
 
 import com.uit.crm.project.model.Project;
 import com.uit.crm.task.model.Task;

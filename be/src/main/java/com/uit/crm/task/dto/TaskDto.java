@@ -10,6 +10,7 @@ public class TaskDto {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
     private String assigneeEmployeeId;
+    private String assignEmployeeName;
     private boolean status;
     private String projectId;
     private  Long id;
