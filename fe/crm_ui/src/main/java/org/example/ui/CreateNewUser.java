@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.dto.CreateUserRequest;
 import org.example.dto.CreateUserResponse;
+import org.example.dto.MyResponse;
 import org.example.utils.ApiClient;
 import org.jdesktop.swingx.JXDatePicker;
 import retrofit2.Call;
@@ -34,15 +35,17 @@ public class CreateNewUser extends JDialog{
     DateFormat dateFormat;
     String date;
     Date currentDate = new Date();
+    private JFrame lastScreen;
 
     public CreateNewUser(JFrame parent, String token) {
         super(parent);
+        this.lastScreen=parent;
 
         cb_role.addItem("Employee");
         cb_role.addItem("Admin");
         cb_role.addItem("Leader");
-
-        dp_date.setFormats("dd/MM/yyyy");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dp_date.setFormats(dateFormat);
         dp_date.setDate(currentDate);
 
         setTitle("Create new user");
@@ -62,11 +65,12 @@ public class CreateNewUser extends JDialog{
 
                 String visiblePassword=new String(tf_password.getPassword());
 
-                dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 date = dateFormat.format(dp_date.getDate());
 
                 CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),date,roleId);
-                callApiCreateUser(createUserRequest,token);
+                CreateUserResponse newUser= callApiCreateUser(createUserRequest,token);
+
             }
         });
 
@@ -80,29 +84,26 @@ public class CreateNewUser extends JDialog{
         setVisible(true);
 
     }
+    public void reloadLastScreen(){
+//        if(lastScreen instanceof AdminScreen){
+//            AdminScreen adminScreen=
+//        }
+    }
 
-    private void callApiCreateUser(CreateUserRequest createUserRequest,String token) {
-        Call<CreateUserResponse> call = ApiClient.callApi().postCreateUser(createUserRequest,"Bearer "+token);
-        call.enqueue(new Callback<CreateUserResponse>() {
-            @Override
-            public void onResponse(Call<CreateUserResponse> call, Response<CreateUserResponse> response) {
-//                System.out.println("call ok");
-                if (response.isSuccessful()) {
-                    CreateUserResponse createUserResponse = response.body();
-                    try {
-                        new AdminScreen(null,token);
-                        setVisible(false);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
+    private CreateUserResponse callApiCreateUser(CreateUserRequest createUserRequest,String token) {
+
+        Call<MyResponse<CreateUserResponse>> call = ApiClient.callApi().postCreateUser(createUserRequest,"Bearer "+token);
+
+        try{
+            Response<MyResponse<CreateUserResponse>> response=call.execute();
+            if(response.isSuccessful()){
+                MyResponse<CreateUserResponse> responseBody=response.body();
+                return responseBody.getContent();
             }
-
-            @Override
-            public void onFailure(Call<CreateUserResponse> call, Throwable throwable) {
-                System.out.println("call failure");
-            }
-        });
-
+        }
+        catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+        return null;
     }
 }

@@ -35,11 +35,11 @@ public class CreateNewProject extends JDialog {
         super(parent);
 
         setTitle("Create new project");
-        dp_date.setFormats("dd/MM/yyyy");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dp_date.setFormats(dateFormat);
         dp_date.setDate(currentDate);
-
-//        lstLeader = callApiGetAllLeader(token);
-//        setLeader(lstLeader);
+        lstLeader = callApiGetAllLeader(token);
+        setLeader(lstLeader);
         setContentPane(panel_createnewpj);
         setMinimumSize(new Dimension(550, 350));
         setModal(true);
@@ -47,7 +47,7 @@ public class CreateNewProject extends JDialog {
         btn_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 date = dateFormat.format(dp_date.getDate());
                 System.out.println(date);
 
@@ -68,7 +68,19 @@ public class CreateNewProject extends JDialog {
 
         public List<GetLeaderResponse> callApiGetAllLeader(String token){
             Call<MyResponse<List<GetLeaderResponse>>> call = ApiClient.callApi().getLeaders("Bearer "+token);
+            try{
+                Response<MyResponse<List<GetLeaderResponse>>> response= call.execute();
+                if(response.isSuccessful()){
 
+                    MyResponse<List<GetLeaderResponse>> lstLeaders= response.body();
+                    return lstLeaders.getContent();
+                }
+
+
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
             return null;
         }
 
