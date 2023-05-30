@@ -19,7 +19,7 @@ public interface CallService {
     Call<MyResponse<CreateProjectResponse>> postCreateProject (@Body CreateProjectRequest createProjectRequest,@Header("Authorization") String token);
 
     @POST("admin/account/create-user")
-    Call<CreateUserResponse> postCreateUser(@Body CreateUserRequest createUserRequest,@Header("Authorization") String token);
+    Call<MyResponse<CreateUserResponse>> postCreateUser(@Body CreateUserRequest createUserRequest,@Header("Authorization") String token);
 
     @POST("user/task/leader/create")
     Call<MyResponse<CreateTaskResponse>> postCreateTask (@Body CreateTaskRequest createTaskRequest,@Header("Authorization") String token);

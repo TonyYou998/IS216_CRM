@@ -35,9 +35,9 @@ public class CreateNewProject extends JDialog {
         super(parent);
 
         setTitle("Create new project");
-        dp_date.setFormats("dd/MM/yyyy");
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dp_date.setFormats(dateFormat);
         dp_date.setDate(currentDate);
-
         lstLeader = callApiGetAllLeader(token);
         setLeader(lstLeader);
         setContentPane(panel_createnewpj);
@@ -47,7 +47,7 @@ public class CreateNewProject extends JDialog {
         btn_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 date = dateFormat.format(dp_date.getDate());
                 System.out.println(date);
 
