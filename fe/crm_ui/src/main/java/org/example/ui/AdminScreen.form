@@ -61,7 +61,7 @@
                   </component>
                 </children>
               </grid>
-              <scrollpane id="d87fb">
+              <scrollpane id="d87fb" binding="refreshBtn">
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -90,11 +90,14 @@
                       <text value=""/>
                     </properties>
                   </component>
-                  <hspacer id="2be71">
+                  <component id="399b5" class="javax.swing.JButton" binding="refreshButton1" default-binding="true">
                     <constraints>
-                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
-                  </hspacer>
+                    <properties>
+                      <text value="refresh"/>
+                    </properties>
+                  </component>
                 </children>
               </grid>
             </children>

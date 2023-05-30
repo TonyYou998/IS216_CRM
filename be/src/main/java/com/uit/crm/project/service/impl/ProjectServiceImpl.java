@@ -32,7 +32,7 @@ public class ProjectServiceImpl implements ProjectService {
         User leader= SpringBeanUtil.getBean(UserRepository.class).findById( Long.parseLong(request.getLeaderId())).orElse(null);
         ProjectDto response=null;
         try{
-            if(leader!=null && leader.getRole().getId()==2) {
+            if(leader!=null && leader.getRole().getId()==3) {
                 Project p = new Project();
                 p.setProjectLeader(leader);
                 p.setProjectName(request.getProjectName());
