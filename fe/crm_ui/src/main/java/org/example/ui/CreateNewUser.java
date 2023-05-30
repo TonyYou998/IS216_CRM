@@ -70,6 +70,8 @@ public class CreateNewUser extends JDialog{
 
                 CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),date,roleId);
                 CreateUserResponse newUser= callApiCreateUser(createUserRequest,token);
+                if(newUser !=null)
+                   dispose();
 
             }
         });
@@ -86,7 +88,8 @@ public class CreateNewUser extends JDialog{
     }
     public void reloadLastScreen(){
 //        if(lastScreen instanceof AdminScreen){
-//            AdminScreen adminScreen=
+////            AdminScreen adminScreen=
+//            lastScreen.callApiAllUser();
 //        }
     }
 

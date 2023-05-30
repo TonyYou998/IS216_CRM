@@ -35,6 +35,7 @@ public class AdminScreen extends JDialog {
     private JTable tableUser;
     private JButton btn_pj_add;
     private JButton btn_user_add;
+    private JButton refreshButton;
 
     String[] strColPj = {"Id","Name","Start date", "End date","Leader"};
     String[] strColUser = {"Id","Username","RoleId","Phone", "Fullname","Address","Email"};
@@ -86,9 +87,15 @@ public class AdminScreen extends JDialog {
                 new CreateNewUser(null,token);
             }
         });
-
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                callApiAllUser(token);
+            }
+        });
 
         setVisible(true);
+
 
 
     }
