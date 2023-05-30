@@ -22,11 +22,12 @@ import java.util.List;
 public class AdminController {
 
     @PostMapping(Constants.CREATE_USER)
-    public UserDto createUserAccount(@RequestBody GetUserDto request){
+    public ResponseEntity<Object> createUserAccount(@RequestBody GetUserDto request){
 
             UserDto response= SpringBeanUtil.getBean(UserService.class).createUser(request);
-
-            return response;
+            if(response!=null)
+                return ResponseHandler.getResponse(response,HttpStatus.OK);
+            return ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
     @PostMapping(Constants.CREATE_ADMIN)

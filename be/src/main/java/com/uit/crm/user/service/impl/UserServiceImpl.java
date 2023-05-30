@@ -19,6 +19,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -36,7 +37,8 @@ public class UserServiceImpl implements UserService {
     private JwtUtils jwtUtils;
     @Override
     public UserDto createUser(GetUserDto dto) {
-        Role role= SpringBeanUtil.getBean(RoleRepository.class).findByRoleName("Employee");
+        Role role= SpringBeanUtil.getBean(RoleRepository.class).findById(Long.parseLong(dto.getRoleId())).orElse(null);
+//        Assert.isNull(role,"Role_ID not exist");
         User user=new User();
         user.setUsername(dto.getUsername());
         user.setEmail(dto.getEmail());

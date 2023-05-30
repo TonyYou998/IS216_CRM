@@ -13,7 +13,7 @@ services:
     volumes:
       - crmDb:/var/lib/mysql
   crm-be:
-    image: tonyyou998/crm:30.5.1
+    image: tonyyou998/crm
     deploy:
       restart_policy:
         condition: on-failure
