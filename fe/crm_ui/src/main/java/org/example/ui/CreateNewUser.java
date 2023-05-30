@@ -65,7 +65,8 @@ public class CreateNewUser extends JDialog{
 
                 String visiblePassword=new String(tf_password.getPassword());
 
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
                 date = dateFormat.format(dp_date.getDate());
 
                 CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),date,roleId);
@@ -79,19 +80,14 @@ public class CreateNewUser extends JDialog{
         CANCELButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
+                dispose();
             }
         });
 
         setVisible(true);
 
     }
-    public void reloadLastScreen(){
-//        if(lastScreen instanceof AdminScreen){
-////            AdminScreen adminScreen=
-//            lastScreen.callApiAllUser();
-//        }
-    }
+
 
     private CreateUserResponse callApiCreateUser(CreateUserRequest createUserRequest,String token) {
 
