@@ -1,14 +1,12 @@
 package com.uit.crm.task.service.impl;
 
 import com.uit.crm.common.utils.JwtUtils;
-import com.uit.crm.common.utils.LoggerUtil;
 import com.uit.crm.common.utils.SpringBeanUtil;
-import com.uit.crm.project.dto.ProjectDto;
 import com.uit.crm.project.model.Project;
 import com.uit.crm.project.repository.ProjectRepository;
 import com.uit.crm.task.dto.TaskDto;
 import com.uit.crm.task.model.Task;
-import com.uit.crm.task.repository.TaskRepository;
+import com.uit.crm.task.model.repository.TaskRepository;
 import com.uit.crm.task.service.TaskService;
 import com.uit.crm.user.model.User;
 import com.uit.crm.user.repository.UserRepository;
@@ -18,7 +16,6 @@ import org.modelmapper.internal.util.Assert;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
@@ -91,6 +88,8 @@ public class TaskServiceImpl implements TaskService {
 
                 dto.setProjectId(item.getProject().getId().toString());
                 dto.setAssigneeEmployeeId(item.getAssignedEmployeeId().getId().toString());
+                dto.setAssignEmployeeName(item.getAssignedEmployeeId().getUsername());
+
                 lstDto.add(dto);
             }
             return lstDto;

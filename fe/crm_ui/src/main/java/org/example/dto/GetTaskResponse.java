@@ -8,6 +8,7 @@ public class GetTaskResponse {
     String startDate;
     String endDate;
     String assigneeEmployeeId;
+    String assignEmployeeName;
     String status;
     String projectId;
     int id;

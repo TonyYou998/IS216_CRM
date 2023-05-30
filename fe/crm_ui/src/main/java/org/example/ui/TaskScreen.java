@@ -33,6 +33,8 @@ public class TaskScreen extends JDialog {
     private JPanel tp_done;
     private JScrollPane table_user;
     private JScrollPane table_task;
+    private JPanel tp_myTasks;
+    private JTable table6;
 
     private  List<GetTaskResponse> listAllTask;
 
@@ -52,11 +54,12 @@ public class TaskScreen extends JDialog {
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
         tp_taskscreen.addTab("All tasks",null,tp_alltask,null);
+        tp_taskscreen.addTab("My tasks",null,tp_myTasks,null);
         tp_taskscreen.addTab("Backlog",null,tp_backlog,null);
         tp_taskscreen.addTab("In-progess",null,tp_inpro,null);
         tp_taskscreen.addTab("Done",null,tp_done,null);
 
-        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
+        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
         btn_employee_create.setIcon(new ImageIcon(buttonIcon));
         btn_employee_create.setBorder(BorderFactory.createEmptyBorder());
         btn_employee_create.setContentAreaFilled(false);
@@ -117,7 +120,7 @@ public class TaskScreen extends JDialog {
             return switch (columnIndex) {
                 case 0 -> listAllTask.get(rowIndex).getId();
                 case 1 -> listAllTask.get(rowIndex).getTaskName();
-                case 2 -> listAllTask.get(rowIndex).getAssigneeEmployeeId();
+                case 2 -> listAllTask.get(rowIndex).getAssignEmployeeName();
                 case 3 -> listAllTask.get(rowIndex).getStartDate();
                 case 4 -> listAllTask.get(rowIndex).getEndDate();
                 case 5 -> listAllTask.get(rowIndex).getStatus();

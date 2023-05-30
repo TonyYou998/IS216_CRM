@@ -26,5 +26,8 @@ public class UserController {
             List<ProjectDto> lstProject=SpringBeanUtil.getBean(ProjectService.class).findByUser(request);
             return ResponseHandler.getResponse(lstProject,HttpStatus.OK);
     }
+    public ResponseEntity<Object> getAllEmployeeInProject(@RequestHeader("")){
+
+    }
 
 }
