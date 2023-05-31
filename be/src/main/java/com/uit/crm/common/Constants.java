@@ -26,4 +26,6 @@ public class Constants {
     public static final String GET_TASK_BY_PROJECT_ID = "/project";
     public static final String GET_ALL_ROLES = "/roles";
     public static final String GET_ALL_LEADER = "/leaders";
+    public static final String GET_ALL_EMPLOYEE = "/employees";
+    public static final String GET_ALL_EMPLOYEE_IN_PROJECT = "/employees/projectId";
 }

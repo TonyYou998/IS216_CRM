@@ -8,7 +8,7 @@ public class UserDto  {
     private String username;
 //    @JsonIgnoreProperties("password")
     //bug return password
-
+    private String roleName;
     private String roleId;
     private String phone;
     private String fullName;
