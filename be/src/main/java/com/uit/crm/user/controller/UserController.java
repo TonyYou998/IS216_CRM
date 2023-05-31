@@ -7,6 +7,7 @@ import com.uit.crm.project.dto.ProjectDto;
 import com.uit.crm.project.service.ProjectService;
 import com.uit.crm.user.dto.GetUserDto;
 import com.uit.crm.user.dto.UserDto;
+import com.uit.crm.user.service.UserService;
 import com.uit.crm.user.service.impl.UserServiceImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +27,20 @@ public class UserController {
             List<ProjectDto> lstProject=SpringBeanUtil.getBean(ProjectService.class).findByUser(request);
             return ResponseHandler.getResponse(lstProject,HttpStatus.OK);
     }
-    public ResponseEntity<Object> getAllEmployeeInProject(@RequestHeader("")){
+    @GetMapping (Constants.LEADER+Constants.GET_ALL_EMPLOYEE)
+    public ResponseEntity<Object> getAllEmployee(@RequestHeader("Authorization")String token){
+        List<UserDto> responses=SpringBeanUtil.getBean(UserService.class).getAllEmployee(token);
+        if(responses==null)
+            return ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseHandler.getResponse(responses,HttpStatus.OK);
+
+    }
+    @GetMapping(Constants.LEADER+Constants.GET_ALL_EMPLOYEE_IN_PROJECT)
+    public ResponseEntity<Object> getAllEmployeeInProject(@RequestHeader("Authorization") String authHeader,@RequestParam("id") String projectId){
+            List<UserDto> response=SpringBeanUtil.getBean(UserService.class).getAllEmployeeInProject(authHeader,projectId);
+            if(response==null)
+                return ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseHandler.getResponse(response,HttpStatus.OK);
 
     }
 

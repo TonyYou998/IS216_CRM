@@ -3,6 +3,10 @@ package com.uit.crm.user.service.impl;
 import com.uit.crm.common.utils.JwtUtils;
 import com.uit.crm.common.utils.LoggerUtil;
 import com.uit.crm.common.utils.SpringBeanUtil;
+import com.uit.crm.project.model.Project;
+import com.uit.crm.project.model.ProjectEmployee;
+import com.uit.crm.project.repository.ProjectEmployeeRepository;
+import com.uit.crm.project.repository.ProjectRepository;
 import com.uit.crm.role.model.Role;
 import com.uit.crm.role.repository.RoleRepository;
 import com.uit.crm.user.dto.GetUserDto;
@@ -19,7 +23,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -112,6 +115,66 @@ public class UserServiceImpl implements UserService {
             return null;
         }
 
+    }
+
+    @Override
+    public List<UserDto> getAllEmployee(String authHeader) {
+        try {
+            String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
+            String email=SpringBeanUtil.getBean(JwtUtils.class).getEmailFromToken(token);
+//            Assert.isNull(email,"User not exist");
+            Role r=SpringBeanUtil.getBean(RoleRepository.class).findById(Long.parseLong("1")).orElse(null);
+//            Assert.isNull(r,"This role not exist");
+            List<User> lstEmployee=SpringBeanUtil.getBean(UserRepository.class).findAllByRole(r);
+            List<UserDto> lstDto=new LinkedList<>();
+
+            if(lstEmployee.size()>0){
+                return getUserDtos(lstEmployee, lstDto);
+            }
+        }
+        catch (Exception e){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(UserServiceImpl.class).info(e.getMessage());
+            return null;
+        }
+        return null;
+    }
+
+    @Override
+    public List<UserDto> getAllEmployeeInProject(String authHeader, String projectId) {
+        try {
+            String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
+            String email=SpringBeanUtil.getBean(JwtUtils.class).getEmailFromToken(token);
+//            User u=SpringBeanUtil.getBean(UserRepository.class).findByEmail(email);
+            Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
+
+            List<ProjectEmployee>lstProjectEmployee= SpringBeanUtil.getBean(ProjectEmployeeRepository.class).findByProject(p);
+            List<UserDto> lstDto=new LinkedList<>();
+            for(ProjectEmployee pE: lstProjectEmployee){
+                UserDto dto=mapper.map(pE.getUser(),UserDto.class);
+                dto.setRoleId(pE.getUser().getRole().getId().toString());
+                dto.setRoleName(pE.getUser().getRole().getRoleName());
+                lstDto.add(dto);
+
+            }
+            return lstDto;
+
+
+
+        }
+        catch (Exception e){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(UserService.class).info(e.getMessage());
+        }
+        return null;
+    }
+
+    private List<UserDto> getUserDtos(List<User> lstEmployee, List<UserDto> lstDto) {
+        for(User u:lstEmployee){
+            UserDto dto=mapper.map(u, UserDto.class);
+            dto.setRoleId(u.getRole().getId().toString());
+            dto.setRoleName(u.getRole().getRoleName());
+            lstDto.add(dto);
+        }
+        return lstDto;
     }
 
     public UserDto login(GetUserDto request) {
