@@ -38,6 +38,7 @@ public class TaskScreen extends JDialog {
     private JScrollPane table_task;
     private JPanel tp_myTasks;
     private JTable table6;
+    private JButton refreshButton;
 
     private  List<GetTaskResponse> listAllTask;
     private List<GetAllUserAccountResponse> lstAllEmployee;
@@ -81,10 +82,13 @@ public class TaskScreen extends JDialog {
                 new CreateTask(null,token);
             }
         });
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                callApiTask(token,1);
+            }
+        });
         setVisible(true);
-
-
-
     }
 
     public static List<GetAllUserAccountResponse> callApiGetEmployeeInProject(String token, int projectId) {

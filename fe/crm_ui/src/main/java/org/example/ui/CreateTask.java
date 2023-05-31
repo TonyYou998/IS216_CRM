@@ -74,7 +74,7 @@ public class CreateTask extends JDialog {
                 MyResponse<CreateTaskResponse> myResponse = response.body();
                 if (myResponse.getStatus() == 200) {
                     System.out.println("call ok");
-
+                    dispose();
                 }
             }
 
