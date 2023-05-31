@@ -16,5 +16,5 @@ public interface UserService {
 
     List<UserDto> getAllEmployee(String token);
 
-    List<UserDto> getAllEmployeeInProject(String projectId);
+    List<UserDto> getAllEmployeeInProject(String projectId, String id);
 }

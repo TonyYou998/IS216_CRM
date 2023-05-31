@@ -38,6 +38,9 @@ public interface CallService {
 
     @GET("admin/leaders")
     Call<MyResponse<List<GetLeaderResponse>>> getLeaders(@Header("Authorization") String token);
+
+   @GET("user/leader/employees/projectId")
+    Call<MyResponse<List<GetAllUserAccountResponse>>> getAllEmployeeInProject(@Header("Authorization") String token, @Query("id") int projectId);
 //    @GET("admin/leaders")
 //    Call<MyResponse<List<GetTaskResponse>>> getTaskByProjectId(@Header("Authorization") String token,@Query("id") int id);
 }
