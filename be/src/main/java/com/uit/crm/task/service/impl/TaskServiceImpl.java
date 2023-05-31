@@ -88,7 +88,7 @@ public class TaskServiceImpl implements TaskService {
                 TaskDto dto=mapper.map(item,TaskDto.class);
 
                 dto.setProjectId(item.getProject().getId().toString());
-                if(item.getAssignedEmployeeId()==null){
+                if(item.getAssignedEmployeeId()!=null){
                     dto.setAssigneeEmployeeId(item.getAssignedEmployeeId().getId().toString());
                     dto.setAssignEmployeeName(item.getAssignedEmployeeId().getUsername());
                 }
