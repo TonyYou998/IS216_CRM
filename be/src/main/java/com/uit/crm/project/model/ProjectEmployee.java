@@ -3,10 +3,12 @@ package com.uit.crm.project.model;
 import com.uit.crm.common.BaseEntity;
 import com.uit.crm.user.model.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Entity
 @Data
+@AllArgsConstructor
 @Table(uniqueConstraints =@UniqueConstraint(columnNames = {"project_id","user_id"}))
 public class ProjectEmployee extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
@@ -16,5 +18,9 @@ public class ProjectEmployee extends BaseEntity {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="user_id")
     private User user;
+
+    public ProjectEmployee() {
+
+    }
 //    private Task taskId;
 }

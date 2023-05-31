@@ -1,5 +1,6 @@
 package org.example.ui;
 
+import org.example.dto.GetAllUserAccountResponse;
 import org.example.dto.GetTaskResponse;
 import org.example.dto.MyResponse;
 import org.example.utils.ApiClient;
@@ -11,6 +12,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +40,10 @@ public class TaskScreen extends JDialog {
     private JTable table6;
 
     private  List<GetTaskResponse> listAllTask;
+    private List<GetAllUserAccountResponse> lstAllEmployee;
 
     String[] strColTask = {"TaskID","Task Name","Assignee","Start date", "End date","Status"};
-    String[] strColUser = {"Id","Username","RoleId","Phone", "Fullname","Address","Email"};
+    String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
 
     public TaskScreen(JFrame parent,String token) throws IOException {
         super(parent);
@@ -51,6 +55,8 @@ public class TaskScreen extends JDialog {
         setLocationRelativeTo(null);
 
         callApiTask(token,1);
+        lstAllEmployee=callApiGetEmployeeInProject(token,1);
+
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
         tp_taskscreen.addTab("All tasks",null,tp_alltask,null);
@@ -67,10 +73,28 @@ public class TaskScreen extends JDialog {
         btn_alltask_create.setIcon(new ImageIcon(buttonIcon));
         btn_alltask_create.setBorder(BorderFactory.createEmptyBorder());
         btn_alltask_create.setContentAreaFilled(false);
-
+        AllEmployeeTable allEmployeeTable=new AllEmployeeTable();
+        table1.setModel(allEmployeeTable);
 
         setVisible(true);
 
+
+    }
+
+    public List<GetAllUserAccountResponse> callApiGetEmployeeInProject(String token, int projectId) {
+        Call<MyResponse<List<GetAllUserAccountResponse>>> call=ApiClient.callApi().getAllEmployeeInProject("Bearer "+token,projectId);
+        try {
+            Response<MyResponse<List<GetAllUserAccountResponse>>> response=call.execute();
+            if(response.isSuccessful()){
+                MyResponse<List<GetAllUserAccountResponse>>lstEmployee=response.body();
+                return lstEmployee.getContent();
+            }
+        }
+        catch (IOException e) {
+
+            throw new RuntimeException(e);
+        }
+return null;
     }
 
     private void callApiTask(String token, int id) {
@@ -97,6 +121,8 @@ public class TaskScreen extends JDialog {
             }
         });
     }
+
+
 
     private class AllTaskTable extends AbstractTableModel {
 
@@ -128,5 +154,35 @@ public class TaskScreen extends JDialog {
             };
         }
     }
+    private class AllEmployeeTable extends AbstractTableModel {
 
+        @Override
+        public String getColumnName(int column) {
+            return strColUser[column];
+        }
+
+        @Override
+        public int getRowCount() {
+            return lstAllEmployee.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return strColUser.length;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return switch (columnIndex) {
+                case 0 -> lstAllEmployee.get(rowIndex).getId();
+                case 1 -> lstAllEmployee.get(rowIndex).getUsername();
+                case 2 -> lstAllEmployee.get(rowIndex).getRoleName();
+                case 3 -> lstAllEmployee.get(rowIndex).getPhone();
+                case 4 -> lstAllEmployee.get(rowIndex).getFullName();
+                case 5 -> lstAllEmployee.get(rowIndex).getAddress();
+                case 6->lstAllEmployee.get(rowIndex).getEmail();
+                default -> "-";
+            };
+        }
+    }
 }

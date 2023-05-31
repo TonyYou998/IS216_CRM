@@ -41,6 +41,8 @@ public class ProjectServiceImpl implements ProjectService {
                 SpringBeanUtil.getBean(ProjectRepository.class).save(p);
                 response = mapper.map(p, ProjectDto.class);
                 response.setLeaderId(leader.getId().toString());
+                ProjectEmployee pE=new ProjectEmployee(p,leader);
+                SpringBeanUtil.getBean(ProjectEmployeeRepository.class).save(pE);
             }
             return  response;
         }
