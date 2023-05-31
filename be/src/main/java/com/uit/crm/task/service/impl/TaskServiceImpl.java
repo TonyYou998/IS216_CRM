@@ -45,7 +45,8 @@ public class TaskServiceImpl implements TaskService {
             SpringBeanUtil.getBean(TaskRepository.class).save(t);
 
             respones= mapper.map(t,TaskDto.class);
-            respones.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
+            if(t.getAssignedEmployeeId()!=null)
+                respones.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
             respones.setProjectId(t.getProject().getId().toString());
             return respones;
 
@@ -87,8 +88,11 @@ public class TaskServiceImpl implements TaskService {
                 TaskDto dto=mapper.map(item,TaskDto.class);
 
                 dto.setProjectId(item.getProject().getId().toString());
-                dto.setAssigneeEmployeeId(item.getAssignedEmployeeId().getId().toString());
-                dto.setAssignEmployeeName(item.getAssignedEmployeeId().getUsername());
+                if(item.getAssignedEmployeeId()==null){
+                    dto.setAssigneeEmployeeId(item.getAssignedEmployeeId().getId().toString());
+                    dto.setAssignEmployeeName(item.getAssignedEmployeeId().getUsername());
+                }
+
 
                 lstDto.add(dto);
             }

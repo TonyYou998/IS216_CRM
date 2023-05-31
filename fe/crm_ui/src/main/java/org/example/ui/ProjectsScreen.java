@@ -15,6 +15,10 @@ import java.util.List;
 public class ProjectsScreen extends JDialog {
 
     private JPanel panel_projects_screen;
+    private JPanel mainPanel;
+
+    private JButton button1;
+    private JButton button2;
     private JPanel panel_listpj;
     private JPanel panel_card;
     private  List<GetAllProjectResponse> listProject;
@@ -23,21 +27,6 @@ public class ProjectsScreen extends JDialog {
         super(parent);
 
         callApiPj(token);
-
-        setTitle("ProjectScreen");
-        setContentPane(panel_projects_screen);
-        setMinimumSize(new Dimension(800,500));
-        setModal(true);
-        setLocationRelativeTo(null);
-
-//        JPanel cardview = new JPanel();
-//        cardview.setBackground(Color.yellow);
-//        cardview.setBounds(50,50,500,100);
-//        cardview.setLayout(new CardLayout());
-//
-//        add(cardview);
-
-
 
         setVisible(true);
 

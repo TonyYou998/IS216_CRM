@@ -38,6 +38,7 @@ public class TaskScreen extends JDialog {
     private JScrollPane table_task;
     private JPanel tp_myTasks;
     private JTable table6;
+    private JButton refreshButton;
 
     private  List<GetTaskResponse> listAllTask;
     private List<GetAllUserAccountResponse> lstAllEmployee;
@@ -75,13 +76,22 @@ public class TaskScreen extends JDialog {
         btn_alltask_create.setContentAreaFilled(false);
         AllEmployeeTable allEmployeeTable=new AllEmployeeTable();
         table1.setModel(allEmployeeTable);
-
+        btn_alltask_create.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CreateTask(null,token);
+            }
+        });
+        refreshButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                callApiTask(token,1);
+            }
+        });
         setVisible(true);
-
-
     }
 
-    public List<GetAllUserAccountResponse> callApiGetEmployeeInProject(String token, int projectId) {
+    public static List<GetAllUserAccountResponse> callApiGetEmployeeInProject(String token, int projectId) {
         Call<MyResponse<List<GetAllUserAccountResponse>>> call=ApiClient.callApi().getAllEmployeeInProject("Bearer "+token,projectId);
         try {
             Response<MyResponse<List<GetAllUserAccountResponse>>> response=call.execute();
@@ -146,7 +156,11 @@ return null;
             return switch (columnIndex) {
                 case 0 -> listAllTask.get(rowIndex).getId();
                 case 1 -> listAllTask.get(rowIndex).getTaskName();
-                case 2 -> listAllTask.get(rowIndex).getAssignEmployeeName();
+                case 2 -> {
+                    if(listAllTask.get(rowIndex).getAssignEmployeeName()==null)
+                        yield "UNASSIGNED";
+                    yield listAllTask.get(rowIndex).getAssignEmployeeName();
+                }
                 case 3 -> listAllTask.get(rowIndex).getStartDate();
                 case 4 -> listAllTask.get(rowIndex).getEndDate();
                 case 5 -> listAllTask.get(rowIndex).getStatus();
