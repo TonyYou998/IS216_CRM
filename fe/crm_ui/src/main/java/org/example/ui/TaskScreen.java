@@ -75,13 +75,19 @@ public class TaskScreen extends JDialog {
         btn_alltask_create.setContentAreaFilled(false);
         AllEmployeeTable allEmployeeTable=new AllEmployeeTable();
         table1.setModel(allEmployeeTable);
-
+        btn_alltask_create.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new CreateTask(null,token);
+            }
+        });
         setVisible(true);
+
 
 
     }
 
-    public List<GetAllUserAccountResponse> callApiGetEmployeeInProject(String token, int projectId) {
+    public static List<GetAllUserAccountResponse> callApiGetEmployeeInProject(String token, int projectId) {
         Call<MyResponse<List<GetAllUserAccountResponse>>> call=ApiClient.callApi().getAllEmployeeInProject("Bearer "+token,projectId);
         try {
             Response<MyResponse<List<GetAllUserAccountResponse>>> response=call.execute();
