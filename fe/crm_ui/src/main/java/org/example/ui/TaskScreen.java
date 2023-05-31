@@ -152,7 +152,11 @@ return null;
             return switch (columnIndex) {
                 case 0 -> listAllTask.get(rowIndex).getId();
                 case 1 -> listAllTask.get(rowIndex).getTaskName();
-                case 2 -> listAllTask.get(rowIndex).getAssignEmployeeName();
+                case 2 -> {
+                    if(listAllTask.get(rowIndex).getAssignEmployeeName()==null)
+                        yield "UNASSIGNED";
+                    yield listAllTask.get(rowIndex).getAssignEmployeeName();
+                }
                 case 3 -> listAllTask.get(rowIndex).getStartDate();
                 case 4 -> listAllTask.get(rowIndex).getEndDate();
                 case 5 -> listAllTask.get(rowIndex).getStatus();

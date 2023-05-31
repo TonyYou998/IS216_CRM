@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class CreateTask extends JDialog {
     private JButton CANCELButton;
     private JXDatePicker dp_date;
     private List<GetAllUserAccountResponse> lstEmployee;
-    private String userId;
+    private String userId="-1";
 
     DateFormat dateFormat;
     String date;
@@ -51,9 +52,11 @@ public class CreateTask extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 date = dateFormat.format(dp_date.getDate());
-                System.out.println(date);
 
-                CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),date,"","","");
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+                LocalDateTime startDate=LocalDateTime.now();
+                CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,"1");
                 callApiCreateTask(createTaskRequest,token);
             }
         });
