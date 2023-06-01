@@ -1,6 +1,7 @@
 package com.uit.crm.task.service.impl;
 
 import com.uit.crm.common.utils.JwtUtils;
+import com.uit.crm.common.utils.LoggerUtil;
 import com.uit.crm.common.utils.SpringBeanUtil;
 import com.uit.crm.project.model.Project;
 import com.uit.crm.project.repository.ProjectRepository;
@@ -105,5 +106,32 @@ public class TaskServiceImpl implements TaskService {
         }
 
 
+    }
+
+    @Override
+    public List<TaskDto> getTaskByUserId(String authHeader) {
+        try {
+            String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
+            String username=SpringBeanUtil.getBean(JwtUtils.class).getEmailFromToken(token);
+            User u=SpringBeanUtil.getBean(UserRepository.class).findByEmail(username);
+            Assert.notNull(u,"User not exist");
+            List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findAllByAssignedEmployeeId(u);
+            List<TaskDto> lstDto=new LinkedList<>();
+            if(lstTask.size()>0){
+                TaskDto dto;
+                for(Task item:lstTask){
+                    dto=mapper.map(item,TaskDto.class);
+                    dto.setAssignEmployeeName(item.getAssignedEmployeeId().getUsername());
+                    dto.setAssigneeEmployeeId(item.getAssignedEmployeeId().getId().toString());
+                    lstDto.add(dto);
+                }
+                return lstDto;
+            }
+        }
+        catch (Exception e){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(e.getMessage());
+
+        }
+        return null;
     }
 }

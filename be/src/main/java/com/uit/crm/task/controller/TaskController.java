@@ -44,8 +44,12 @@ public class TaskController {
             return ResponseHandler.getResponse(response,HttpStatus.OK);
         return  ResponseHandler.getResponse("Internal server error",HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    public ResponseEntity<Object> getTaskByUserId(){
-        return  null;
+    @RequestMapping(Constants.REQUEST_MAPPING_TASK+Constants.GET_TASK_BY_USER)
+    public ResponseEntity<Object> getTaskByUserId(@RequestHeader("Authorization") String authHeader ){
+        List<TaskDto> response= SpringBeanUtil.getBean(TaskService.class).getTaskByUserId(authHeader);
+        if(response!=null)
+            return ResponseHandler.getResponse(response,HttpStatus.OK);
+        return  ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
