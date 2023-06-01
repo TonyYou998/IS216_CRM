@@ -10,4 +10,6 @@ public interface TaskService {
     TaskDto assignTask(TaskDto request);
 
     List<TaskDto> getTaskByProjectId(String projectId, String authHeader);
+
+    List<TaskDto> getTaskByUserId(String authHeader);
 }

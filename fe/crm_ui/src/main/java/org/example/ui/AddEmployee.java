@@ -4,13 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AddEmployee extends JDialog {
-    private JTextField tf_userid;
     private JButton btn_save;
     private JButton btn_cancel;
     private JPanel panel_addemployee;
-    private JComboBox cb_pjid;
+    private JComboBox cb_username;
 
-    public AddEmployee(JFrame parent) {
+    public AddEmployee(JFrame parent,String token) {
         super(parent);
         setTitle("Edit Screen");
         setContentPane(panel_addemployee);
