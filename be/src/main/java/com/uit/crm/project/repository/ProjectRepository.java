@@ -11,14 +11,11 @@ import java.util.List;
 public interface ProjectRepository extends JpaRepository<Project,Long> {
 
 
-    @Query(value = "SELECT p.*, NULL as user_id " +
+    @Query(value = "SELECT p.* " +
             "FROM project p " +
-            "WHERE p.leader_id = :uid " +
-            "UNION " +
-            "SELECT p.*, pe.user_id " +
-            "FROM project_employee pe " +
-            "INNER JOIN project p ON p.id = pe.project_id " +
-            "WHERE pe.user_id = :uid", nativeQuery = true)
+            "JOIN project_employee pe ON p.id = pe.project_id " +
+            "JOIN users u ON pe.user_id = u.id " +
+            "WHERE u.id = :uid", nativeQuery = true)
     List<Project> findByUser(@Param("uid") Integer uid);
 
 

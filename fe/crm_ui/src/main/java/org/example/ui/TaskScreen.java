@@ -58,7 +58,7 @@ public class TaskScreen extends JDialog {
         setLocationRelativeTo(null);
 
         callApiTask(token,1);
-        lstAllEmployee=callApiGetEmployeeInProject(token,1);
+        lstAllEmployee=callApiGetEmployeeInProject(token,11);
 
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
@@ -87,7 +87,7 @@ public class TaskScreen extends JDialog {
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                callApiTask(token,1);
+                callApiTask(token,11);
             }
         });
         btn_employee_create.addActionListener(new ActionListener() {
