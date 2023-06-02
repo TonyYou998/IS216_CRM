@@ -55,6 +55,9 @@ public class TaskServiceImpl implements TaskService {
 
         }
         return null;
+
+
+
     }
 
     @Override
@@ -132,6 +135,43 @@ public class TaskServiceImpl implements TaskService {
             SpringBeanUtil.getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(e.getMessage());
 
         }
+        return null;
+    }
+
+    @Override
+    public TaskDto updateTask(String taskId, String authHeader,TaskDto request) {
+        try {
+            Task t= SpringBeanUtil.getBean(TaskRepository.class).findById(Long.parseLong(taskId)).orElse(null);
+            Assert.notNull(t,"Task not exist");
+            String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
+            String email=SpringBeanUtil.getBean(JwtUtils.class).getEmailFromToken(token);
+            User u=SpringBeanUtil.getBean(UserRepository.class).findByEmail(email);
+            Assert.notNull(u,"User is not exist");
+            if(t.getAssignedEmployeeId().getId()!=Long.parseLong(request.getAssigneeEmployeeId())){
+                User user= SpringBeanUtil.getBean(UserRepository.class).findById(Long.parseLong(request.getAssigneeEmployeeId())).orElse(null);
+                Assert.notNull(user,"User not exist");
+                t.setAssignedEmployeeId(user);
+
+            }
+                t.setTaskName(request.getTaskName());
+                t.setStartDate(request.getStartDate());
+                t.setEndDate(request.getEndDate());
+                t.setStatus(request.getStatus());
+
+                SpringBeanUtil.getBean(TaskRepository.class).save(t);
+                TaskDto dto= mapper.map(t,TaskDto.class);
+                dto.setProjectId(t.getProject().getId().toString());
+                dto.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
+                dto.setAssignEmployeeName(t.getAssignedEmployeeId().getUsername());
+                return dto;
+
+        }
+        catch (Exception ex){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(ex.getMessage());
+
+
+        }
+
         return null;
     }
 }

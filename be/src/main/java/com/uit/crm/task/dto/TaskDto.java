@@ -14,4 +14,8 @@ public class TaskDto {
     private boolean status;
     private String projectId;
     private  Long id;
+
+    public boolean getStatus(){
+        return this.status;
+    }
 }
