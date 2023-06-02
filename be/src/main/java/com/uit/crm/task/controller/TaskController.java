@@ -56,7 +56,7 @@ public class TaskController {
     }
 
 
-        @PutMapping(Constants.REQUEST_MAPPING_TASK+Constants.UPDATE_TASK+Constants.TASK_ID)
+        @PatchMapping(Constants.REQUEST_MAPPING_TASK+Constants.UPDATE_TASK+Constants.TASK_ID)
         public ResponseEntity<Object> updateTask(@RequestHeader("Authorization") String authHeader,@RequestParam("id") String taskId ,@RequestBody TaskDto request ){
                 TaskDto dto= SpringBeanUtil.getBean(TaskService.class).updateTask(taskId,authHeader,request);
                 if(dto!=null)
