@@ -57,7 +57,7 @@ public class TaskScreen extends JDialog {
         setModal(true);
         setLocationRelativeTo(null);
 
-        callApiTask(token,1);
+        listAllTask= callApiTask(token,11);
         lstAllEmployee=callApiGetEmployeeInProject(token,11);
 
 
@@ -76,8 +76,10 @@ public class TaskScreen extends JDialog {
         btn_alltask_create.setIcon(new ImageIcon(buttonIcon));
         btn_alltask_create.setBorder(BorderFactory.createEmptyBorder());
         btn_alltask_create.setContentAreaFilled(false);
+        AllTaskTable allTaskTable=new AllTaskTable();
         AllEmployeeTable allEmployeeTable=new AllEmployeeTable();
         table1.setModel(allEmployeeTable);
+        table2.setModel(allTaskTable);
         btn_alltask_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,29 +120,42 @@ public class TaskScreen extends JDialog {
 return null;
     }
 
-    private void callApiTask(String token, int id) {
+    private List<GetTaskResponse> callApiTask(String token, int id) {
         Call<MyResponse<List<GetTaskResponse>>> myResponseCall = ApiClient.callApi().getTaskByProjectId("Bearer "+token,id);
-        myResponseCall.enqueue(new Callback<MyResponse<List<GetTaskResponse>>>() {
-            @Override
-            public void onResponse(Call<MyResponse<List<GetTaskResponse>>> call, Response<MyResponse<List<GetTaskResponse>>> response) {
-                System.out.print("ok");
-                MyResponse<List<GetTaskResponse>> listMyResponse = response.body();
-                listAllTask = listMyResponse.getContent();
-                if (listAllTask == null) {
-                    System.out.print("null");
-                } else {
-                    System.out.print(listAllTask.size());
-                    AllTaskTable allTaskTable = new AllTaskTable();
-                    table2.setModel(allTaskTable);
-                }
+//        myResponseCall.enqueue(new Callback<MyResponse<List<GetTaskResponse>>>() {
+//            @Override
+//            public void onResponse(Call<MyResponse<List<GetTaskResponse>>> call, Response<MyResponse<List<GetTaskResponse>>> response) {
+//                System.out.print("ok");
+//                MyResponse<List<GetTaskResponse>> listMyResponse = response.body();
+//                listAllTask = listMyResponse.getContent();
+//                if (listAllTask == null) {
+//                    System.out.print("null");
+//                } else {
+//                    System.out.print(listAllTask.size());
+//                    AllTaskTable allTaskTable = new AllTaskTable();
+//                    table2.setModel(allTaskTable);
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<MyResponse<List<GetTaskResponse>>> call, Throwable throwable) {
+//                System.out.print("call failure all task");
+//
+//            }
+//        });
+
+        try{
+            Response<MyResponse<List<GetTaskResponse>>> lstResponse=myResponseCall.execute();
+            if(lstResponse.isSuccessful()){
+                MyResponse<List<GetTaskResponse>>lstEmployee=lstResponse.body();
+                return lstEmployee.getContent();
             }
 
-            @Override
-            public void onFailure(Call<MyResponse<List<GetTaskResponse>>> call, Throwable throwable) {
-                System.out.print("call failure all task");
-
-            }
-        });
+        }
+        catch (Exception ex){
+                throw  new RuntimeException(ex.getMessage());
+        }
+        return null;
     }
 
 
