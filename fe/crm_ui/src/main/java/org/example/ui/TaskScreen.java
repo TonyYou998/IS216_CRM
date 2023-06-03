@@ -41,14 +41,14 @@ public class TaskScreen extends JDialog {
     private JPanel tp_myTasks;
     private JTable table6;
     private JButton refreshButton;
-
+    private int projectId;
     private  List<GetTaskResponse> listAllTask;
     private List<GetAllUserAccountResponse> lstAllEmployee;
 
     String[] strColTask = {"TaskID","Task Name","Assignee","Start date", "End date","Status"};
     String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
 
-    public TaskScreen(JFrame parent,String token) throws IOException {
+    public TaskScreen(JFrame parent,String token, int projectId) throws IOException {
         super(parent);
 
         setTitle("Task Screen");
@@ -89,7 +89,7 @@ public class TaskScreen extends JDialog {
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                callApiTask(token,11);
+                callApiTask(token,projectId);
             }
         });
         btn_employee_create.addActionListener(new ActionListener() {

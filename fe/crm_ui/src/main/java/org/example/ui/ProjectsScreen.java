@@ -11,6 +11,8 @@ import retrofit2.Response;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,13 +26,15 @@ public class ProjectsScreen extends JDialog {
     private JPanel panel_listpj;
     private JPanel panel_card;
     private List<GetAllProjectResponse> lstProject;
+    private String projectId="-1";
+    private String token;
 
 
     public ProjectsScreen(JFrame parent, String token) throws IOException {
         super(parent);
         setTitle("Project Screen");
         setContentPane(panel_projects_screen);
-
+        this.token=token;
         setMinimumSize(new Dimension(800,500));
         lstProject = callApiGetProjectByUser(token);
         setProject(lstProject);
@@ -55,6 +59,7 @@ public class ProjectsScreen extends JDialog {
     }
 
     public void setProject(List<GetAllProjectResponse> lstProject) {
+        cb_chooseProject.addItem(new ComboBoxItem("None","-1"));
         for (GetAllProjectResponse item : lstProject) {
             ComboBoxItem comboBoxItem = new ComboBoxItem(item.getProjectName(), String.valueOf(item.getId()));
             cb_chooseProject.addItem(comboBoxItem);
@@ -70,6 +75,25 @@ public class ProjectsScreen extends JDialog {
                                          }
                                      }
         );
+
+        cb_chooseProject.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ComboBoxItem selectedProject = (ComboBoxItem) cb_chooseProject.getSelectedItem();
+                projectId  = selectedProject.getId();
+
+                // Use the leaderId and other values as needed
+                System.out.println("Selected Leader ID: " + projectId);
+
+                try {
+                    dispose();
+                    new TaskScreen(null,token,Integer.parseInt(projectId));
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+        });
 
 
     }
