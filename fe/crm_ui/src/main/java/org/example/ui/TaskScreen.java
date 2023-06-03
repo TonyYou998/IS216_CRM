@@ -90,6 +90,8 @@ public class TaskScreen extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
               listAllTask=  callApiTask(token,projectId);
+                AllTaskTable allTaskTable=new AllTaskTable();
+                table2.setModel(allTaskTable);
             }
         });
         btn_employee_create.addActionListener(new ActionListener() {
