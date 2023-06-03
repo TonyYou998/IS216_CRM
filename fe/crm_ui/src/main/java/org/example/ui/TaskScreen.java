@@ -57,8 +57,8 @@ public class TaskScreen extends JDialog {
         setModal(true);
         setLocationRelativeTo(null);
 
-        listAllTask= callApiTask(token,11);
-        lstAllEmployee=callApiGetEmployeeInProject(token,11);
+        listAllTask= callApiTask(token,projectId);
+        lstAllEmployee=callApiGetEmployeeInProject(token,projectId);
 
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
