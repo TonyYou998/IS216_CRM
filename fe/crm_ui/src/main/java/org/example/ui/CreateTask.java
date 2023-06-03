@@ -29,13 +29,14 @@ public class CreateTask extends JDialog {
     private JXDatePicker dp_date;
     private List<GetAllUserAccountResponse> lstEmployee;
     private String userId="-1";
+    private int projectId;
 
     DateFormat dateFormat;
     String date;
     Date currentDate = new Date();
-    public CreateTask(JFrame parent,String token) {
+    public CreateTask(JFrame parent,String token,int projectcId) {
         super(parent);
-
+        this.projectId=projectcId;
         dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dp_date.setFormats(dateFormat);
         dp_date.setDate(currentDate);
@@ -56,7 +57,7 @@ public class CreateTask extends JDialog {
                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
                 LocalDateTime startDate=LocalDateTime.now();
-                CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,"11");
+                CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,String.valueOf(projectcId));
                 callApiCreateTask(createTaskRequest,token);
             }
         });

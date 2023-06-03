@@ -83,13 +83,13 @@ public class TaskScreen extends JDialog {
         btn_alltask_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateTask(null,token);
+                new CreateTask(null,token,projectId);
             }
         });
         refreshButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                callApiTask(token,projectId);
+              listAllTask=  callApiTask(token,projectId);
             }
         });
         btn_employee_create.addActionListener(new ActionListener() {
@@ -147,8 +147,8 @@ return null;
         try{
             Response<MyResponse<List<GetTaskResponse>>> lstResponse=myResponseCall.execute();
             if(lstResponse.isSuccessful()){
-                MyResponse<List<GetTaskResponse>>lstEmployee=lstResponse.body();
-                return lstEmployee.getContent();
+                MyResponse<List<GetTaskResponse>>lstTask=lstResponse.body();
+                return lstTask.getContent();
             }
 
         }
