@@ -18,7 +18,6 @@ public class ApiClient {
 
         Retrofit retrofit = new Retrofit.Builder()
                 .addConverterFactory(GsonConverterFactory.create())
-//                .baseUrl("http://crmapi.apgrc8b7asamg6gf.eastus.azurecontainer.io:8080/api/v1/")
                 .baseUrl("http://localhost:8080/api/v1/")
                 .client(okHttpClient)
                 .build();

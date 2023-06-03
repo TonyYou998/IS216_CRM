@@ -42,9 +42,9 @@ public class AdminScreen extends JDialog {
     String[] strColPj = {"Id","Name","Start date", "End date","Leader"};
     String[] strColUser = {"Id","Username","RoleId","Phone", "Fullname","Address","Email"};
 
-    List<GetAllProjectResponse> listPj;
+    List<GetAllProjectResponse> listPj = new ArrayList<>();
 
-    List<GetAllUserAccountResponse> listUser;
+    List<GetAllUserAccountResponse> listUser = new ArrayList<>();
 
     List<String> listRole = new ArrayList<>();
 
@@ -61,12 +61,11 @@ public class AdminScreen extends JDialog {
         setModal(true);
         setLocationRelativeTo(null);
 
-
         tp_adminscreen.addTab("Projects",null,tp_pj,null);
         tp_adminscreen.addTab("Users",null,tp_user,null);
 
-//        BufferedImage buttonIcon = ImageIO.read(new File("/src/image/add.png"));
-        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
+        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
+//        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
         btn_pj_add.setIcon(new ImageIcon(buttonIcon));
         btn_pj_add.setBorder(BorderFactory.createEmptyBorder());
         btn_pj_add.setContentAreaFilled(false);
@@ -79,7 +78,7 @@ public class AdminScreen extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateNewProject(null,token);
-
+                callApiAllPj(token);
             }
         });
 
@@ -87,24 +86,11 @@ public class AdminScreen extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateNewUser(null,token);
-            }
-        });
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
                 callApiAllUser(token);
             }
         });
-        refreshButton1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                callApiAllPj(token);
-            }
-        });
+
         setVisible(true);
-
-
-
     }
 
     public void callApiAllPj(String token) {
@@ -117,8 +103,7 @@ public class AdminScreen extends JDialog {
                     ProjectTable projectTable = new ProjectTable();
                     tablePj.setModel(projectTable);
 
-                }
-
+            }
             }
 
             @Override

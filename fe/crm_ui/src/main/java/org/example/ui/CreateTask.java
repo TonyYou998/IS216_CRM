@@ -33,37 +33,38 @@ public class CreateTask extends JDialog {
     DateFormat dateFormat;
     String date;
     Date currentDate = new Date();
+
+
     public CreateTask(JFrame parent,String token) {
         super(parent);
 
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         dp_date.setFormats(dateFormat);
         dp_date.setDate(currentDate);
 
         setTitle("Create Task");
         setContentPane(panel_createtask);
-        setMinimumSize(new Dimension(800,500));
+        setMinimumSize(new Dimension(500,300));
         setModal(true);
         setLocationRelativeTo(null);
-        lstEmployee=TaskScreen.callApiGetEmployeeInProject(token,1);
+//        lstEmployee=TaskScreen.callApiGetEmployeeInProject(token,1);
+        lstEmployee = TaskScreen.lstAllEmployee;
         setEmployee(lstEmployee);
         CREATEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 date = dateFormat.format(dp_date.getDate());
-
-                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
                 LocalDateTime startDate=LocalDateTime.now();
                 CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,"1");
                 callApiCreateTask(createTaskRequest,token);
+
+
             }
         });
+
+
         setVisible(true);
-
-
-
     }
 
     private void callApiCreateTask(CreateTaskRequest createTaskRequest,String token) {
@@ -75,6 +76,8 @@ public class CreateTask extends JDialog {
                 if (myResponse.getStatus() == 200) {
                     System.out.println("call ok");
                     dispose();
+
+                    TaskScreen.callApiTask(token,1);
                 }
             }
 

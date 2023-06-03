@@ -14,11 +14,14 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class TaskScreen extends JDialog {
@@ -40,16 +43,19 @@ public class TaskScreen extends JDialog {
     private JScrollPane table_task;
     private JPanel tp_myTasks;
     private JTable table6;
-    private JButton refreshButton;
 
-    private  List<GetTaskResponse> listAllTask;
-    private List<GetAllUserAccountResponse> lstAllEmployee;
+    private static List<GetTaskResponse> listAllTask = new ArrayList<>();
+    public static List<GetAllUserAccountResponse> lstAllEmployee = new ArrayList<>();
 
     String[] strColTask = {"TaskID","Task Name","Assignee","Start date", "End date","Status"};
     String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
 
+    String token; int id;
+
     public TaskScreen(JFrame parent,String token) throws IOException {
         super(parent);
+
+        this.token = token;
 
         setTitle("Task Screen");
         setContentPane(panel_taskscreen);
@@ -58,8 +64,7 @@ public class TaskScreen extends JDialog {
         setLocationRelativeTo(null);
 
         callApiTask(token,1);
-        lstAllEmployee=callApiGetEmployeeInProject(token,1);
-
+        callApiGetEmployeeInProject(token,1);
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
         tp_taskscreen.addTab("All tasks",null,tp_alltask,null);
@@ -68,7 +73,7 @@ public class TaskScreen extends JDialog {
         tp_taskscreen.addTab("In-progess",null,tp_inpro,null);
         tp_taskscreen.addTab("Done",null,tp_done,null);
 
-        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
+        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
         btn_employee_create.setIcon(new ImageIcon(buttonIcon));
         btn_employee_create.setBorder(BorderFactory.createEmptyBorder());
         btn_employee_create.setContentAreaFilled(false);
@@ -76,62 +81,57 @@ public class TaskScreen extends JDialog {
         btn_alltask_create.setIcon(new ImageIcon(buttonIcon));
         btn_alltask_create.setBorder(BorderFactory.createEmptyBorder());
         btn_alltask_create.setContentAreaFilled(false);
-        AllEmployeeTable allEmployeeTable=new AllEmployeeTable();
-        table1.setModel(allEmployeeTable);
+
+        AllEmployeeTable allUserTable = new AllEmployeeTable();
+        table1.setModel(allUserTable);
+
+        AllTaskTable allTaskTable = new AllTaskTable();
+        table2.setModel(allTaskTable);
+
         btn_alltask_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateTask(null,token);
-            }
-        });
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
                 callApiTask(token,1);
+
             }
         });
+
         btn_employee_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new AddEmployee(null,token);
+                callApiGetEmployeeInProject(token,1);
+
             }
         });
 
         setVisible(true);
-
-
     }
 
-    public static List<GetAllUserAccountResponse> callApiGetEmployeeInProject(String token, int projectId) {
+    private void callApiGetEmployeeInProject(String token, int projectId) {
         Call<MyResponse<List<GetAllUserAccountResponse>>> call=ApiClient.callApi().getAllEmployeeInProject("Bearer "+token,projectId);
         try {
             Response<MyResponse<List<GetAllUserAccountResponse>>> response=call.execute();
             if(response.isSuccessful()){
                 MyResponse<List<GetAllUserAccountResponse>>lstEmployee=response.body();
-                return lstEmployee.getContent();
+                lstAllEmployee = lstEmployee.getContent();
             }
         }
         catch (IOException e) {
 
             throw new RuntimeException(e);
         }
-return null;
     }
 
-    private void callApiTask(String token, int id) {
+    public static void callApiTask(String token, int id) {
         Call<MyResponse<List<GetTaskResponse>>> myResponseCall = ApiClient.callApi().getTaskByProjectId("Bearer "+token,id);
         myResponseCall.enqueue(new Callback<MyResponse<List<GetTaskResponse>>>() {
             @Override
             public void onResponse(Call<MyResponse<List<GetTaskResponse>>> call, Response<MyResponse<List<GetTaskResponse>>> response) {
-                System.out.print("ok");
-                MyResponse<List<GetTaskResponse>> listMyResponse = response.body();
-                listAllTask = listMyResponse.getContent();
-                if (listAllTask == null) {
-                    System.out.print("null");
-                } else {
-                    System.out.print(listAllTask.size());
-                    AllTaskTable allTaskTable = new AllTaskTable();
-                    table2.setModel(allTaskTable);
+                if(response.isSuccessful()){
+                    MyResponse<List<GetTaskResponse>> listMyResponse = response.body();
+                    listAllTask = listMyResponse.getContent();
                 }
             }
 
@@ -142,8 +142,6 @@ return null;
             }
         });
     }
-
-
 
     private class AllTaskTable extends AbstractTableModel {
 

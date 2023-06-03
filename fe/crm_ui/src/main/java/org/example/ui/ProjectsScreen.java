@@ -48,7 +48,6 @@ public class ProjectsScreen extends JDialog {
                     }
 
                 }
-
             }
 
             @Override

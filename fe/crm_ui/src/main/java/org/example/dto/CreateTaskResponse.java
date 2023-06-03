@@ -1,5 +1,8 @@
 package org.example.dto;
 
+import lombok.Data;
+
+@Data
 public class CreateTaskResponse {
     private String taskName;
     private String startDate;

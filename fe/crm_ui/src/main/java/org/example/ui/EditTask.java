@@ -29,9 +29,9 @@ public class EditTask extends JDialog {
         dp_date.setFormats("dd/MM/yyyy");
         dp_date.setDate(currentDate);
 
-        setTitle("Edit Screen");
+        setTitle("Edit Task");
         setContentPane(panel_edittask);
-        setMinimumSize(new Dimension(800,500));
+        setMinimumSize(new Dimension(500,300));
         setModal(true);
         setLocationRelativeTo(null);
 
@@ -42,6 +42,13 @@ public class EditTask extends JDialog {
                 date = dateFormat.format(dp_date.getDate());
                 System.out.println(date);
 
+            }
+        });
+
+        CANCELButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
             }
         });
 
