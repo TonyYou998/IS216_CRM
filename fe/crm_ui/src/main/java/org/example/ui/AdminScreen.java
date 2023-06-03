@@ -13,6 +13,8 @@ import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -95,18 +97,62 @@ public class AdminScreen extends JDialog {
                 callApiAllUser(token);
             }
         });
-        refreshButton1.addActionListener(new ActionListener() {
+
+        tablePj.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                callApiAllPj(token);
+            public void mouseClicked(MouseEvent e) {
+                // Handle right-click event
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    int row = tablePj.rowAtPoint(e.getPoint());
+                    int col = tablePj.columnAtPoint(e.getPoint());
+                    // Show the popup at the selected location
+                    showPopup(e.getComponent(), e.getX(), e.getY(), row, col);
+                }
             }
         });
+        tableUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Handle right-click event
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    int row = tableUser.rowAtPoint(e.getPoint());
+                    int col = tableUser.columnAtPoint(e.getPoint());
+                    // Show the popup at the selected location
+                    showPopup(e.getComponent(), e.getX(), e.getY(), row, col);
+                }
+            }
+        });
+
+
         setVisible(true);
 
 
 
     }
 
+    public void showPopup(Component component, int x, int y, int row, int col) {
+        JPopupMenu popup = new JPopupMenu();
+        JMenuItem item1 = new JMenuItem("Edit");
+        JMenuItem item2 = new JMenuItem("Delete");
+
+        item1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the action when the popup item is clicked
+                System.out.println("Popup Item Clicked at row " + row + ", column " + col);
+            }
+        });
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the action when the popup item is clicked
+                System.out.println("Popup Item Clicked at row " + row + ", column " + col);
+            }
+        });
+        popup.add(item1);
+        popup.add(item2);
+        popup.show(component, x, y);
+    }
     public void callApiAllPj(String token) {
         Call<java.util.List<GetAllProjectResponse>> responese = ApiClient.callApi().getAllProjectForAdmin("Bearer "+token);
         responese.enqueue(new Callback<java.util.List<GetAllProjectResponse>>() {
