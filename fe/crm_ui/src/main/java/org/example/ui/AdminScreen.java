@@ -162,11 +162,8 @@ public class AdminScreen extends JDialog {
                     listPj = response.body();
                     ProjectTable projectTable = new ProjectTable();
                     tablePj.setModel(projectTable);
-
                 }
-
             }
-
             @Override
             public void onFailure(Call<List<GetAllProjectResponse>> call, Throwable throwable) {
                 System.out.print("call failure Pj");
