@@ -65,7 +65,8 @@ public class CreateNewUser extends JDialog{
 
                 String visiblePassword=new String(tf_password.getPassword());
 
-                date = dateFormat.format(dp_date.getDate());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                date = simpleDateFormat.format(dp_date.getDate());
 
                 CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),date,roleId);
                 CreateUserResponse newUser= callApiCreateUser(createUserRequest,token);

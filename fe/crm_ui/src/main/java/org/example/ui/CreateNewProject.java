@@ -37,7 +37,8 @@ public class CreateNewProject extends JDialog {
         super(parent);
 
         setTitle("Create new project");
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+
         dp_start_date.setFormats(dateFormat);
         dp_start_date.setDate(currentDate);
         dp_due_date.setFormats(dateFormat);
@@ -51,7 +52,6 @@ public class CreateNewProject extends JDialog {
         setLocationRelativeTo(null);
 
         btn_create.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
@@ -62,7 +62,6 @@ public class CreateNewProject extends JDialog {
                 CreateProjectResponse response= callApiCreateNewProject(createProjectRequest,token);
                 if(response!=null)
                     dispose();
-
             }
         });
         btn_cancel.addActionListener(new ActionListener() {
@@ -73,14 +72,10 @@ public class CreateNewProject extends JDialog {
         });
 
         setVisible(true);
-
-
     }
 
 
         public void setLeader(List<GetLeaderResponse> lstLeader){
-
-
             for(GetLeaderResponse item:lstLeader){
                 ComboBoxItem comboBoxItem=new ComboBoxItem(item.getUsername(),item.getId());
                cb_leader.addItem(comboBoxItem);

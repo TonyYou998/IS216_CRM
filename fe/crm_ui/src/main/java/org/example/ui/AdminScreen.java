@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.dto.GetAllProjectResponse;
 import org.example.dto.GetAllUserAccountResponse;
+import org.example.dto.GetTaskResponse;
 import org.example.utils.ApiClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -9,14 +10,22 @@ import retrofit2.Response;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AdminScreen extends JDialog {
@@ -40,13 +49,15 @@ public class AdminScreen extends JDialog {
     private JScrollPane refreshBtn;
 
     String[] strColPj = {"Id","Name","Start date", "End date","Leader"};
-    String[] strColUser = {"Id","Username","RoleId","Phone", "Fullname","Address","Email"};
+    String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
 
     List<GetAllProjectResponse> listPj = new ArrayList<>();
 
-    List<GetAllUserAccountResponse> listUser = new ArrayList<>();
+    static List<GetAllUserAccountResponse> listUser = new ArrayList<>();
 
     List<String> listRole = new ArrayList<>();
+
+    DateFormat dateFormat;
 
 
     public AdminScreen(JFrame parent,String token) throws IOException {
@@ -54,6 +65,7 @@ public class AdminScreen extends JDialog {
 
         callApiAllPj(token);
         callApiAllUser(token);
+        dateFormat =new SimpleDateFormat("dd/MM/yyyy");
 
         setTitle("AdminScreen");
         setContentPane(panel_admin_screen);
@@ -74,6 +86,21 @@ public class AdminScreen extends JDialog {
         btn_user_add.setBorder(BorderFactory.createEmptyBorder());
         btn_user_add.setContentAreaFilled(false);
 
+        ProjectTable projectTable = new ProjectTable();
+        tablePj.setModel(projectTable);
+
+        UserTable userTable = new UserTable();
+        tableUser.setModel(userTable);
+
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i=0;i<5;i++) {
+            tablePj.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+        }
+        for (int i=0;i<7;i++) {
+            tableUser.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+        }
+
         btn_pj_add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -90,6 +117,23 @@ public class AdminScreen extends JDialog {
             }
         });
 
+        tablePj.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                // do some actions here, for example
+                // print first column value from selected row
+//                System.out.println(table2.getValueAt(table2.getSelectedRow(), 0).toString());
+                int pjId = Integer.parseInt(tablePj.getValueAt(tablePj.getSelectedRow(), 0).toString());
+                new AddEmployee(null,token,pjId);
+            }
+        });
+
+        btn_user_search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.print(tf_user_search.getText());
+
+            }
+        });
         setVisible(true);
     }
 
@@ -100,10 +144,7 @@ public class AdminScreen extends JDialog {
             public void onResponse(Call<java.util.List<GetAllProjectResponse>> call, Response<java.util.List<GetAllProjectResponse>> response) {
                 if(response.isSuccessful()){
                     listPj = response.body();
-                    ProjectTable projectTable = new ProjectTable();
-                    tablePj.setModel(projectTable);
-
-            }
+                }
             }
 
             @Override
@@ -125,9 +166,6 @@ public class AdminScreen extends JDialog {
                         else if(listUser.get(i).getRoleId().equals("2")) {listRole.add("Admin");}
                         else if(listUser.get(i).getRoleId().equals("3")) {listRole.add("Leader");}
                     }
-
-                    UserTable userTable = new UserTable();
-                    tableUser.setModel(userTable);
                 }
             }
 
@@ -161,8 +199,8 @@ public class AdminScreen extends JDialog {
             return switch (columnIndex) {
                 case 0 -> listPj.get(rowIndex).getId();
                 case 1 -> listPj.get(rowIndex).getProjectName();
-                case 2 -> listPj.get(rowIndex).getStartDate();
-                case 3 -> listPj.get(rowIndex).getEndDate();
+                case 2 -> changeFormat(listPj.get(rowIndex).getStartDate());
+                case 3 -> changeFormat(listPj.get(rowIndex).getEndDate());
                 case 4 -> listPj.get(rowIndex).getLeaderName();
                 default -> "-";
             };
@@ -201,4 +239,15 @@ public class AdminScreen extends JDialog {
         }
     }
 
+    private String changeFormat(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date parsedDate = null;
+        try {
+            parsedDate = simpleDateFormat.parse(date);
+            String strDate = dateFormat.format(parsedDate);
+            return strDate;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
