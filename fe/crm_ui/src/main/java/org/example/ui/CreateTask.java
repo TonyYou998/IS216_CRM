@@ -38,7 +38,7 @@ public class CreateTask extends JDialog {
     public CreateTask(JFrame parent,String token) {
         super(parent);
 
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dp_date.setFormats(dateFormat);
         dp_date.setDate(currentDate);
 
@@ -53,13 +53,12 @@ public class CreateTask extends JDialog {
         CREATEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 date = dateFormat.format(dp_date.getDate());
 
                 LocalDateTime startDate=LocalDateTime.now();
                 CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,"1");
                 callApiCreateTask(createTaskRequest,token);
-
-
             }
         });
 

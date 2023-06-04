@@ -10,7 +10,10 @@ import retrofit2.Response;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +24,11 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class TaskScreen extends JDialog {
@@ -46,16 +53,16 @@ public class TaskScreen extends JDialog {
 
     private static List<GetTaskResponse> listAllTask = new ArrayList<>();
     public static List<GetAllUserAccountResponse> lstAllEmployee = new ArrayList<>();
+    DateFormat dateFormat;
+    GetTaskResponse getTaskResponseSelection;
 
     String[] strColTask = {"TaskID","Task Name","Assignee","Start date", "End date","Status"};
     String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
 
-    String token; int id;
-
     public TaskScreen(JFrame parent,String token) throws IOException {
         super(parent);
 
-        this.token = token;
+        dateFormat =new SimpleDateFormat("dd/MM/yyyy");
 
         setTitle("Task Screen");
         setContentPane(panel_taskscreen);
@@ -88,21 +95,35 @@ public class TaskScreen extends JDialog {
         AllTaskTable allTaskTable = new AllTaskTable();
         table2.setModel(allTaskTable);
 
+        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        for (int i=0;i<7;i++) {
+            table1.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+        }
+        for (int i=0;i<6;i++) {
+            table2.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+        }
+
         btn_alltask_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateTask(null,token);
                 callApiTask(token,1);
-
             }
         });
 
-        btn_employee_create.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new AddEmployee(null,token);
-                callApiGetEmployeeInProject(token,1);
-
+        table2.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                // do some actions here, for example
+                // print first column value from selected row
+//                System.out.println(table2.getValueAt(table2.getSelectedRow(), 0).toString());
+                String valueSelected = table2.getValueAt(table2.getSelectedRow(), 0).toString();
+                for (GetTaskResponse getTaskResponse : listAllTask) {
+                    if(valueSelected.equals(String.valueOf(getTaskResponse.getId()))) {
+                        getTaskResponseSelection = getTaskResponse;
+                    }
+                }
+                new EditTask(null,getTaskResponseSelection,token);
             }
         });
 
@@ -119,7 +140,6 @@ public class TaskScreen extends JDialog {
             }
         }
         catch (IOException e) {
-
             throw new RuntimeException(e);
         }
     }
@@ -138,7 +158,6 @@ public class TaskScreen extends JDialog {
             @Override
             public void onFailure(Call<MyResponse<List<GetTaskResponse>>> call, Throwable throwable) {
                 System.out.print("call failure all task");
-
             }
         });
     }
@@ -170,8 +189,8 @@ public class TaskScreen extends JDialog {
                         yield "UNASSIGNED";
                     yield listAllTask.get(rowIndex).getAssignEmployeeName();
                 }
-                case 3 -> listAllTask.get(rowIndex).getStartDate();
-                case 4 -> listAllTask.get(rowIndex).getEndDate();
+                case 3 -> changeFormat(listAllTask.get(rowIndex).getStartDate());
+                case 4 -> changeFormat(listAllTask.get(rowIndex).getEndDate());
                 case 5 -> listAllTask.get(rowIndex).getStatus();
                 default -> "-";
             };
@@ -206,6 +225,18 @@ public class TaskScreen extends JDialog {
                 case 6->lstAllEmployee.get(rowIndex).getEmail();
                 default -> "-";
             };
+        }
+    }
+
+    private String changeFormat(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date parsedDate = null;
+        try {
+            parsedDate = simpleDateFormat.parse(date);
+            String strDate = dateFormat.format(parsedDate);
+            return strDate;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
         }
     }
 }
