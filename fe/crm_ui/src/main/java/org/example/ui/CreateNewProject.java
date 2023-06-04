@@ -54,7 +54,7 @@ public class CreateNewProject extends JDialog {
         btn_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
                 startDate = dateFormat.format(dp_start_date.getDate());
                 dueDate=dateFormat.format(dp_due_date.getDate());

@@ -240,7 +240,7 @@ public class AdminScreen extends JDialog {
     }
 
     private String changeFormat(String date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsedDate = null;
         try {
             parsedDate = simpleDateFormat.parse(date);

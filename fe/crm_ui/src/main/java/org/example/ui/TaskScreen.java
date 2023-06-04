@@ -17,10 +17,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +46,7 @@ public class TaskScreen extends JDialog {
     private JScrollPane table_task;
     private JPanel tp_myTasks;
     private JTable table6;
+    private JLabel label_employees;
 
     private static List<GetTaskResponse> listAllTask = new ArrayList<>();
     public static List<GetAllUserAccountResponse> lstAllEmployee = new ArrayList<>();
@@ -137,6 +134,8 @@ public class TaskScreen extends JDialog {
             if(response.isSuccessful()){
                 MyResponse<List<GetAllUserAccountResponse>>lstEmployee=response.body();
                 lstAllEmployee = lstEmployee.getContent();
+                label_employees.setText(String.valueOf(lstAllEmployee.size())+" Employees");
+
             }
         }
         catch (IOException e) {
@@ -229,7 +228,7 @@ public class TaskScreen extends JDialog {
     }
 
     private String changeFormat(String date) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date parsedDate = null;
         try {
             parsedDate = simpleDateFormat.parse(date);
