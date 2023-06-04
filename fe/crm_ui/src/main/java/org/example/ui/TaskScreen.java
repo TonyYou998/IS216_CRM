@@ -63,7 +63,7 @@ public class TaskScreen extends JDialog {
         setModal(true);
         setLocationRelativeTo(null);
 
-        callApiTask(token,1);
+        callApiTask(token,11);
         callApiGetEmployeeInProject(token,1);
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
@@ -73,7 +73,8 @@ public class TaskScreen extends JDialog {
         tp_taskscreen.addTab("In-progess",null,tp_inpro,null);
         tp_taskscreen.addTab("Done",null,tp_done,null);
 
-        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
+//        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
+        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
         btn_employee_create.setIcon(new ImageIcon(buttonIcon));
         btn_employee_create.setBorder(BorderFactory.createEmptyBorder());
         btn_employee_create.setContentAreaFilled(false);
