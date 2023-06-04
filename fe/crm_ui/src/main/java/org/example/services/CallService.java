@@ -44,4 +44,7 @@ public interface CallService {
 
    @GET("admin/project/add-employee")
    Call<MyResponse<AddEmployeeResponse>> getAddEmployee (@Header("Authorization") String token, @Query("userId") String userId,@Query("projectId") int projectId);
+
+    @PATCH("user/task/update/taskId")
+    Call<MyResponse<CreateTaskResponse>> patchUpdateTask (@Header("Authorization") String token, @Query("id") int id,@Body CreateTaskRequest createTaskRequest);
 }

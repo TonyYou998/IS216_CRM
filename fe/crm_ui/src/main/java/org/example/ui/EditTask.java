@@ -1,9 +1,14 @@
 package org.example.ui;
 
-import org.example.dto.GetAllUserAccountResponse;
-import org.example.dto.GetTaskResponse;
+import org.example.dto.*;
 import org.example.ui.components.ComboBoxItem;
+import org.example.utils.ApiClient;
 import org.jdesktop.swingx.JXDatePicker;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.Query;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,6 +17,7 @@ import java.awt.event.ActionListener;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -27,7 +33,7 @@ public class EditTask extends JDialog {
     private JButton CREATEButton;
     private JButton CANCELButton;
     DateFormat dateFormat;
-    String date;
+    String date,status;
     private String userId="-1";
     private List<GetAllUserAccountResponse> lstEmployee;
     GetTaskResponse getTaskResponse;
@@ -52,16 +58,8 @@ public class EditTask extends JDialog {
         setEmployee(lstEmployee);
 
         getTaskResponse = getTaskResponseSelection;
-
         tf_taskname.setText(getTaskResponseSelection.getTaskName());
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        Date parsedDate = null;
-        try {
-            parsedDate = simpleDateFormat.parse(getTaskResponseSelection.getEndDate());
-            dp_date.setDate(parsedDate);
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        changeFormat(getTaskResponseSelection.getEndDate());
 
 
         SAVEButton.addActionListener(new ActionListener() {
@@ -69,7 +67,6 @@ public class EditTask extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 date = dateFormat.format(dp_date.getDate());
                 System.out.println(date);
-
             }
         });
 
@@ -83,14 +80,14 @@ public class EditTask extends JDialog {
         inProgressRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getTaskResponse.setStatus(inProgressRadioButton.getText());
+                status = inProgressRadioButton.getText();
             }
         });
 
         doneRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                getTaskResponse.setStatus(doneRadioButton.getText());
+                status = doneRadioButton.getText();
             }
         });
 
@@ -104,8 +101,35 @@ public class EditTask extends JDialog {
                 System.out.println("Selected employee: " + userId);
             }
         });
+
+        SAVEButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                callApi(token,getTaskResponse.getId());
+            }
+        });
         setVisible(true);
 
+    }
+
+    private void callApi(String token, int id) {
+        dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        date = dateFormat.format(dp_date.getDate());
+
+        CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(), LocalDateTime.now().toString(),date,userId,getTaskResponse.getProjectId());
+        Call<MyResponse<CreateTaskResponse>> patchUpdateTask = ApiClient.callApi().patchUpdateTask("Bearer "+token,id,createTaskRequest);
+        patchUpdateTask.enqueue(new Callback<MyResponse<CreateTaskResponse>>() {
+            @Override
+            public void onResponse(Call<MyResponse<CreateTaskResponse>> call, Response<MyResponse<CreateTaskResponse>> response) {
+                dispose();
+            }
+
+            @Override
+            public void onFailure(Call<MyResponse<CreateTaskResponse>> call, Throwable throwable) {
+                System.out.println("call fail");
+
+            }
+        });
     }
 
     public void setEmployee(List<GetAllUserAccountResponse> lstEmployee){
@@ -123,5 +147,16 @@ public class EditTask extends JDialog {
                         isSelected, cellHasFocus);
             }
         });
+    }
+
+    private void changeFormat(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date parsedDate = null;
+        try {
+            parsedDate = simpleDateFormat.parse(date);
+            dp_date.setDate(parsedDate);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
