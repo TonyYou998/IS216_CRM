@@ -53,7 +53,7 @@ public class CreateTask extends JDialog {
         CREATEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 date = dateFormat.format(dp_date.getDate());
 
                 LocalDateTime startDate=LocalDateTime.now();
