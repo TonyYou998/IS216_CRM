@@ -1,5 +1,8 @@
 package org.example.ui;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.example.dto.GetAllUserAccountResponse;
 import org.example.dto.GetTaskResponse;
 import org.example.dto.MyResponse;
@@ -24,6 +27,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
@@ -49,15 +53,21 @@ public class TaskScreen extends JDialog {
     private JLabel label_employees;
 
     private static List<GetTaskResponse> listAllTask = new ArrayList<>();
+    private List<GetTaskResponse> listTaskDone = new ArrayList<>();
+    private List<GetTaskResponse> listTaskInPro = new ArrayList<>();
     public static List<GetAllUserAccountResponse> lstAllEmployee = new ArrayList<>();
     DateFormat dateFormat;
     GetTaskResponse getTaskResponseSelection;
 
     String[] strColTask = {"TaskID","Task Name","Assignee","Start date", "End date","Status"};
     String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
+    String userName;
+    DefaultTableCellRenderer cellRenderer;
 
     public TaskScreen(JFrame parent,String token) throws IOException {
         super(parent);
+
+        encode(token);
 
         dateFormat =new SimpleDateFormat("dd/MM/yyyy");
 
@@ -67,7 +77,10 @@ public class TaskScreen extends JDialog {
         setModal(true);
         setLocationRelativeTo(null);
 
-        callApiTask(token,11);
+        cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        callApiTask(token,1);
         callApiGetEmployeeInProject(token,1);
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
@@ -86,21 +99,6 @@ public class TaskScreen extends JDialog {
         btn_alltask_create.setIcon(new ImageIcon(buttonIcon));
         btn_alltask_create.setBorder(BorderFactory.createEmptyBorder());
         btn_alltask_create.setContentAreaFilled(false);
-
-        AllEmployeeTable allUserTable = new AllEmployeeTable();
-        table1.setModel(allUserTable);
-
-        AllTaskTable allTaskTable = new AllTaskTable();
-        table2.setModel(allTaskTable);
-
-        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i=0;i<7;i++) {
-            table1.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
-        }
-        for (int i=0;i<6;i++) {
-            table2.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
-        }
 
         btn_alltask_create.addActionListener(new ActionListener() {
             @Override
@@ -122,12 +120,24 @@ public class TaskScreen extends JDialog {
                     }
                 }
                 new EditTask(null,getTaskResponseSelection,token);
+                callApiTask(token,1);
             }
         });
 
         setVisible(true);
     }
 
+    private void encode(String token) {
+        String[] chunks = token.split("\\.");
+        Base64.Decoder decoder = Base64.getUrlDecoder();
+        String payload = new String(decoder.decode(chunks[1]));
+
+        JsonParser parser = new JsonParser();
+        JsonObject jsonObject = parser.parse(payload).getAsJsonObject();
+        userName = String.valueOf(jsonObject.get("sub"));
+        System.out.println(userName);
+
+    }
     private void callApiGetEmployeeInProject(String token, int projectId) {
         Call<MyResponse<List<GetAllUserAccountResponse>>> call=ApiClient.callApi().getAllEmployeeInProject("Bearer "+token,projectId);
         try {
@@ -135,6 +145,12 @@ public class TaskScreen extends JDialog {
             if(response.isSuccessful()){
                 MyResponse<List<GetAllUserAccountResponse>>lstEmployee=response.body();
                 lstAllEmployee = lstEmployee.getContent();
+                AllEmployeeTable allUserTable = new AllEmployeeTable();
+                table1.setModel(allUserTable);
+                for (int i=0;i<7;i++) {
+                    table1.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                }
+
                 label_employees.setText(String.valueOf(lstAllEmployee.size())+" Employees");
 
             }
@@ -144,7 +160,7 @@ public class TaskScreen extends JDialog {
         }
     }
 
-    public static void callApiTask(String token, int id) {
+    private void callApiTask(String token, int id) {
         Call<MyResponse<List<GetTaskResponse>>> myResponseCall = ApiClient.callApi().getTaskByProjectId("Bearer "+token,id);
         myResponseCall.enqueue(new Callback<MyResponse<List<GetTaskResponse>>>() {
             @Override
@@ -152,12 +168,28 @@ public class TaskScreen extends JDialog {
                 if(response.isSuccessful()){
                     MyResponse<List<GetTaskResponse>> listMyResponse = response.body();
                     listAllTask = listMyResponse.getContent();
+                    AllTaskTable allTaskTable = new AllTaskTable();
+                    table2.setModel(allTaskTable);
+                    for (int i=0;i<6;i++) {
+                        table2.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                    }
+
+                    for(GetTaskResponse getTaskResponse : listAllTask) {
+                        if(getTaskResponse.getStatus().equals("in-progress")) {
+                            listTaskInPro.add(getTaskResponse);
+                            TaskInProTable taskInPro = new TaskInProTable();
+                            table4.setModel(taskInPro);
+
+                        } else if(getTaskResponse.getStatus().equals("done")) {
+                            listTaskDone.add(getTaskResponse);
+                        }
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<MyResponse<List<GetTaskResponse>>> call, Throwable throwable) {
-                System.out.print("call failure all task");
+                System.out.println("call failure all task");
             }
         });
     }
@@ -196,6 +228,41 @@ public class TaskScreen extends JDialog {
             };
         }
     }
+    private class TaskInProTable extends AbstractTableModel {
+
+        @Override
+        public String getColumnName(int column) {
+            return strColTask[column];
+        }
+
+        @Override
+        public int getRowCount() {
+            return listTaskInPro.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return strColTask.length;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return switch (columnIndex) {
+                case 0 -> listTaskInPro.get(rowIndex).getId();
+                case 1 -> listTaskInPro.get(rowIndex).getTaskName();
+                case 2 -> {
+                    if(listTaskInPro.get(rowIndex).getAssignEmployeeName()==null)
+                        yield "UNASSIGNED";
+                    yield listTaskInPro.get(rowIndex).getAssignEmployeeName();
+                }
+                case 3 -> changeFormat(listTaskInPro.get(rowIndex).getStartDate());
+                case 4 -> changeFormat(listTaskInPro.get(rowIndex).getEndDate());
+                case 5 -> listTaskInPro.get(rowIndex).getStatus();
+                default -> "-";
+            };
+        }
+    }
+
     private class AllEmployeeTable extends AbstractTableModel {
 
         @Override

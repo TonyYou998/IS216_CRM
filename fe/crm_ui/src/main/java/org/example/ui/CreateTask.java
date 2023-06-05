@@ -62,6 +62,13 @@ public class CreateTask extends JDialog {
             }
         });
 
+        CANCELButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+
 
         setVisible(true);
     }
@@ -73,10 +80,7 @@ public class CreateTask extends JDialog {
             public void onResponse(Call<MyResponse<CreateTaskResponse>> call, Response<MyResponse<CreateTaskResponse>> response) {
                 MyResponse<CreateTaskResponse> myResponse = response.body();
                 if (myResponse.getStatus() == 200) {
-                    System.out.println("call ok");
                     dispose();
-
-                    TaskScreen.callApiTask(token,1);
                 }
             }
 

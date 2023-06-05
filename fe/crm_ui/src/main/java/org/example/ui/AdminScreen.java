@@ -56,12 +56,14 @@ public class AdminScreen extends JDialog {
     static List<GetAllUserAccountResponse> listUser = new ArrayList<>();
 
     List<String> listRole = new ArrayList<>();
-
     DateFormat dateFormat;
-
+    DefaultTableCellRenderer cellRenderer;
 
     public AdminScreen(JFrame parent,String token) throws IOException {
         super(parent);
+
+        cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         callApiAllPj(token);
         callApiAllUser(token);
@@ -76,8 +78,8 @@ public class AdminScreen extends JDialog {
         tp_adminscreen.addTab("Projects",null,tp_pj,null);
         tp_adminscreen.addTab("Users",null,tp_user,null);
 
-        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
-//        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
+//        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
+        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
         btn_pj_add.setIcon(new ImageIcon(buttonIcon));
         btn_pj_add.setBorder(BorderFactory.createEmptyBorder());
         btn_pj_add.setContentAreaFilled(false);
@@ -86,20 +88,6 @@ public class AdminScreen extends JDialog {
         btn_user_add.setBorder(BorderFactory.createEmptyBorder());
         btn_user_add.setContentAreaFilled(false);
 
-        ProjectTable projectTable = new ProjectTable();
-        tablePj.setModel(projectTable);
-
-        UserTable userTable = new UserTable();
-        tableUser.setModel(userTable);
-
-        DefaultTableCellRenderer cellRenderer = new DefaultTableCellRenderer();
-        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
-        for (int i=0;i<5;i++) {
-            tablePj.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
-        }
-        for (int i=0;i<7;i++) {
-            tableUser.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
-        }
 
         btn_pj_add.addActionListener(new ActionListener() {
             @Override
@@ -144,6 +132,11 @@ public class AdminScreen extends JDialog {
             public void onResponse(Call<java.util.List<GetAllProjectResponse>> call, Response<java.util.List<GetAllProjectResponse>> response) {
                 if(response.isSuccessful()){
                     listPj = response.body();
+                    ProjectTable projectTable = new ProjectTable();
+                    tablePj.setModel(projectTable);
+                    for (int i=0;i<5;i++) {
+                        tablePj.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                    }
                 }
             }
 
@@ -165,6 +158,11 @@ public class AdminScreen extends JDialog {
                         if(listUser.get(i).getRoleId().equals("1")) {listRole.add("Employee");}
                         else if(listUser.get(i).getRoleId().equals("2")) {listRole.add("Admin");}
                         else if(listUser.get(i).getRoleId().equals("3")) {listRole.add("Leader");}
+                    }
+                    UserTable userTable = new UserTable();
+                    tableUser.setModel(userTable);
+                    for (int i=0;i<7;i++) {
+                        tableUser.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
                     }
                 }
             }
