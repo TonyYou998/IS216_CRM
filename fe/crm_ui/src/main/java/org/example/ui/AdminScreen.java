@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -58,10 +59,11 @@ public class AdminScreen extends JDialog {
     List<String> listRole = new ArrayList<>();
     DateFormat dateFormat;
     DefaultTableCellRenderer cellRenderer;
+    String token;
 
     public AdminScreen(JFrame parent,String token) throws IOException {
         super(parent);
-
+        this.token=token;
         cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(JLabel.CENTER);
 
@@ -105,15 +107,21 @@ public class AdminScreen extends JDialog {
             }
         });
 
-        tablePj.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
-                // do some actions here, for example
-                // print first column value from selected row
-//                System.out.println(table2.getValueAt(table2.getSelectedRow(), 0).toString());
-                int pjId = Integer.parseInt(tablePj.getValueAt(tablePj.getSelectedRow(), 0).toString());
-                new AddEmployee(null,token,pjId);
+        tablePj.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Handle right-click event
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    int row = tablePj.rowAtPoint(e.getPoint());
+                    int col = tablePj.columnAtPoint(e.getPoint());
+                    // Show the popup at the selected location
+                    int pjId = Integer.parseInt(tablePj.getValueAt(tablePj.rowAtPoint(e.getPoint()), 0).toString());
+                    System.out.println(pjId);
+                    showPopup(e.getComponent(), e.getX(), e.getY(), row, col,pjId);
+                }
             }
-        });
+        }
+        );
 
         btn_user_search.addActionListener(new ActionListener() {
             @Override
@@ -122,9 +130,50 @@ public class AdminScreen extends JDialog {
 
             }
         });
+        tableUser.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Handle right-click event
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    int row = tableUser.rowAtPoint(e.getPoint());
+                    int col = tableUser.columnAtPoint(e.getPoint());
+                    // Show the popup at the selected location
+
+                    int pjId = Integer.parseInt(tablePj.getValueAt(tablePj.rowAtPoint(e.getPoint()), 0).toString());
+
+                    showPopup(e.getComponent(), e.getX(), e.getY(), row, col,pjId);
+                }
+            }
+        });
+
+
         setVisible(true);
     }
 
+    public void showPopup(Component component, int x, int y, int row, int col,int pjId) {
+        JPopupMenu popup = new JPopupMenu();
+        JMenuItem item1 = new JMenuItem("Add employee");
+        JMenuItem item2 = new JMenuItem("Delete");
+
+        item1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the action when the popup item is clicked
+//                System.out.println("Popup Item Clicked at row " + row + ", column " + col);
+                new AddEmployee(null,token,pjId);
+            }
+        });
+        item2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the action when the popup item is clicked
+                System.out.println("Popup Item Clicked at row " + row + ", column " + col);
+            }
+        });
+        popup.add(item1);
+        popup.add(item2);
+        popup.show(component, x, y);
+    }
     public void callApiAllPj(String token) {
         Call<java.util.List<GetAllProjectResponse>> responese = ApiClient.callApi().getAllProjectForAdmin("Bearer "+token);
         responese.enqueue(new Callback<java.util.List<GetAllProjectResponse>>() {
@@ -139,7 +188,6 @@ public class AdminScreen extends JDialog {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<List<GetAllProjectResponse>> call, Throwable throwable) {
                 System.out.print("call failure Pj");
@@ -249,3 +297,5 @@ public class AdminScreen extends JDialog {
         }
     }
 }
+
+
