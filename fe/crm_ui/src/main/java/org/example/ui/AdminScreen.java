@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.dto.GetAllProjectResponse;
 import org.example.dto.GetAllUserAccountResponse;
+import org.example.dto.GetTaskResponse;
 import org.example.utils.ApiClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -9,14 +10,22 @@ import retrofit2.Response;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AdminScreen extends JDialog {
@@ -40,20 +49,25 @@ public class AdminScreen extends JDialog {
     private JScrollPane refreshBtn;
 
     String[] strColPj = {"Id","Name","Start date", "End date","Leader"};
-    String[] strColUser = {"Id","Username","RoleId","Phone", "Fullname","Address","Email"};
+    String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
 
-    List<GetAllProjectResponse> listPj;
+    List<GetAllProjectResponse> listPj = new ArrayList<>();
 
-    List<GetAllUserAccountResponse> listUser;
+    static List<GetAllUserAccountResponse> listUser = new ArrayList<>();
 
     List<String> listRole = new ArrayList<>();
-
+    DateFormat dateFormat;
+    DefaultTableCellRenderer cellRenderer;
 
     public AdminScreen(JFrame parent,String token) throws IOException {
         super(parent);
 
+        cellRenderer = new DefaultTableCellRenderer();
+        cellRenderer.setHorizontalAlignment(JLabel.CENTER);
+
         callApiAllPj(token);
         callApiAllUser(token);
+        dateFormat =new SimpleDateFormat("dd/MM/yyyy");
 
         setTitle("AdminScreen");
         setContentPane(panel_admin_screen);
@@ -61,11 +75,10 @@ public class AdminScreen extends JDialog {
         setModal(true);
         setLocationRelativeTo(null);
 
-
         tp_adminscreen.addTab("Projects",null,tp_pj,null);
         tp_adminscreen.addTab("Users",null,tp_user,null);
 
-//        BufferedImage buttonIcon = ImageIO.read(new File("/src/image/add.png"));
+//        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
         BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
         btn_pj_add.setIcon(new ImageIcon(buttonIcon));
         btn_pj_add.setBorder(BorderFactory.createEmptyBorder());
@@ -75,11 +88,12 @@ public class AdminScreen extends JDialog {
         btn_user_add.setBorder(BorderFactory.createEmptyBorder());
         btn_user_add.setContentAreaFilled(false);
 
+
         btn_pj_add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateNewProject(null,token);
-
+                callApiAllPj(token);
             }
         });
 
@@ -87,24 +101,28 @@ public class AdminScreen extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new CreateNewUser(null,token);
-            }
-        });
-        refreshButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
                 callApiAllUser(token);
             }
         });
-        refreshButton1.addActionListener(new ActionListener() {
+
+        tablePj.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+            public void valueChanged(ListSelectionEvent event) {
+                // do some actions here, for example
+                // print first column value from selected row
+//                System.out.println(table2.getValueAt(table2.getSelectedRow(), 0).toString());
+                int pjId = Integer.parseInt(tablePj.getValueAt(tablePj.getSelectedRow(), 0).toString());
+                new AddEmployee(null,token,pjId);
+            }
+        });
+
+        btn_user_search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                callApiAllPj(token);
+                System.out.print(tf_user_search.getText());
+
             }
         });
         setVisible(true);
-
-
-
     }
 
     public void callApiAllPj(String token) {
@@ -116,9 +134,10 @@ public class AdminScreen extends JDialog {
                     listPj = response.body();
                     ProjectTable projectTable = new ProjectTable();
                     tablePj.setModel(projectTable);
-
+                    for (int i=0;i<5;i++) {
+                        tablePj.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                    }
                 }
-
             }
 
             @Override
@@ -140,9 +159,11 @@ public class AdminScreen extends JDialog {
                         else if(listUser.get(i).getRoleId().equals("2")) {listRole.add("Admin");}
                         else if(listUser.get(i).getRoleId().equals("3")) {listRole.add("Leader");}
                     }
-
                     UserTable userTable = new UserTable();
                     tableUser.setModel(userTable);
+                    for (int i=0;i<7;i++) {
+                        tableUser.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                    }
                 }
             }
 
@@ -176,8 +197,8 @@ public class AdminScreen extends JDialog {
             return switch (columnIndex) {
                 case 0 -> listPj.get(rowIndex).getId();
                 case 1 -> listPj.get(rowIndex).getProjectName();
-                case 2 -> listPj.get(rowIndex).getStartDate();
-                case 3 -> listPj.get(rowIndex).getEndDate();
+                case 2 -> changeFormat(listPj.get(rowIndex).getStartDate());
+                case 3 -> changeFormat(listPj.get(rowIndex).getEndDate());
                 case 4 -> listPj.get(rowIndex).getLeaderName();
                 default -> "-";
             };
@@ -216,4 +237,15 @@ public class AdminScreen extends JDialog {
         }
     }
 
+    private String changeFormat(String date) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date parsedDate = null;
+        try {
+            parsedDate = simpleDateFormat.parse(date);
+            String strDate = dateFormat.format(parsedDate);
+            return strDate;
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

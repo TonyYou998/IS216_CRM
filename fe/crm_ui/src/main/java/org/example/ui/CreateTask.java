@@ -34,37 +34,49 @@ public class CreateTask extends JDialog {
     DateFormat dateFormat;
     String date;
     Date currentDate = new Date();
+
+
+    
+
+       
     public CreateTask(JFrame parent,String token,int projectId) {
         super(parent);
         this.projectId=projectId;
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        // dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dp_date.setFormats(dateFormat);
         dp_date.setDate(currentDate);
 
         setTitle("Create Task");
         setContentPane(panel_createtask);
-        setMinimumSize(new Dimension(800,500));
+        setMinimumSize(new Dimension(500,300));
         setModal(true);
         setLocationRelativeTo(null);
-        lstEmployee=TaskScreen.callApiGetEmployeeInProject(token,projectId);
+//        lstEmployee=TaskScreen.callApiGetEmployeeInProject(token,1);
+        lstEmployee = TaskScreen.lstAllEmployee;
+        // lstEmployee=TaskScreen.callApiGetEmployeeInProject(token,projectId);
         setEmployee(lstEmployee);
         CREATEButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 date = dateFormat.format(dp_date.getDate());
-
-                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
                 LocalDateTime startDate=LocalDateTime.now();
                 CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,String.valueOf(projectId));
                 callApiCreateTask(createTaskRequest,token);
             }
         });
+
+        CANCELButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+
+
         setVisible(true);
-
-
-
     }
 
     private void callApiCreateTask(CreateTaskRequest createTaskRequest,String token) {
@@ -74,7 +86,6 @@ public class CreateTask extends JDialog {
             public void onResponse(Call<MyResponse<CreateTaskResponse>> call, Response<MyResponse<CreateTaskResponse>> response) {
                 MyResponse<CreateTaskResponse> myResponse = response.body();
                 if (myResponse.getStatus() == 200) {
-                    System.out.println("call ok");
                     dispose();
                 }
             }
