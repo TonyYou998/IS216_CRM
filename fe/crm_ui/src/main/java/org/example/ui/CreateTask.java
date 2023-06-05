@@ -29,16 +29,21 @@ public class CreateTask extends JDialog {
     private JXDatePicker dp_date;
     private List<GetAllUserAccountResponse> lstEmployee;
     private String userId="-1";
+    private int projectId;
 
     DateFormat dateFormat;
     String date;
     Date currentDate = new Date();
 
 
-    public CreateTask(JFrame parent,String token) {
-        super(parent);
+    
 
-        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+       
+    public CreateTask(JFrame parent,String token,int projectId) {
+        super(parent);
+        this.projectId=projectId;
+         dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        // dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         dp_date.setFormats(dateFormat);
         dp_date.setDate(currentDate);
 
@@ -49,6 +54,7 @@ public class CreateTask extends JDialog {
         setLocationRelativeTo(null);
 //        lstEmployee=TaskScreen.callApiGetEmployeeInProject(token,1);
         lstEmployee = TaskScreen.lstAllEmployee;
+        // lstEmployee=TaskScreen.callApiGetEmployeeInProject(token,projectId);
         setEmployee(lstEmployee);
         CREATEButton.addActionListener(new ActionListener() {
             @Override
@@ -57,7 +63,7 @@ public class CreateTask extends JDialog {
                 date = dateFormat.format(dp_date.getDate());
 
                 LocalDateTime startDate=LocalDateTime.now();
-                CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,"1");
+                CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,String.valueOf(projectId));
                 callApiCreateTask(createTaskRequest,token);
             }
         });

@@ -58,13 +58,17 @@ public class TaskScreen extends JDialog {
     public static List<GetAllUserAccountResponse> lstAllEmployee = new ArrayList<>();
     DateFormat dateFormat;
     GetTaskResponse getTaskResponseSelection;
+    private JButton refreshButton;
+    private int projectId;
+//    private  List<GetTaskResponse> listAllTask;
+    // private List<GetAllUserAccountResponse> lstAllEmployee;
 
     String[] strColTask = {"TaskID","Task Name","Assignee","Start date", "End date","Status"};
     String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
     String userName;
     DefaultTableCellRenderer cellRenderer;
 
-    public TaskScreen(JFrame parent,String token) throws IOException {
+    public TaskScreen(JFrame parent,String token, int projectId) throws IOException {
         super(parent);
 
         encode(token);
@@ -79,9 +83,11 @@ public class TaskScreen extends JDialog {
 
         cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(JLabel.CENTER);
+        // listAllTask= callApiTask(token,projectId);
+        // lstAllEmployee=callApiGetEmployeeInProject(token,projectId);
 
-        callApiTask(token,1);
-        callApiGetEmployeeInProject(token,1);
+        callApiTask(token,projectId);
+        callApiGetEmployeeInProject(token,projectId);
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
         tp_taskscreen.addTab("All tasks",null,tp_alltask,null);
@@ -92,9 +98,9 @@ public class TaskScreen extends JDialog {
 
 //        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
         BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
-        btn_employee_create.setIcon(new ImageIcon(buttonIcon));
-        btn_employee_create.setBorder(BorderFactory.createEmptyBorder());
-        btn_employee_create.setContentAreaFilled(false);
+//        btn_employee_create.setIcon(new ImageIcon(buttonIcon));
+//        btn_employee_create.setBorder(BorderFactory.createEmptyBorder());
+//        btn_employee_create.setContentAreaFilled(false);
 
         btn_alltask_create.setIcon(new ImageIcon(buttonIcon));
         btn_alltask_create.setBorder(BorderFactory.createEmptyBorder());
@@ -103,8 +109,8 @@ public class TaskScreen extends JDialog {
         btn_alltask_create.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new CreateTask(null,token);
-                callApiTask(token,1);
+                new CreateTask(null,token,projectId);
+                callApiTask(token,projectId);
             }
         });
 
