@@ -44,7 +44,7 @@ public class CreateNewUser extends JDialog{
         cb_role.addItem("Employee");
         cb_role.addItem("Admin");
         cb_role.addItem("Leader");
-        dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         dp_date.setFormats(dateFormat);
         dp_date.setDate(currentDate);
 
@@ -65,15 +65,13 @@ public class CreateNewUser extends JDialog{
 
                 String visiblePassword=new String(tf_password.getPassword());
 
-                dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
-                date = dateFormat.format(dp_date.getDate());
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+                date = simpleDateFormat.format(dp_date.getDate());
 
                 CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),date,roleId);
                 CreateUserResponse newUser= callApiCreateUser(createUserRequest,token);
                 if(newUser !=null)
                    dispose();
-
             }
         });
 

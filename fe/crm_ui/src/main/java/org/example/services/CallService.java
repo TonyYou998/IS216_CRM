@@ -42,6 +42,11 @@ public interface CallService {
    @GET("user/leader/employees/projectId")
     Call<MyResponse<List<GetAllUserAccountResponse>>> getAllEmployeeInProject(@Header("Authorization") String token, @Query("id") int projectId);
 
+   @GET("admin/project/add-employee")
+   Call<MyResponse<AddEmployeeResponse>> getAddEmployee (@Header("Authorization") String token, @Query("userId") String userId,@Query("projectId") int projectId);
+
+    @PATCH("user/task/update/taskId")
+    Call<MyResponse<CreateTaskResponse>> patchUpdateTask (@Header("Authorization") String token, @Query("id") int id,@Body CreateTaskRequest createTaskRequest);
    @GET("user/all-project")
     Call<MyResponse<List<GetAllProjectResponse>>> getAllProjectByUser(@Header("Authorization") String token);
 //    @GET("admin/leaders")

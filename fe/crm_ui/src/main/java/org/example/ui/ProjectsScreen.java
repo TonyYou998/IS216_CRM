@@ -39,10 +39,22 @@ public class ProjectsScreen extends JDialog {
         lstProject = callApiGetProjectByUser(token);
         setProject(lstProject);
         setVisible(true);
-
-
     }
 
+    // public void callApiPj(String token) {
+    //     Call<MyResponse<List<GetAllProjectResponse>>> responseCall = ApiClient.callApi().getAllProject(token);
+    //     responseCall.enqueue(new Callback<MyResponse<List<GetAllProjectResponse>>>() {
+    //         @Override
+    //         public void onResponse(Call<MyResponse<List<GetAllProjectResponse>>> call, Response<MyResponse<List<GetAllProjectResponse>>> response) {
+    //             if(response.isSuccessful()) {
+    //                 MyResponse<List<GetAllProjectResponse>> listMyResponse = response.body();
+    //                 listProject = listMyResponse.getContent();
+    //                 if (listProject == null) {
+    //                     System.out.print("null");
+    //                 } else {
+    //                     System.out.print(listProject.size());
+    //                 }
+    //             }
     public List<GetAllProjectResponse> callApiGetProjectByUser(String token) {
         Call<MyResponse<List<GetAllProjectResponse>>> call = ApiClient.callApi().getAllProjectByUser("Bearer " + token);
         try {
