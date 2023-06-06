@@ -31,4 +31,5 @@ public class Constants {
     public static final String GET_TASK_BY_USER = "/get-task-by-user";
     public static final String UPDATE_TASK = "/update";
     public static final String TASK_ID = "/taskId";
+    public static final String DELETE_EMPLOYEE = "/delete-project";
 }

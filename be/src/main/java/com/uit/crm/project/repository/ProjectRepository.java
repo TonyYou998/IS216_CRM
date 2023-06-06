@@ -1,6 +1,7 @@
 package com.uit.crm.project.repository;
 
 import com.uit.crm.project.model.Project;
+import com.uit.crm.project.model.ProjectEmployee;
 import com.uit.crm.user.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -20,4 +21,6 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
 
 
 
+
+//    void deleteAll(List<ProjectEmployee> lstEmployee);
 }

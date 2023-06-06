@@ -126,9 +126,10 @@ public class TaskScreen extends JDialog {
                     }
                 }
                 new EditTask(null,getTaskResponseSelection,token);
-                callApiTask(token,1);
+                callApiTask(token,projectId);
             }
         });
+
 
         setVisible(true);
     }

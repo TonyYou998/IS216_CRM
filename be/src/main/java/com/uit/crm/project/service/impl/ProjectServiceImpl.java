@@ -14,8 +14,10 @@ import com.uit.crm.user.model.User;
 import com.uit.crm.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.util.Assert;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -23,6 +25,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @Service
+@Transactional
 public class ProjectServiceImpl implements ProjectService {
 
     private ModelMapper mapper;
@@ -143,6 +146,23 @@ public class ProjectServiceImpl implements ProjectService {
             return null;
         }
 
+
+    }
+
+    @Override
+    public ProjectDto deleteProject(String id) {
+        try{
+            Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(id)).orElse(null);
+            Assert.notNull(p,"Project not exist");
+            List<ProjectEmployee> lstEmployee=SpringBeanUtil.getBean(ProjectEmployeeRepository.class).findByProject(p);
+            SpringBeanUtil.getBean(ProjectEmployeeRepository.class).deleteAll(lstEmployee);
+            SpringBeanUtil.getBean(ProjectRepository.class).deleteById(p.getId());
+            return mapper.map(p,ProjectDto.class);
+        }
+        catch (Exception ex){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(ProjectService.class).info(ex.getMessage());
+            return null;
+        }
 
     }
 }
