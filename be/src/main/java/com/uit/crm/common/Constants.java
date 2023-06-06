@@ -33,4 +33,5 @@ public class Constants {
     public static final String TASK_ID = "/taskId";
     public static final String DELETE_EMPLOYEE = "/delete-project";
     public static final String GET_BACKLOG = "/get-backlog";
+    public static final String GET_IN_PROGRESS = "/get-inprogress";
 }
