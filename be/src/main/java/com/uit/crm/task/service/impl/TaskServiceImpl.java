@@ -196,4 +196,24 @@ public class TaskServiceImpl implements TaskService {
 
         return lstDto;
     }
+
+    @Override
+    public List<TaskDto> getAllInProgress(String id, String authHeader) {
+        Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(id)).orElse(null);
+
+        List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findByProjectAndStatus(p,"IN-PROGRESS");
+        List<TaskDto> lstDto=new LinkedList<>();
+        for(Task t:lstTask){
+            TaskDto dto=mapper.map(t,TaskDto.class);
+            dto.setAssignEmployeeName(t.getAssignedEmployeeId().getUsername());
+            dto.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
+            dto.setProjectId(t.getProject().getId().toString());
+            lstDto.add(dto);
+
+        }
+
+
+
+        return lstDto;
+    }
 }
