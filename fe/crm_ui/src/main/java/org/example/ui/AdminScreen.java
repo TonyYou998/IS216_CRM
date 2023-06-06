@@ -170,6 +170,7 @@ public class AdminScreen extends JDialog {
 //                System.out.println("Popup Item Clicked at row " + row + ", column " + col);
                 String deleteStatus=delete(token,pjId);
                 System.out.println(deleteStatus);
+                callApiAllPj(token);
             }
         });
         popup.add(item1);
@@ -183,7 +184,7 @@ public class AdminScreen extends JDialog {
             Response<String> response= call.execute();
             if(response.isSuccessful()){
 
-                String result = response.body();
+                String result = "success";
                 return  result;
             }
         }

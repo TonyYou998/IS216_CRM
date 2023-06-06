@@ -10,6 +10,8 @@ import com.uit.crm.project.model.ProjectEmployee;
 import com.uit.crm.project.repository.ProjectEmployeeRepository;
 import com.uit.crm.project.repository.ProjectRepository;
 import com.uit.crm.project.service.ProjectService;
+import com.uit.crm.task.model.Task;
+import com.uit.crm.task.model.repository.TaskRepository;
 import com.uit.crm.user.model.User;
 import com.uit.crm.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -155,7 +157,11 @@ public class ProjectServiceImpl implements ProjectService {
             Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(id)).orElse(null);
             Assert.notNull(p,"Project not exist");
             List<ProjectEmployee> lstEmployee=SpringBeanUtil.getBean(ProjectEmployeeRepository.class).findByProject(p);
-            SpringBeanUtil.getBean(ProjectEmployeeRepository.class).deleteAll(lstEmployee);
+            List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findAllByProject(p);
+            if(!lstEmployee.isEmpty())
+                SpringBeanUtil.getBean(ProjectEmployeeRepository.class).deleteAll(lstEmployee);
+            if(!lstTask.isEmpty())
+                SpringBeanUtil.getBean(TaskRepository.class).deleteAll(lstTask);
             SpringBeanUtil.getBean(ProjectRepository.class).deleteById(p.getId());
             return mapper.map(p,ProjectDto.class);
         }

@@ -14,11 +14,11 @@ public class Task extends BaseEntity {
     private String taskName;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="assignee_id",nullable = true)
     private User assignedEmployeeId;
     private String status="NOT START";
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="project_id",nullable = false)
     private Project project;
     private String description;
