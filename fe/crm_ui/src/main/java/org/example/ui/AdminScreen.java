@@ -167,13 +167,32 @@ public class AdminScreen extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Handle the action when the popup item is clicked
-                System.out.println("Popup Item Clicked at row " + row + ", column " + col);
+//                System.out.println("Popup Item Clicked at row " + row + ", column " + col);
+                String deleteStatus=delete(token,pjId);
+                System.out.println(deleteStatus);
             }
         });
         popup.add(item1);
         popup.add(item2);
         popup.show(component, x, y);
     }
+
+    private String delete(String token, int pjId) {
+        Call<String> call=ApiClient.callApi().deleteProject("Bearer "+token,String.valueOf(pjId));
+        try{
+            Response<String> response= call.execute();
+            if(response.isSuccessful()){
+
+                String result = response.body();
+                return  result;
+            }
+        }
+        catch (Exception ex){
+            return null;
+        }
+        return null;
+    }
+
     public void callApiAllPj(String token) {
         Call<java.util.List<GetAllProjectResponse>> responese = ApiClient.callApi().getAllProjectForAdmin("Bearer "+token);
         responese.enqueue(new Callback<java.util.List<GetAllProjectResponse>>() {

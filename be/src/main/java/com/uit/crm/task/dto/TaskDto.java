@@ -11,11 +11,12 @@ public class TaskDto {
     private LocalDateTime endDate;
     private String assigneeEmployeeId;
     private String assignEmployeeName;
-    private boolean status;
+    private String status;
     private String projectId;
     private  Long id;
+    private String description;
 
-    public boolean getStatus(){
+    public String getStatus(){
         return this.status;
     }
 }

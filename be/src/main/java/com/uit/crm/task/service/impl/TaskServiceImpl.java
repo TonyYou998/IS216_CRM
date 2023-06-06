@@ -43,6 +43,7 @@ public class TaskServiceImpl implements TaskService {
             t.setEndDate(request.getEndDate());
             t.setAssignedEmployeeId(u);
             t.setProject(p);
+            t.setDescription(request.getDescription());
             SpringBeanUtil.getBean(TaskRepository.class).save(t);
 
             respones= mapper.map(t,TaskDto.class);
