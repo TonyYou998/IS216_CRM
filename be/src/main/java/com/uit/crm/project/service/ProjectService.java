@@ -17,4 +17,6 @@ public interface ProjectService {
     ProjectDto addLeaderToProject(String projectId, String leaderId);
 
     List<ProjectDto> findByUser(String request);
+
+    ProjectDto deleteProject(String id);
 }

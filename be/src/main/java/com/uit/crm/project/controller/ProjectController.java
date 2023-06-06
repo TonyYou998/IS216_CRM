@@ -8,6 +8,7 @@ import com.uit.crm.project.dto.ProjectEmployeeDto;
 import com.uit.crm.project.model.Project;
 import com.uit.crm.project.service.ProjectService;
 import com.uit.crm.user.dto.UserDto;
+import org.apache.tomcat.util.bcel.Const;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,21 +17,30 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(Constants.BASE_URL+Constants.REQUEST_MAPPING)
 public class ProjectController {
-        @PostMapping(Constants.CREATE_PROJECT)
-        public ResponseEntity<Object> createProject(@RequestBody ProjectDto request){
-            ProjectDto response= SpringBeanUtil.getBean(ProjectService.class).createProject(request);
-            if(response!=null)
-                return  ResponseHandler.getResponse(response,HttpStatus.OK);
-            return ResponseHandler.getResponse("An unexpected error occurred while processing your request. Please try again later or contact the support team for assistance.",HttpStatus.INTERNAL_SERVER_ERROR);
+    @PostMapping(Constants.CREATE_PROJECT)
+    public ResponseEntity<Object> createProject(@RequestBody ProjectDto request) {
+        ProjectDto response = SpringBeanUtil.getBean(ProjectService.class).createProject(request);
+        if (response != null)
+            return ResponseHandler.getResponse(response, HttpStatus.OK);
+        return ResponseHandler.getResponse("An unexpected error occurred while processing your request. Please try again later or contact the support team for assistance.", HttpStatus.INTERNAL_SERVER_ERROR);
 
+    }
+
+    @GetMapping(Constants.ADD_EMPLOYEE)
+    public ResponseEntity<Object> addEmployee(@RequestParam("userId") String userId, @RequestParam("projectId") String projectId) {
+
+        ProjectEmployeeDto response = SpringBeanUtil.getBean(ProjectService.class).addEmployee(userId, projectId);
+        if (response != null)
+            return ResponseHandler.getResponse(response, HttpStatus.OK);
+        return ResponseHandler.getResponse("An unexpected error occurred while processing your request. Please try again later or contact the support team for assistance.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @DeleteMapping(Constants.DELETE_EMPLOYEE)
+    public ResponseEntity<Object> deleteProject(@RequestParam("id") String id) {
+        ProjectDto response = SpringBeanUtil.getBean(ProjectService.class).deleteProject(id);
+        if (response != null) {
+            return ResponseHandler.getResponse(response, HttpStatus.OK);
         }
-        @GetMapping(Constants.ADD_EMPLOYEE)
-    public  ResponseEntity<Object> addEmployee(@RequestParam("userId")String userId, @RequestParam("projectId") String projectId){
-
-            ProjectEmployeeDto response=SpringBeanUtil.getBean(ProjectService.class).addEmployee(userId,projectId);
-            if(response!=null)
-                return ResponseHandler.getResponse(response, HttpStatus.OK);
-            return ResponseHandler.getResponse("An unexpected error occurred while processing your request. Please try again later or contact the support team for assistance.",HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
+        return ResponseHandler.getResponse("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

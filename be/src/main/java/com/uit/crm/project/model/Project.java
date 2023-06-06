@@ -18,11 +18,11 @@ public class Project extends BaseEntity {
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="leader_id")
     private User projectLeader;
 
-    @OneToMany(mappedBy = "id")
+    @OneToMany(mappedBy = "project",cascade = CascadeType.ALL)
     private Set<ProjectEmployee> lstProjectEmployee=new HashSet<>();
 
 
