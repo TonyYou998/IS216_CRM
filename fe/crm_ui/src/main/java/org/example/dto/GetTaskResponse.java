@@ -11,5 +11,6 @@ public class GetTaskResponse {
     String assignEmployeeName;
     String status;
     String projectId;
+    private  String description;
     int id;
 }

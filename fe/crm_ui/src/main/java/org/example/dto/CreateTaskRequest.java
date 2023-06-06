@@ -13,4 +13,6 @@ public class CreateTaskRequest {
     private String endDate;
     private String assigneeEmployeeId;
     private String projectId;
+    private String description;
+    private String status;
 }

@@ -63,7 +63,7 @@ public class CreateTask extends JDialog {
                 date = dateFormat.format(dp_date.getDate());
 
                 LocalDateTime startDate=LocalDateTime.now();
-                CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,String.valueOf(projectId));
+                CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(),startDate.toString(),date,userId,String.valueOf(projectId),tf_description.getText(),null);
                 callApiCreateTask(createTaskRequest,token);
             }
         });

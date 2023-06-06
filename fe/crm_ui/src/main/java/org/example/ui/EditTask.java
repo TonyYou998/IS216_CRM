@@ -32,10 +32,12 @@ public class EditTask extends JDialog {
     private JButton SAVEButton;
     private JButton CREATEButton;
     private JButton CANCELButton;
+    private JRadioButton notStartButton;
     DateFormat dateFormat;
     String date,status;
     private String userId="-1";
     private List<GetAllUserAccountResponse> lstEmployee;
+    private ButtonGroup buttonGroup = new ButtonGroup();
     GetTaskResponse getTaskResponse;
 
     public EditTask(JFrame parent, GetTaskResponse getTaskResponseSelection, String token) {
@@ -44,7 +46,8 @@ public class EditTask extends JDialog {
         dateFormat =new SimpleDateFormat("dd/MM/yyyy");
         dp_date.setFormats(dateFormat);
 
-        ButtonGroup buttonGroup = new ButtonGroup();
+
+        buttonGroup.add(notStartButton);
         buttonGroup.add(inProgressRadioButton);
         buttonGroup.add(doneRadioButton);
 
@@ -55,10 +58,28 @@ public class EditTask extends JDialog {
         setLocationRelativeTo(null);
 
         lstEmployee = TaskScreen.lstAllEmployee;
-        setEmployee(lstEmployee);
+
+            setEmployee(lstEmployee);
+
+
+
 
         getTaskResponse = getTaskResponseSelection;
         tf_taskname.setText(getTaskResponseSelection.getTaskName());
+        tf_description.setText(getTaskResponseSelection.getDescription());
+        notStartButton.setActionCommand("NOT START");
+        inProgressRadioButton.setActionCommand("IN-PROGRESS");
+        doneRadioButton.setActionCommand("DONE");
+        switch (getTaskResponseSelection.getStatus()){
+            case "IN-PROGRESS":
+                inProgressRadioButton.setSelected(true);
+                break;
+            case "DONE":
+                doneRadioButton.setSelected(true);
+                break;
+            default:
+                notStartButton.setSelected(true);
+        }
         changeFormat(getTaskResponseSelection.getEndDate());
 
 
@@ -77,19 +98,7 @@ public class EditTask extends JDialog {
             }
         });
 
-        inProgressRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                status = inProgressRadioButton.getText();
-            }
-        });
 
-        doneRadioButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                status = doneRadioButton.getText();
-            }
-        });
 
         comboBox1.addActionListener(new ActionListener() {
             @Override
@@ -106,6 +115,7 @@ public class EditTask extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 callApi(token,getTaskResponse.getId());
+
             }
         });
         setVisible(true);
@@ -115,8 +125,22 @@ public class EditTask extends JDialog {
     private void callApi(String token, int id) {
         dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         date = dateFormat.format(dp_date.getDate());
+        String status;
+      ButtonModel selectedBtn=   buttonGroup.getSelection();
+      switch (selectedBtn.getActionCommand()){
 
-        CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(), LocalDateTime.now().toString(),date,userId,getTaskResponse.getProjectId());
+          case "IN-PROGRESS":
+              status="IN-PROGRESS";
+              break;
+          case "DONE":
+              status="DONE";
+              break;
+          default:
+              status="NOT START";
+
+
+      }
+        CreateTaskRequest createTaskRequest = new CreateTaskRequest(tf_taskname.getText(), LocalDateTime.now().toString(),date,userId,getTaskResponse.getProjectId(),getTaskResponse.getDescription(),status);
         Call<MyResponse<CreateTaskResponse>> patchUpdateTask = ApiClient.callApi().patchUpdateTask("Bearer "+token,id,createTaskRequest);
         patchUpdateTask.enqueue(new Callback<MyResponse<CreateTaskResponse>>() {
             @Override
@@ -133,6 +157,7 @@ public class EditTask extends JDialog {
     }
 
     public void setEmployee(List<GetAllUserAccountResponse> lstEmployee){
+
         comboBox1.addItem(new ComboBoxItem("none","-1"));
         for(GetAllUserAccountResponse item:lstEmployee){
             ComboBoxItem comboBoxItem=new ComboBoxItem(item.getUsername(),String.valueOf(item.getId()));
