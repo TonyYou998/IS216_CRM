@@ -15,4 +15,6 @@ public interface TaskService {
 
 
     TaskDto updateTask(String taskId, String authHeader, TaskDto request);
+
+    List<TaskDto> getAllBackLog(String id, String authHeader);
 }
