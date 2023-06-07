@@ -185,8 +185,11 @@ public class TaskServiceImpl implements TaskService {
        List<TaskDto> lstDto=new LinkedList<>();
        for(Task t:lstTask){
            TaskDto dto=mapper.map(t,TaskDto.class);
-           dto.setAssignEmployeeName(t.getAssignedEmployeeId().getUsername());
-           dto.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
+           if(t.getAssignedEmployeeId()!=null){
+               dto.setAssignEmployeeName(t.getAssignedEmployeeId().getUsername());
+               dto.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
+           }
+
            dto.setProjectId(t.getProject().getId().toString());
            lstDto.add(dto);
 
@@ -202,7 +205,11 @@ public class TaskServiceImpl implements TaskService {
         Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(id)).orElse(null);
 
         List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findByProjectAndStatus(p,"IN-PROGRESS");
+        if(lstTask.size()==0){
+            return null;
+        }
         List<TaskDto> lstDto=new LinkedList<>();
+
         for(Task t:lstTask){
             TaskDto dto=mapper.map(t,TaskDto.class);
             dto.setAssignEmployeeName(t.getAssignedEmployeeId().getUsername());

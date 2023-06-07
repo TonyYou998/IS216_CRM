@@ -52,6 +52,9 @@ public interface CallService {
 
    @DELETE("admin/delete-project")
     Call<String> deleteProject(@Header("Authorization") String token,@Query("id") String id);
+
+   @GET("user/task/get-backlog")
+    Call<MyResponse<List<GetTaskResponse>>> getAllTaskInBackLog(@Header("Authorization") String token, @Query("id") int projectId);
 //    @GET("admin/leaders")
 //    Call<MyResponse<List<GetTaskResponse>>> getTaskByProjectId(@Header("Authorization") String token,@Query("id") int id);
 }

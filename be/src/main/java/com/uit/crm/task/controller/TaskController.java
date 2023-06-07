@@ -69,7 +69,7 @@ public class TaskController {
         @GetMapping(Constants.REQUEST_MAPPING_TASK+Constants.GET_BACKLOG)
         public ResponseEntity<Object> getAllBackLog(@RequestParam("id") String id,@RequestHeader("Authorization") String authHeader){
             List<TaskDto> responses=SpringBeanUtil.getBean(TaskService.class).getAllBackLog(id,authHeader);
-            if(responses.isEmpty())
+            if(responses==null)
                 return ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
             return ResponseHandler.getResponse(responses,HttpStatus.OK);
 

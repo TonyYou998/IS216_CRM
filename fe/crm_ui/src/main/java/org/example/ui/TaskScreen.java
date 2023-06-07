@@ -55,6 +55,7 @@ public class TaskScreen extends JDialog {
     private static List<GetTaskResponse> listAllTask = new ArrayList<>();
     private List<GetTaskResponse> listTaskDone = new ArrayList<>();
     private List<GetTaskResponse> listTaskInPro = new ArrayList<>();
+    private List<GetTaskResponse> listTaskBacklog=new ArrayList<>();
     public static List<GetAllUserAccountResponse> lstAllEmployee = new ArrayList<>();
     DateFormat dateFormat;
     GetTaskResponse getTaskResponseSelection;
@@ -88,6 +89,7 @@ public class TaskScreen extends JDialog {
 
         callApiTask(token,projectId);
         callApiGetEmployeeInProject(token,projectId);
+        getTaskBackLog(token,projectId);
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
         tp_taskscreen.addTab("All tasks",null,tp_alltask,null);
@@ -166,6 +168,28 @@ public class TaskScreen extends JDialog {
             throw new RuntimeException(e);
         }
     }
+    public List<GetTaskResponse>getTaskBackLog(String token,int projectId){
+        Call<MyResponse<List<GetTaskResponse>>> call=ApiClient.callApi().getAllTaskInBackLog(token,projectId);
+        try {
+            Response<MyResponse<List<GetTaskResponse>>> response=call.execute();
+            if(response.isSuccessful()){
+                MyResponse<List<GetTaskResponse>>lstTask=response.body();
+                listTaskBacklog= lstTask.getContent();
+                AllBacklogTable allBacklogTable = new AllBacklogTable();
+                table3.setModel(allBacklogTable);
+                for (int i=0;i<7;i++) {
+                    table1.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                }
+
+//                label_employees.setText(String.valueOf(lstAllEmployee.size())+" Employees");
+
+            }
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    return null;
+    }
 
     private void callApiTask(String token, int id) {
         Call<MyResponse<List<GetTaskResponse>>> myResponseCall = ApiClient.callApi().getTaskByProjectId("Bearer "+token,id);
@@ -231,6 +255,40 @@ public class TaskScreen extends JDialog {
                 case 3 -> changeFormat(listAllTask.get(rowIndex).getStartDate());
                 case 4 -> changeFormat(listAllTask.get(rowIndex).getEndDate());
                 case 5 -> listAllTask.get(rowIndex).getStatus();
+                default -> "-";
+            };
+        }
+    }
+    private class AllBacklogTable extends AbstractTableModel {
+
+        @Override
+        public String getColumnName(int column) {
+            return strColTask[column];
+        }
+
+        @Override
+        public int getRowCount() {
+            return listTaskBacklog.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return strColTask.length;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return switch (columnIndex) {
+                case 0 -> listTaskBacklog.get(rowIndex).getId();
+                case 1 -> listTaskBacklog.get(rowIndex).getTaskName();
+                case 2 -> {
+                    if(listTaskBacklog.get(rowIndex).getAssignEmployeeName()==null)
+                        yield "UNASSIGNED";
+                    yield listTaskBacklog.get(rowIndex).getAssignEmployeeName();
+                }
+                case 3 -> changeFormat(listTaskBacklog.get(rowIndex).getStartDate());
+                case 4 -> changeFormat(listTaskBacklog.get(rowIndex).getEndDate());
+                case 5 -> listTaskBacklog.get(rowIndex).getStatus();
                 default -> "-";
             };
         }
