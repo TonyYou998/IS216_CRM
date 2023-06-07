@@ -85,7 +85,6 @@ public class AdminScreen extends JDialog {
         btn_pj_add.setIcon(new ImageIcon(buttonIcon));
         btn_pj_add.setBorder(BorderFactory.createEmptyBorder());
         btn_pj_add.setContentAreaFilled(false);
-
         btn_user_add.setIcon(new ImageIcon(buttonIcon));
         btn_user_add.setBorder(BorderFactory.createEmptyBorder());
         btn_user_add.setContentAreaFilled(false);
@@ -217,6 +216,8 @@ public class AdminScreen extends JDialog {
 
     public void callApiAllUser(String token) {
         Call<List<GetAllUserAccountResponse>> reponse = ApiClient.callApi().getAllUser("Bearer "+token);
+        if(!listRole.isEmpty())
+            listRole.clear();
         reponse.enqueue(new Callback<List<GetAllUserAccountResponse>>() {
             @Override
             public void onResponse(Call<List<GetAllUserAccountResponse>> call, Response<List<GetAllUserAccountResponse>> response) {
