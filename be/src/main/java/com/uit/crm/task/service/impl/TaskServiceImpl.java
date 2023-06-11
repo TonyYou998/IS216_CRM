@@ -131,6 +131,8 @@ public class TaskServiceImpl implements TaskService {
                 }
                 return lstDto;
             }
+            else
+                return lstDto;
         }
         catch (Exception e){
             SpringBeanUtil.getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(e.getMessage());
@@ -216,11 +218,72 @@ public class TaskServiceImpl implements TaskService {
             dto.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
             dto.setProjectId(t.getProject().getId().toString());
             lstDto.add(dto);
-
         }
 
 
 
         return lstDto;
+    }
+
+    @Override
+    public List<TaskDto> getTasksDone(String projectId, String authHeader) {
+
+        try{
+            Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
+            List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findByProjectAndStatus(p,"DONE");
+            List<TaskDto> lstDto=new LinkedList<>();
+            if(lstTask.size()==0){
+                return lstDto;
+            }
+
+
+            for(Task t:lstTask){
+                TaskDto dto=mapper.map(t,TaskDto.class);
+                if(t.getAssignedEmployeeId()!=null){
+                    dto.setAssignEmployeeName(t.getAssignedEmployeeId().getUsername());
+                    dto.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
+                }
+                dto.setProjectId(t.getProject().getId().toString());
+                lstDto.add(dto);
+            }
+
+
+
+            return lstDto;
+
+        }
+        catch (Exception ex){
+
+        }
+        return null;
+    }
+
+    @Override
+    public List<TaskDto> getMyTasks(String projectId, String authHeader) {
+        try{
+            Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
+            String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
+            String username=SpringBeanUtil.getBean(JwtUtils.class).getUsernameFromToken(token);
+            User u=SpringBeanUtil.getBean(UserRepository.class).findByUsername(username);
+            Assert.notNull(u,"User not found");
+            List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findByProjectAndAssignedEmployeeId(p,u);
+            List<TaskDto> lstDto=new LinkedList<>();
+            if(lstTask.size()>0){
+                for(Task t:lstTask){
+                    TaskDto dto=mapper.map(t,TaskDto.class);
+                    if(t.getAssignedEmployeeId()!=null){
+                        dto.setAssignEmployeeName(t.getAssignedEmployeeId().getUsername());
+                        dto.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
+                    }
+                    dto.setProjectId(t.getProject().getId().toString());
+                    lstDto.add(dto);
+                }
+                return lstDto;
+            }
+        }
+        catch (Exception ex){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(ex.getMessage());
+        }
+        return null;
     }
 }

@@ -55,6 +55,13 @@ public interface CallService {
 
    @GET("user/task/get-backlog")
     Call<MyResponse<List<GetTaskResponse>>> getAllTaskInBackLog(@Header("Authorization") String token, @Query("id") int projectId);
+
+
+   @GET("user/task/get-inprogress")
+    Call<MyResponse<List<GetTaskResponse>>> getTaskInProgress(@Header("Authorization") String token, @Query("id") int projectId);
+
+   @GET("user/task/my-task")
+    Call<MyResponse<List<GetTaskResponse>>> getTaskByUser(@Header("Authorization") String token, @Query("id") int project);
 //    @GET("admin/leaders")
 //    Call<MyResponse<List<GetTaskResponse>>> getTaskByProjectId(@Header("Authorization") String token,@Query("id") int id);
 }

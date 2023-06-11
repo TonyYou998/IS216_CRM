@@ -77,10 +77,26 @@ public class TaskController {
     @GetMapping(Constants.REQUEST_MAPPING_TASK+Constants.GET_IN_PROGRESS)
     public ResponseEntity<Object> getAllInProgress(@RequestParam("id") String id,@RequestHeader("Authorization") String authHeader){
         List<TaskDto> responses=SpringBeanUtil.getBean(TaskService.class).getAllInProgress(id,authHeader);
-        if(responses.isEmpty())
+        if(responses==null)
             return ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
         return ResponseHandler.getResponse(responses,HttpStatus.OK);
 
+    }
+    @GetMapping(Constants.REQUEST_MAPPING_TASK+Constants.DONE)
+    public ResponseEntity<Object> getTasksDone(@RequestParam("id") String projectId,@RequestHeader("Authorization") String authHeader){
+        List<TaskDto> responses=SpringBeanUtil.getBean(TaskService.class).getTasksDone(projectId,authHeader);
+        if(responses==null)
+            return ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
+        return ResponseHandler.getResponse(responses,HttpStatus.OK);
+
+    }
+
+    @GetMapping(Constants.REQUEST_MAPPING_TASK+Constants.MY_TASK)
+    public ResponseEntity<Object> getMyTasks(@RequestParam("id") String projectId,@RequestHeader("Authorization") String authHeader){
+        List<TaskDto> responses=SpringBeanUtil.getBean(TaskService.class).getMyTasks(projectId,authHeader);
+        if(responses!=null)
+            return ResponseHandler.getResponse(responses,HttpStatus.OK);
+        return ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
     }
 //        @GetMapping()
 //    public ResponseEntity<O>
