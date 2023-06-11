@@ -68,12 +68,24 @@ public class TaskScreen extends JDialog {
     String userName;
     DefaultTableCellRenderer cellRenderer;
 
+    Color color1,color2,color3;
+
     public TaskScreen(JFrame parent,String token, int projectId) throws IOException {
         super(parent);
 
         encode(token);
 
         dateFormat =new SimpleDateFormat("dd/MM/yyyy");
+
+        color1 = new Color(227,231,241);
+        color2 = new Color(198,203,239);
+        color3 = new Color(73,76,162);
+
+        setColorTable(table1);
+        setColorTable(table2);
+        setColorTable(table3);
+        setColorTable(table4);
+        setColorTable(table5);
 
         setTitle("Task Screen");
         setContentPane(panel_taskscreen);
@@ -96,8 +108,8 @@ public class TaskScreen extends JDialog {
         tp_taskscreen.addTab("In-progess",null,tp_inpro,null);
         tp_taskscreen.addTab("Done",null,tp_done,null);
 
-//        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
-        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
+        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
+//        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
 //        btn_employee_create.setIcon(new ImageIcon(buttonIcon));
 //        btn_employee_create.setBorder(BorderFactory.createEmptyBorder());
 //        btn_employee_create.setContentAreaFilled(false);
@@ -144,6 +156,15 @@ public class TaskScreen extends JDialog {
         userName = String.valueOf(jsonObject.get("sub"));
         System.out.println(userName);
 
+    }
+
+    private void setColorTable(JTable table) {
+        table.setOpaque(true);
+        table.setFillsViewportHeight(true);
+        table.setBackground(color1);
+        table.getTableHeader().setOpaque(false);
+        table.getTableHeader().setBackground(color2);
+        table.getTableHeader().setForeground(color3);
     }
     private void callApiGetEmployeeInProject(String token, int projectId) {
         Call<MyResponse<List<GetAllUserAccountResponse>>> call=ApiClient.callApi().getAllEmployeeInProject("Bearer "+token,projectId);

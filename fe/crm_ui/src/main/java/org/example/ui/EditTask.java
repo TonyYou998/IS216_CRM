@@ -145,6 +145,7 @@ public class EditTask extends JDialog {
         patchUpdateTask.enqueue(new Callback<MyResponse<CreateTaskResponse>>() {
             @Override
             public void onResponse(Call<MyResponse<CreateTaskResponse>> call, Response<MyResponse<CreateTaskResponse>> response) {
+                JOptionPane.showMessageDialog(null, "Successfully edit task!", "Message", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
             }
 

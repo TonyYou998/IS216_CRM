@@ -64,6 +64,25 @@ public class AdminScreen extends JDialog {
     public AdminScreen(JFrame parent,String token) throws IOException {
         super(parent);
         this.token=token;
+
+        Color color1 = new Color(227,231,241);
+        Color color2 = new Color(198,203,239);
+        Color color3 = new Color(73,76,162);
+
+        tablePj.setOpaque(true);
+        tablePj.setFillsViewportHeight(true);
+        tablePj.setBackground(color1);
+        tablePj.getTableHeader().setOpaque(false);
+        tablePj.getTableHeader().setBackground(color2);
+        tablePj.getTableHeader().setForeground(color3);
+
+        tableUser.setOpaque(true);
+        tableUser.setFillsViewportHeight(true);
+        tableUser.setBackground(color1);
+        tableUser.getTableHeader().setOpaque(false);
+        tableUser.getTableHeader().setBackground(color2);
+        tableUser.getTableHeader().setForeground(color3);
+
         cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(JLabel.CENTER);
 
@@ -80,8 +99,8 @@ public class AdminScreen extends JDialog {
         tp_adminscreen.addTab("Projects",null,tp_pj,null);
         tp_adminscreen.addTab("Users",null,tp_user,null);
 
-//        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
-        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
+        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
+//        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
         btn_pj_add.setIcon(new ImageIcon(buttonIcon));
         btn_pj_add.setBorder(BorderFactory.createEmptyBorder());
         btn_pj_add.setContentAreaFilled(false);

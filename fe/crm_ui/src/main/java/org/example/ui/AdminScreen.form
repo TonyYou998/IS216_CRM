@@ -5,7 +5,9 @@
     <constraints>
       <xy x="20" y="20" width="566" height="400"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-1841167"/>
+    </properties>
     <border type="none"/>
     <children>
       <tabbedpane id="f90a9" binding="tp_adminscreen">
@@ -15,6 +17,8 @@
           </grid>
         </constraints>
         <properties>
+          <background color="-3748881"/>
+          <foreground color="-11973470"/>
           <tabPlacement value="2"/>
         </properties>
         <border type="none"/>
@@ -24,7 +28,9 @@
             <constraints>
               <tabbedpane title="Untitled"/>
             </constraints>
-            <properties/>
+            <properties>
+              <background color="-1841167"/>
+            </properties>
             <border type="none"/>
             <children>
               <grid id="b283" layout-manager="GridLayoutManager" row-count="1" column-count="3" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
@@ -32,7 +38,9 @@
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <background color="-1841167"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="5092e" class="javax.swing.JLabel" binding="lb_pj_search">
@@ -40,6 +48,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <foreground color="-11973470"/>
                       <text value="Enter project name"/>
                     </properties>
                   </component>
@@ -56,6 +65,8 @@
                       <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <background color="-8288555"/>
+                      <foreground color="-1"/>
                       <text value="Search"/>
                     </properties>
                   </component>
@@ -65,12 +76,19 @@
                 <constraints>
                   <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <background color="-1841167"/>
+                  <foreground color="-16777216"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="d5162" class="javax.swing.JTable" binding="tablePj">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <background color="-1841167"/>
+                      <foreground color="-16777216"/>
+                      <gridColor color="-3748881"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
@@ -79,7 +97,9 @@
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <background color="-1841167"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="7a343" class="javax.swing.JButton" binding="btn_pj_add">
@@ -87,6 +107,8 @@
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <background color="-1841167"/>
+                      <foreground color="-8288555"/>
                       <text value=""/>
                     </properties>
                   </component>
@@ -112,7 +134,9 @@
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <background color="-1841167"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="929bb" class="javax.swing.JLabel" binding="lb_user_search">
@@ -120,6 +144,7 @@
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <foreground color="-11973470"/>
                       <text value="Enter user name"/>
                     </properties>
                   </component>
@@ -136,6 +161,8 @@
                       <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <background color="-8288555"/>
+                      <foreground color="-1"/>
                       <text value="Search"/>
                     </properties>
                   </component>
@@ -150,7 +177,10 @@
                 <children>
                   <component id="47516" class="javax.swing.JTable" binding="tableUser">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <background color="-1841167"/>
+                      <gridColor color="-3748881"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
@@ -159,7 +189,9 @@
                 <constraints>
                   <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                 </constraints>
-                <properties/>
+                <properties>
+                  <background color="-1841167"/>
+                </properties>
                 <border type="none"/>
                 <children>
                   <component id="9c5b0" class="javax.swing.JButton" binding="btn_user_add">
@@ -167,6 +199,7 @@
                       <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                     </constraints>
                     <properties>
+                      <background color="-1841167"/>
                       <text value=""/>
                     </properties>
                   </component>

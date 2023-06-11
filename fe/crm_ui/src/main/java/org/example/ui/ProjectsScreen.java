@@ -1,12 +1,10 @@
 package org.example.ui;
 
 import org.example.dto.GetAllProjectResponse;
-import org.example.dto.GetAllUserAccountResponse;
 import org.example.dto.MyResponse;
 import org.example.ui.components.ComboBoxItem;
 import org.example.utils.ApiClient;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 import javax.swing.*;
@@ -19,8 +17,8 @@ import java.util.List;
 public class ProjectsScreen extends JDialog {
 
     private JPanel panel_projects_screen;
+    private JButton OPENButton;
     private JComboBox cb_chooseProject;
-    private JButton openButton;
     private JPanel mainPanel;
 
     private JPanel panel_listpj;
@@ -32,29 +30,19 @@ public class ProjectsScreen extends JDialog {
 
     public ProjectsScreen(JFrame parent, String token) throws IOException {
         super(parent);
-        setTitle("Project Screen");
-        setContentPane(panel_projects_screen);
+
         this.token=token;
-        setMinimumSize(new Dimension(800,500));
         lstProject = callApiGetProjectByUser(token);
         setProject(lstProject);
+
+        setTitle("Project Screen");
+        setContentPane(panel_projects_screen);
+        setMinimumSize(new Dimension(500,300));
+        setModal(true);
+        setLocationRelativeTo(null);
         setVisible(true);
     }
 
-    // public void callApiPj(String token) {
-    //     Call<MyResponse<List<GetAllProjectResponse>>> responseCall = ApiClient.callApi().getAllProject(token);
-    //     responseCall.enqueue(new Callback<MyResponse<List<GetAllProjectResponse>>>() {
-    //         @Override
-    //         public void onResponse(Call<MyResponse<List<GetAllProjectResponse>>> call, Response<MyResponse<List<GetAllProjectResponse>>> response) {
-    //             if(response.isSuccessful()) {
-    //                 MyResponse<List<GetAllProjectResponse>> listMyResponse = response.body();
-    //                 listProject = listMyResponse.getContent();
-    //                 if (listProject == null) {
-    //                     System.out.print("null");
-    //                 } else {
-    //                     System.out.print(listProject.size());
-    //                 }
-    //             }
     public List<GetAllProjectResponse> callApiGetProjectByUser(String token) {
         Call<MyResponse<List<GetAllProjectResponse>>> call = ApiClient.callApi().getAllProjectByUser("Bearer " + token);
         try {

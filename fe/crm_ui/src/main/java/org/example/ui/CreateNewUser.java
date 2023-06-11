@@ -71,6 +71,7 @@ public class CreateNewUser extends JDialog{
                 CreateUserRequest createUserRequest = new CreateUserRequest(tf_username.getText(),visiblePassword,tf_phone.getText(),tf_fullname.getText(),tf_address.getText(),tf_email.getText(),date,roleId);
                 CreateUserResponse newUser= callApiCreateUser(createUserRequest,token);
                 if(newUser !=null)
+                    JOptionPane.showMessageDialog(null, "Successfully created an user!", "Message", JOptionPane.INFORMATION_MESSAGE);
                    dispose();
             }
         });

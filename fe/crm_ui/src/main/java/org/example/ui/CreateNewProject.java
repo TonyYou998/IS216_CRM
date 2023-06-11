@@ -61,6 +61,7 @@ public class CreateNewProject extends JDialog {
                 CreateProjectRequest createProjectRequest=new CreateProjectRequest(tf_pjname.getText(),startDate,dueDate,leaderId);
                 CreateProjectResponse response= callApiCreateNewProject(createProjectRequest,token);
                 if(response!=null)
+                    JOptionPane.showMessageDialog(null, "Successfully created a project!", "Message", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
             }
         });
