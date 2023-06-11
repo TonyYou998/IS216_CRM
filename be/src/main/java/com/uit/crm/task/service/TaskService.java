@@ -19,4 +19,8 @@ public interface TaskService {
     List<TaskDto> getAllBackLog(String id, String authHeader);
 
     List<TaskDto> getAllInProgress(String id, String authHeader);
+
+    List<TaskDto> getTasksDone(String projectId, String authHeader);
+
+    List<TaskDto> getMyTasks(String projectId, String authHeader);
 }
