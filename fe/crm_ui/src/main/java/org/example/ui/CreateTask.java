@@ -86,6 +86,7 @@ public class CreateTask extends JDialog {
             public void onResponse(Call<MyResponse<CreateTaskResponse>> call, Response<MyResponse<CreateTaskResponse>> response) {
                 MyResponse<CreateTaskResponse> myResponse = response.body();
                 if (myResponse.getStatus() == 200) {
+                    JOptionPane.showMessageDialog(null, "Successfully created a task!", "Message", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 }
             }

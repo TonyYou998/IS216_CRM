@@ -72,6 +72,7 @@ public class AddEmployee extends JDialog {
                 if(response.isSuccessful()) {
                     MyResponse<AddEmployeeResponse> myResponse = response.body();
                     if(myResponse.getStatus() == 200) {
+                        JOptionPane.showMessageDialog(null, "Successfully added an employee!", "Message", JOptionPane.INFORMATION_MESSAGE);
                         dispose();
                     }
                 }

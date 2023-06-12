@@ -1,12 +1,10 @@
 package org.example.ui;
 
 import org.example.dto.GetAllProjectResponse;
-import org.example.dto.GetAllUserAccountResponse;
 import org.example.dto.MyResponse;
 import org.example.ui.components.ComboBoxItem;
 import org.example.utils.ApiClient;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 import javax.swing.*;
@@ -19,42 +17,54 @@ import java.util.List;
 public class ProjectsScreen extends JDialog {
 
     private JPanel panel_projects_screen;
+    private JButton OPENButton;
     private JComboBox cb_chooseProject;
-    private JButton openButton;
+    private JLabel lb_name;
     private JPanel mainPanel;
 
     private JPanel panel_listpj;
     private JPanel panel_card;
     private List<GetAllProjectResponse> lstProject;
-    private String projectId="-1";
+    private int projectId=-1;
     private String token;
 
 
-    public ProjectsScreen(JFrame parent, String token) throws IOException {
+    public ProjectsScreen(JFrame parent, String token,String username) throws IOException {
         super(parent);
-        setTitle("Project Screen");
-        setContentPane(panel_projects_screen);
+
         this.token=token;
-        setMinimumSize(new Dimension(800,500));
+
+        lb_name.setText("       Welcome back! "+username);
         lstProject = callApiGetProjectByUser(token);
         setProject(lstProject);
+
+        setTitle("Project Screen");
+        setContentPane(panel_projects_screen);
+        setMinimumSize(new Dimension(500,300));
+        setModal(true);
+        setLocationRelativeTo(null);
+
+        OPENButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(projectId != -1) {
+                    for (GetAllProjectResponse projectResponse : lstProject) {
+                        if(projectId == projectResponse.getId()) {
+                            try {
+                                dispose();
+                                new TaskScreen(null,token,projectResponse);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
         setVisible(true);
     }
 
-    // public void callApiPj(String token) {
-    //     Call<MyResponse<List<GetAllProjectResponse>>> responseCall = ApiClient.callApi().getAllProject(token);
-    //     responseCall.enqueue(new Callback<MyResponse<List<GetAllProjectResponse>>>() {
-    //         @Override
-    //         public void onResponse(Call<MyResponse<List<GetAllProjectResponse>>> call, Response<MyResponse<List<GetAllProjectResponse>>> response) {
-    //             if(response.isSuccessful()) {
-    //                 MyResponse<List<GetAllProjectResponse>> listMyResponse = response.body();
-    //                 listProject = listMyResponse.getContent();
-    //                 if (listProject == null) {
-    //                     System.out.print("null");
-    //                 } else {
-    //                     System.out.print(listProject.size());
-    //                 }
-    //             }
     public List<GetAllProjectResponse> callApiGetProjectByUser(String token) {
         Call<MyResponse<List<GetAllProjectResponse>>> call = ApiClient.callApi().getAllProjectByUser("Bearer " + token);
         try {
@@ -89,21 +99,11 @@ public class ProjectsScreen extends JDialog {
         );
 
         cb_chooseProject.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 ComboBoxItem selectedProject = (ComboBoxItem) cb_chooseProject.getSelectedItem();
-                projectId  = selectedProject.getId();
+                projectId  = Integer.parseInt(selectedProject.getId());
 
-                // Use the leaderId and other values as needed
-                System.out.println("Selected Leader ID: " + projectId);
-
-                try {
-                    dispose();
-                    new TaskScreen(null,token,Integer.parseInt(projectId));
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
             }
         });
 

@@ -2,6 +2,7 @@ package org.example.ui;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import org.example.dto.GetAllProjectResponse;
 import org.example.dto.GetAllUserAccountResponse;
 import org.example.dto.GetTaskResponse;
 import org.example.dto.MyResponse;
@@ -51,6 +52,14 @@ public class TaskScreen extends JDialog {
     private JScrollPane table_task;
     private JPanel tp_myTasks;
     private JTable table6;
+    private JLabel lb_pjname;
+    private JPanel tp_dangXuat;
+    private JButton SIGNOUTButton;
+    private JLabel lb_1;
+    private JLabel lb_2;
+    private JLabel lb_3;
+    private JLabel lb_4;
+    private JLabel lb_5;
     private JLabel label_employees;
 
     private static List<GetTaskResponse> listAllTask = new ArrayList<>();
@@ -72,12 +81,29 @@ public class TaskScreen extends JDialog {
     String userName;
     DefaultTableCellRenderer cellRenderer;
 
-    public TaskScreen(JFrame parent,String token, int projectId) throws IOException {
+    Color color1,color2,color3;
+
+    public TaskScreen(JFrame parent,String token, GetAllProjectResponse projectResponse) throws IOException {
         super(parent);
 
         encode(token);
 
         dateFormat =new SimpleDateFormat("dd/MM/yyyy");
+
+        color1 = new Color(227,231,241);
+        color2 = new Color(198,203,239);
+        color3 = new Color(73,76,162);
+
+        setColorTable(table1);
+        setColorTable(table2);
+        setColorTable(table3);
+        setColorTable(table4);
+        setColorTable(table5);
+        setColorTable(table6);
+
+
+        lb_pjname.setText("Project Name: " +projectResponse.getProjectName());
+        projectId = Math.toIntExact(projectResponse.getId());
 
         setTitle("Task Screen");
         setContentPane(panel_taskscreen);
@@ -103,6 +129,8 @@ public class TaskScreen extends JDialog {
         tp_taskscreen.addTab("Backlog",null,tp_backlog,null);
         tp_taskscreen.addTab("In-progess",null,tp_inpro,null);
         tp_taskscreen.addTab("Done",null,tp_done,null);
+        tp_taskscreen.addTab("Sign out",null,tp_dangXuat,null);
+
 
 //        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
         BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
@@ -140,6 +168,14 @@ public class TaskScreen extends JDialog {
             }
         });
 
+        SIGNOUTButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new Login(null);
+            }
+        });
+
         tp_taskscreen.addChangeListener(new ChangeListener() {
             @Override
             public void stateChanged(ChangeEvent e) {
@@ -174,6 +210,15 @@ public class TaskScreen extends JDialog {
         System.out.println(userName);
 
     }
+
+    private void setColorTable(JTable table) {
+        table.setOpaque(true);
+        table.setFillsViewportHeight(true);
+        table.setBackground(color1);
+        table.getTableHeader().setOpaque(false);
+        table.getTableHeader().setBackground(color2);
+        table.getTableHeader().setForeground(color3);
+    }
     private void callApiGetEmployeeInProject(String token, int projectId) {
         Call<MyResponse<List<GetAllUserAccountResponse>>> call=ApiClient.callApi().getAllEmployeeInProject("Bearer "+token,projectId);
         try {
@@ -186,9 +231,6 @@ public class TaskScreen extends JDialog {
                 for (int i=0;i<7;i++) {
                     table1.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
                 }
-
-                label_employees.setText(String.valueOf(lstAllEmployee.size())+" Employees");
-
             }
         }
         catch (IOException e) {
