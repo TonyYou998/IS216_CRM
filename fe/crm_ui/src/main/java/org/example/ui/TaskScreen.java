@@ -1,6 +1,5 @@
 package org.example.ui;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.example.dto.GetAllUserAccountResponse;
@@ -13,6 +12,8 @@ import retrofit2.Response;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
@@ -89,11 +90,12 @@ public class TaskScreen extends JDialog {
         // listAllTask= callApiTask(token,projectId);
         // lstAllEmployee=callApiGetEmployeeInProject(token,projectId);
 
-        callApiTask(token,projectId);
+//        callApiTask(token,projectId);
         callApiGetEmployeeInProject(token,projectId);
-        getTaskBackLog(token,projectId);
-        getTaskInProgress(token,projectId);
-        getMyTask(token, projectId);
+//        getTaskBackLog(token,projectId);
+//        getTaskInProgress(token,projectId);
+//        getMyTask(token, projectId);
+//        getTaskDone(token,projectId);
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
         tp_taskscreen.addTab("All tasks",null,tp_alltask,null);
@@ -121,6 +123,8 @@ public class TaskScreen extends JDialog {
         });
 
         table2.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
+
+
             public void valueChanged(ListSelectionEvent event) {
                 // do some actions here, for example
                 // print first column value from selected row
@@ -133,6 +137,27 @@ public class TaskScreen extends JDialog {
                 }
                 new EditTask(null,getTaskResponseSelection,token);
                 callApiTask(token,projectId);
+            }
+        });
+
+        tp_taskscreen.addChangeListener(new ChangeListener() {
+            @Override
+            public void stateChanged(ChangeEvent e) {
+                int getSelectedIndex=tp_taskscreen.getSelectedIndex();
+                switch (getSelectedIndex){
+                    case 1:callApiTask(token,projectId);
+                        break;
+                    case 2:getMyTask(token,projectId);
+                        break;
+                    case 3:getTaskBackLog(token,projectId);
+                        break;
+                    case 4:getTaskInProgress(token,projectId);
+                        break;
+                    case 5:getTaskDone(token,projectId);
+                        break;
+                    default:
+                        callApiGetEmployeeInProject(token,projectId);
+                }
             }
         });
         setVisible(true);
@@ -238,6 +263,30 @@ public class TaskScreen extends JDialog {
         }
 
     }
+    public void getTaskDone(String token,int projectId){
+
+        Call<MyResponse<List<GetTaskResponse>>> call=ApiClient.callApi().getTaskDone(token,projectId);
+        try {
+            Response<MyResponse<List<GetTaskResponse>>> response=call.execute();
+            if(response.isSuccessful()){
+                MyResponse<List<GetTaskResponse>>lstTask=response.body();
+                listTaskDone= lstTask.getContent();
+//                AllBacklogTable allBacklogTable = new AllBacklogTable();
+                AllTaskDoneTable allTaskDoneTable=new AllTaskDoneTable();
+                table5.setModel(allTaskDoneTable);
+                for (int i=0;i<6;i++) {
+                    table5.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                }
+
+//                label_employees.setText(String.valueOf(lstAllEmployee.size())+" Employees");
+
+            }
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
     private void callApiTask(String token, int id) {
         Call<MyResponse<List<GetTaskResponse>>> myResponseCall = ApiClient.callApi().getTaskByProjectId("Bearer "+token,id);
@@ -258,10 +307,11 @@ public class TaskScreen extends JDialog {
                             listTaskInPro.add(getTaskResponse);
                             TaskInProTable taskInPro = new TaskInProTable();
                             table2.setModel(taskInPro);
-
-                        } else if(getTaskResponse.getStatus().equals("done")) {
-                            listTaskDone.add(getTaskResponse);
                         }
+
+//                        } else if(getTaskResponse.getStatus().equals("done")) {
+//                            listTaskDone.add(getTaskResponse);
+//                        }
                     }
                 }
             }
@@ -472,6 +522,41 @@ public class TaskScreen extends JDialog {
                 case 4 -> lstAllEmployee.get(rowIndex).getFullName();
                 case 5 -> lstAllEmployee.get(rowIndex).getAddress();
                 case 6->lstAllEmployee.get(rowIndex).getEmail();
+                default -> "-";
+            };
+        }
+    }
+
+    private class AllTaskDoneTable extends AbstractTableModel {
+
+        @Override
+        public String getColumnName(int column) {
+            return strColTask[column];
+        }
+
+        @Override
+        public int getRowCount() {
+            return listTaskDone.size();
+        }
+
+        @Override
+        public int getColumnCount() {
+            return strColTask.length;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return switch (columnIndex) {
+                case 0 -> listTaskDone.get(rowIndex).getId();
+                case 1 -> listTaskDone.get(rowIndex).getTaskName();
+                case 2 -> {
+                    if(listTaskDone.get(rowIndex).getAssignEmployeeName()==null)
+                        yield "UNASSIGNED";
+                    yield listTaskDone.get(rowIndex).getAssignEmployeeName();
+                }
+                case 3 -> changeFormat(listTaskDone.get(rowIndex).getStartDate());
+                case 4 -> changeFormat(listTaskDone.get(rowIndex).getEndDate());
+                case 5 -> listTaskDone.get(rowIndex).getStatus();
                 default -> "-";
             };
         }

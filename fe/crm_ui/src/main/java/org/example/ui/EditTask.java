@@ -83,13 +83,13 @@ public class EditTask extends JDialog {
         changeFormat(getTaskResponseSelection.getEndDate());
 
 
-        SAVEButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                date = dateFormat.format(dp_date.getDate());
-                System.out.println(date);
-            }
-        });
+//        SAVEButton.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                date = dateFormat.format(dp_date.getDate());
+//                System.out.println(date);
+//            }
+//        });
 
         CANCELButton.addActionListener(new ActionListener() {
             @Override

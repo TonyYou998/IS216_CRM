@@ -149,14 +149,14 @@ public class TaskServiceImpl implements TaskService {
             String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
             String email=SpringBeanUtil.getBean(JwtUtils.class).getEmailFromToken(token);
             User u=SpringBeanUtil.getBean(UserRepository.class).findByEmail(email);
-            Assert.notNull(u,"User is not exist");
+//            Assert.notNull(u,"User is not exist");
 
-            if(t.getAssignedEmployeeId()==null|| t.getAssignedEmployeeId().getId()!=Long.parseLong(request.getAssigneeEmployeeId())){
                 User user= SpringBeanUtil.getBean(UserRepository.class).findById(Long.parseLong(request.getAssigneeEmployeeId())).orElse(null);
-                Assert.notNull(user,"User not exist");
+//                Assert.notNull(user,"User not exist");
                 t.setAssignedEmployeeId(user);
 
-            }
+
+
                 t.setTaskName(request.getTaskName());
                 t.setStartDate(request.getStartDate());
                 t.setEndDate(request.getEndDate());

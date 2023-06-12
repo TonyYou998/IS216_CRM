@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 @Component
 public class JwtUtils {
-    private Long jwtExpiration = 108000L;
+    private Long jwtExpiration = 108000000L;
     private String authHeader = "Authorization";
     private String tokenPrefix = "Bearer ";
     final String jwtSecret="tanvuu998";
