@@ -12,13 +12,13 @@
     </properties>
     <border type="none"/>
     <children>
-      <component id="bea19" class="javax.swing.JLabel">
+      <component id="bea19" class="javax.swing.JLabel" binding="lb_name">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
           <background color="-3748881"/>
-          <font name="Arial" size="20" style="1"/>
+          <font name="Arial" size="18" style="1"/>
           <foreground color="-11973470"/>
           <text value="Welcome back!"/>
           <verticalAlignment value="1"/>

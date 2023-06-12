@@ -19,19 +19,22 @@ public class ProjectsScreen extends JDialog {
     private JPanel panel_projects_screen;
     private JButton OPENButton;
     private JComboBox cb_chooseProject;
+    private JLabel lb_name;
     private JPanel mainPanel;
 
     private JPanel panel_listpj;
     private JPanel panel_card;
     private List<GetAllProjectResponse> lstProject;
-    private String projectId="-1";
+    private int projectId=-1;
     private String token;
 
 
-    public ProjectsScreen(JFrame parent, String token) throws IOException {
+    public ProjectsScreen(JFrame parent, String token,String email) throws IOException {
         super(parent);
 
         this.token=token;
+
+        lb_name.setText("       Welcome back! "+email);
         lstProject = callApiGetProjectByUser(token);
         setProject(lstProject);
 
@@ -40,6 +43,25 @@ public class ProjectsScreen extends JDialog {
         setMinimumSize(new Dimension(500,300));
         setModal(true);
         setLocationRelativeTo(null);
+
+        OPENButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(projectId != -1) {
+                    for (GetAllProjectResponse projectResponse : lstProject) {
+                        if(projectId == projectResponse.getId()) {
+                            try {
+                                dispose();
+                                new TaskScreen(null,token,projectResponse);
+                            } catch (IOException ex) {
+                                throw new RuntimeException(ex);
+                            }
+                        }
+                    }
+
+                }
+            }
+        });
         setVisible(true);
     }
 
@@ -77,21 +99,11 @@ public class ProjectsScreen extends JDialog {
         );
 
         cb_chooseProject.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent e) {
                 ComboBoxItem selectedProject = (ComboBoxItem) cb_chooseProject.getSelectedItem();
-                projectId  = selectedProject.getId();
+                projectId  = Integer.parseInt(selectedProject.getId());
 
-                // Use the leaderId and other values as needed
-                System.out.println("Selected Leader ID: " + projectId);
-
-                try {
-                    dispose();
-                    new TaskScreen(null,token,Integer.parseInt(projectId));
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
             }
         });
 

@@ -2,7 +2,6 @@ package org.example.ui;
 
 import org.example.dto.GetAllProjectResponse;
 import org.example.dto.GetAllUserAccountResponse;
-import org.example.dto.GetTaskResponse;
 import org.example.utils.ApiClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -10,10 +9,9 @@ import retrofit2.Response;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -48,18 +46,27 @@ public class AdminScreen extends JDialog {
     private JButton refreshButton;
     private JButton refreshButton1;
     private JScrollPane refreshBtn;
+    private JPanel tp_dangxuat;
+    private JButton SIGNOUTButton;
 
     String[] strColPj = {"Id","Name","Start date", "End date","Leader"};
     String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
 
     List<GetAllProjectResponse> listPj = new ArrayList<>();
 
+    List<GetAllProjectResponse> listTamPj = new ArrayList<>();
+
     static List<GetAllUserAccountResponse> listUser = new ArrayList<>();
+
+    List<GetAllUserAccountResponse> listTamUser = new ArrayList<>();
+
 
     List<String> listRole = new ArrayList<>();
     DateFormat dateFormat;
     DefaultTableCellRenderer cellRenderer;
     String token;
+
+    TableRowSorter sorter;
 
     public AdminScreen(JFrame parent,String token) throws IOException {
         super(parent);
@@ -98,6 +105,7 @@ public class AdminScreen extends JDialog {
 
         tp_adminscreen.addTab("Projects",null,tp_pj,null);
         tp_adminscreen.addTab("Users",null,tp_user,null);
+        tp_adminscreen.addTab("Sign out",null,tp_dangxuat,null);
 
         BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
 //        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
@@ -141,30 +149,58 @@ public class AdminScreen extends JDialog {
         }
         );
 
-        btn_user_search.addActionListener(new ActionListener() {
+        btn_pj_search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.print(tf_user_search.getText());
+                String text = tf_pj_search.getText().toLowerCase();
 
-            }
-        });
-        tableUser.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                // Handle right-click event
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    int row = tableUser.rowAtPoint(e.getPoint());
-                    int col = tableUser.columnAtPoint(e.getPoint());
-                    // Show the popup at the selected location
+                listTamPj.clear();
 
-                    int pjId = Integer.parseInt(tablePj.getValueAt(tablePj.rowAtPoint(e.getPoint()), 0).toString());
+                listPj.size();
 
-                    showPopup(e.getComponent(), e.getX(), e.getY(), row, col,pjId);
+                for(GetAllProjectResponse projectResponse : listPj) {
+                    if(projectResponse.getProjectName().toLowerCase().contains(text)) {
+                        listTamPj.add(projectResponse);
+                    }
+                }
+
+                ProjectTable projectTable = new ProjectTable();
+                tablePj.setModel(projectTable);
+                for (int i=0;i<5;i++) {
+                    tablePj.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
                 }
             }
         });
 
+        btn_user_search.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String text = tf_user_search.getText().toLowerCase();
 
+                listTamUser.clear();
+                listUser.size();
+
+                for(GetAllUserAccountResponse userAccountResponse : listUser) {
+                    if(userAccountResponse.getUsername().toLowerCase().contains(text)) {
+                        listTamUser.add(userAccountResponse);
+                    }
+                }
+
+                UserTable userTable = new UserTable();
+                tableUser.setModel(userTable);
+                for (int i=0;i<5;i++) {
+                    tableUser.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                }
+            }
+        });
+
+        SIGNOUTButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                new Login(null);
+            }
+        });
         setVisible(true);
     }
 
@@ -219,6 +255,7 @@ public class AdminScreen extends JDialog {
             public void onResponse(Call<java.util.List<GetAllProjectResponse>> call, Response<java.util.List<GetAllProjectResponse>> response) {
                 if(response.isSuccessful()){
                     listPj = response.body();
+                    listTamPj = listPj;
                     ProjectTable projectTable = new ProjectTable();
                     tablePj.setModel(projectTable);
                     for (int i=0;i<5;i++) {
@@ -242,10 +279,11 @@ public class AdminScreen extends JDialog {
             public void onResponse(Call<List<GetAllUserAccountResponse>> call, Response<List<GetAllUserAccountResponse>> response) {
                 if(response.isSuccessful()){
                     listUser = response.body();
-                    for(int i=0;i<listUser.size();i++) {
-                        if(listUser.get(i).getRoleId().equals("1")) {listRole.add("Employee");}
-                        else if(listUser.get(i).getRoleId().equals("2")) {listRole.add("Admin");}
-                        else if(listUser.get(i).getRoleId().equals("3")) {listRole.add("Leader");}
+                    listTamUser = listUser;
+                    for(int i=0;i<listTamUser.size();i++) {
+                        if(listTamUser.get(i).getRoleId().equals("1")) {listRole.add("Employee");}
+                        else if(listTamUser.get(i).getRoleId().equals("2")) {listRole.add("Admin");}
+                        else if(listTamUser.get(i).getRoleId().equals("3")) {listRole.add("Leader");}
                     }
                     UserTable userTable = new UserTable();
                     tableUser.setModel(userTable);
@@ -272,7 +310,7 @@ public class AdminScreen extends JDialog {
 
         @Override
         public int getRowCount() {
-            return listPj.size();
+            return listTamPj.size();
         }
 
         @Override
@@ -283,11 +321,11 @@ public class AdminScreen extends JDialog {
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             return switch (columnIndex) {
-                case 0 -> listPj.get(rowIndex).getId();
-                case 1 -> listPj.get(rowIndex).getProjectName();
-                case 2 -> changeFormat(listPj.get(rowIndex).getStartDate());
-                case 3 -> changeFormat(listPj.get(rowIndex).getEndDate());
-                case 4 -> listPj.get(rowIndex).getLeaderName();
+                case 0 -> listTamPj.get(rowIndex).getId();
+                case 1 -> listTamPj.get(rowIndex).getProjectName();
+                case 2 -> changeFormat(listTamPj.get(rowIndex).getStartDate());
+                case 3 -> changeFormat(listTamPj.get(rowIndex).getEndDate());
+                case 4 -> listTamPj.get(rowIndex).getLeaderName();
                 default -> "-";
             };
         }
@@ -302,7 +340,7 @@ public class AdminScreen extends JDialog {
 
         @Override
         public int getRowCount() {
-            return listUser.size();
+            return listTamUser.size();
         }
 
         @Override
@@ -313,13 +351,13 @@ public class AdminScreen extends JDialog {
         @Override
         public Object getValueAt(int rowIndex, int columnIndex) {
             return switch (columnIndex) {
-                case 0 -> listUser.get(rowIndex).getId();
-                case 1 -> listUser.get(rowIndex).getUsername();
+                case 0 -> listTamUser.get(rowIndex).getId();
+                case 1 -> listTamUser.get(rowIndex).getUsername();
                 case 2 -> listRole.get(rowIndex);
-                case 3 -> listUser.get(rowIndex).getPhone();
-                case 4 -> listUser.get(rowIndex).getFullName();
-                case 5 -> listUser.get(rowIndex).getAddress();
-                case 6 -> listUser.get(rowIndex).getEmail();
+                case 3 -> listTamUser.get(rowIndex).getPhone();
+                case 4 -> listTamUser.get(rowIndex).getFullName();
+                case 5 -> listTamUser.get(rowIndex).getAddress();
+                case 6 -> listTamUser.get(rowIndex).getEmail();
                 default -> "-";
             };
         }

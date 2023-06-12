@@ -77,30 +77,34 @@ public class Login extends JDialog {
                     token=content.getToken();
                     System.out.println(token);
 
-                    String[] chunks = token.split("\\.");
-                    Base64.Decoder decoder = Base64.getUrlDecoder();
-                    String payload = new String(decoder.decode(chunks[1]));
+                    if(token == null) {
+                        JOptionPane.showMessageDialog(null, "Please check your details and try again", "Incorrect email or password", JOptionPane.INFORMATION_MESSAGE);
 
-                    JsonParser parser = new JsonParser();
-                    JsonObject jsonObject = parser.parse(payload).getAsJsonObject();
-                    JsonArray roles = jsonObject.getAsJsonArray("roles");
-                    String roleObject = roles.getAsString();
-                    System.out.println(roleObject);
+                    } else {
+                        String[] chunks = token.split("\\.");
+                        Base64.Decoder decoder = Base64.getUrlDecoder();
+                        String payload = new String(decoder.decode(chunks[1]));
 
-                    if (roleObject.equals("ROLE_ADMIN")) {
-                        setVisible(false);
-                        try {
-                            new AdminScreen(null,token);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    } else  {
-                        setVisible(false);
-                        try {
-//                            new TaskScreen(null,token);
-                            new ProjectsScreen(null,token);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
+                        JsonParser parser = new JsonParser();
+                        JsonObject jsonObject = parser.parse(payload).getAsJsonObject();
+                        JsonArray roles = jsonObject.getAsJsonArray("roles");
+                        String roleObject = roles.getAsString();
+                        System.out.println(roleObject);
+
+                        if (roleObject.equals("ROLE_ADMIN")) {
+                            dispose();
+                            try {
+                                new AdminScreen(null,token);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        } else  {
+                            setVisible(false);
+                            try {
+                                new ProjectsScreen(null,token,tf_email.getText());
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                     }
                 }
