@@ -107,8 +107,8 @@ public class AdminScreen extends JDialog {
         tp_adminscreen.addTab("Users",null,tp_user,null);
         tp_adminscreen.addTab("Sign out",null,tp_dangxuat,null);
 
-        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
-//        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
+//        BufferedImage buttonIcon = ImageIO.read(new File("src/image/add.png"));
+        BufferedImage buttonIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\add.png"));
         btn_pj_add.setIcon(new ImageIcon(buttonIcon));
         btn_pj_add.setBorder(BorderFactory.createEmptyBorder());
         btn_pj_add.setContentAreaFilled(false);

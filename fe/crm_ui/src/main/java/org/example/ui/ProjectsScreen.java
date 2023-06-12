@@ -29,12 +29,12 @@ public class ProjectsScreen extends JDialog {
     private String token;
 
 
-    public ProjectsScreen(JFrame parent, String token,String email) throws IOException {
+    public ProjectsScreen(JFrame parent, String token,String username) throws IOException {
         super(parent);
 
         this.token=token;
 
-        lb_name.setText("       Welcome back! "+email);
+        lb_name.setText("       Welcome back! "+username);
         lstProject = callApiGetProjectByUser(token);
         setProject(lstProject);
 

@@ -7,6 +7,7 @@
     </constraints>
     <properties>
       <background color="-3748881"/>
+      <font name="JetBrains Mono"/>
     </properties>
     <border type="none"/>
     <children>
@@ -19,6 +20,7 @@
         </constraints>
         <properties>
           <background color="-1841167"/>
+          <font name="JetBrains Mono"/>
         </properties>
         <border type="none"/>
         <children>
@@ -40,7 +42,7 @@
                   </grid>
                 </constraints>
                 <properties>
-                  <font name="Arial" size="22" style="1"/>
+                  <font name="JetBrains Mono" size="22" style="1"/>
                   <foreground color="-11973470"/>
                   <horizontalAlignment value="0"/>
                   <text value="Project Management"/>
@@ -51,7 +53,7 @@
                   <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <font name="Arial" size="14" style="1"/>
+                  <font name="JetBrains Mono" size="14" style="1"/>
                   <foreground color="-11973470"/>
                   <text value="Email:"/>
                 </properties>
@@ -62,14 +64,16 @@
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <font name="JetBrains Mono"/>
+                </properties>
               </component>
               <component id="16671" class="javax.swing.JLabel" binding="lb_pass">
                 <constraints>
                   <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <font name="Arial" size="14" style="1"/>
+                  <font name="JetBrains Mono" size="14" style="1"/>
                   <foreground color="-11973470"/>
                   <text value="Password:"/>
                 </properties>
@@ -80,7 +84,9 @@
                     <preferred-size width="150" height="-1"/>
                   </grid>
                 </constraints>
-                <properties/>
+                <properties>
+                  <font name="JetBrains Mono"/>
+                </properties>
               </component>
               <component id="d4f55" class="javax.swing.JButton" binding="btn_login">
                 <constraints>
@@ -88,7 +94,7 @@
                 </constraints>
                 <properties>
                   <background color="-8288555"/>
-                  <font name="Arial" size="18" style="1"/>
+                  <font name="JetBrains Mono" size="18" style="1"/>
                   <foreground color="-1"/>
                   <text value="LOGIN"/>
                 </properties>
