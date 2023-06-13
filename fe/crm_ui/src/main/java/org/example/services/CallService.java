@@ -71,6 +71,9 @@ public interface CallService {
 
    @GET("admin/find-user")
    Call<MyResponse<List<GetAllUserAccountResponse>>> findUserByUsername(@Header("Authorization") String s,@Query("username") String username);
+
+   @DELETE("admin/delete-user")
+    Call<String> deleteUser(@Header("Authorization") String token, @Query("userId") String userId);
 //    @GET("admin/leaders")
 //    Call<MyResponse<List<GetTaskResponse>>> getTaskByProjectId(@Header("Authorization") String token,@Query("id") int id);
 }

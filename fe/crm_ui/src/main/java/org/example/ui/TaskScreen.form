@@ -278,7 +278,7 @@
             </properties>
             <border type="none"/>
             <children>
-              <component id="f25cf" class="javax.swing.JLabel" binding="lb_5">
+              <component id="f25cf" class="javax.swing.JLabel" binding="myTasks">
                 <constraints>
                   <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -288,27 +288,17 @@
                   <text value="Label"/>
                 </properties>
               </component>
-              <component id="8b572" class="javax.swing.JLabel" binding="lb_1">
-                <constraints>
-                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <font name="Arial" size="14"/>
-                  <foreground color="-11973470"/>
-                  <text value="Label"/>
-                </properties>
-              </component>
-              <component id="ad61f" class="javax.swing.JLabel" binding="lb_4">
+              <component id="ad61f" class="javax.swing.JLabel" binding="done">
                 <constraints>
                   <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <font name="Arial" size="14"/>
                   <foreground color="-11973470"/>
-                  <text value="Label"/>
+                  <text value=""/>
                 </properties>
               </component>
-              <component id="cf7e6" class="javax.swing.JLabel" binding="lb_2">
+              <component id="cf7e6" class="javax.swing.JLabel" binding="backlog">
                 <constraints>
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
@@ -318,9 +308,19 @@
                   <text value="Label"/>
                 </properties>
               </component>
-              <component id="276aa" class="javax.swing.JLabel" binding="lb_3">
+              <component id="276aa" class="javax.swing.JLabel" binding="inProgress">
                 <constraints>
                   <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <font name="Arial" size="14"/>
+                  <foreground color="-11973470"/>
+                  <text value="Label"/>
+                </properties>
+              </component>
+              <component id="8b572" class="javax.swing.JLabel" binding="overdue">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <font name="Arial" size="14"/>

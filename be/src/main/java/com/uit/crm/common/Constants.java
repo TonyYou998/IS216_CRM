@@ -31,11 +31,13 @@ public class Constants {
     public static final String GET_TASK_BY_USER = "/get-task-by-user";
     public static final String UPDATE_TASK = "/update";
     public static final String TASK_ID = "/taskId";
-    public static final String DELETE_EMPLOYEE = "/delete-project";
+    public static final String DELETE_PROJECT = "/delete-project";
     public static final String GET_BACKLOG = "/get-backlog";
     public static final String GET_IN_PROGRESS = "/get-inprogress";
     public static final String DONE = "/done";
     public static final String MY_TASK = "/my-task";
     public static final String SEARCH_PROJECT = "/find-project";
     public static final String FIND_USER = "/find-user";
+    public static final String DELETE_EMPLOYEE = "delete-user";
+    public static final String EDIT_PROJECT = "/edit";
 }

@@ -147,10 +147,25 @@ public class AdminScreen extends JDialog {
                     // Show the popup at the selected location
                     int pjId = Integer.parseInt(tablePj.getValueAt(tablePj.rowAtPoint(e.getPoint()), 0).toString());
                     System.out.println(pjId);
-                    showPopup(e.getComponent(), e.getX(), e.getY(), row, col,pjId);
+                    showPopupProject(e.getComponent(), e.getX(), e.getY(), row, col,pjId);
                 }
             }
         }
+        );
+        tableUser.addMouseListener(new MouseAdapter() {
+                                     @Override
+                                     public void mouseClicked(MouseEvent e) {
+                                         // Handle right-click event
+                                         if (e.getButton() == MouseEvent.BUTTON3) {
+                                             int row = tableUser.rowAtPoint(e.getPoint());
+                                             int col = tableUser.columnAtPoint(e.getPoint());
+                                             // Show the popup at the selected location
+                                             int userId = Integer.parseInt(tableUser.getValueAt(tableUser.rowAtPoint(e.getPoint()), 0).toString());
+                                             System.out.println(userId);
+                                             showPopupUser(e.getComponent(), e.getX(), e.getY(), row, col,userId);
+                                         }
+                                     }
+                                 }
         );
 
         btn_pj_search.addActionListener(new ActionListener() {
@@ -210,10 +225,11 @@ public class AdminScreen extends JDialog {
         setVisible(true);
     }
 
-    public void showPopup(Component component, int x, int y, int row, int col,int pjId) {
+    public void showPopupProject(Component component, int x, int y, int row, int col,int pjId) {
         JPopupMenu popup = new JPopupMenu();
         JMenuItem item1 = new JMenuItem("Add employee");
         JMenuItem item2 = new JMenuItem("Delete");
+        JMenuItem item3=new JMenuItem("Edit");
 
         item1.addActionListener(new ActionListener() {
             @Override
@@ -228,7 +244,7 @@ public class AdminScreen extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 // Handle the action when the popup item is clicked
 //                System.out.println("Popup Item Clicked at row " + row + ", column " + col);
-                String deleteStatus=delete(token,pjId);
+                String deleteStatus=delete(token,pjId,1);
                 System.out.println(deleteStatus);
                 callApiAllPj(token);
             }
@@ -237,10 +253,37 @@ public class AdminScreen extends JDialog {
         popup.add(item2);
         popup.show(component, x, y);
     }
+    public void showPopupUser(Component component, int x, int y, int row, int col,int userID) {
+        JPopupMenu popup = new JPopupMenu();
+
+        JMenuItem item = new JMenuItem("Delete");
+
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Handle the action when the popup item is clicked
+//                System.out.println("Popup Item Clicked at row " + row + ", column " + col);
+                delete(token,userID,2);
+                callApiAllUser(token);
+
+            }
+        });
+
+       popup.add(item);
+        popup.show(component, x, y);
+    }
 
 
-    private String delete(String token, int pjId) {
-        Call<String> call=ApiClient.callApi().deleteProject("Bearer "+token,String.valueOf(pjId));
+    private String delete(String token, int id,int deleteOption) {
+        Call<String> call=null;
+        switch (deleteOption){
+            case 1:   call=ApiClient.callApi().deleteProject("Bearer "+token,String.valueOf(id));
+                break;
+            case 2:
+                call = ApiClient.callApi().deleteUser("Bearer " + token, String.valueOf(id));
+                 break;
+        }
+
         try{
             Response<String> response= call.execute();
             if(response.isSuccessful()){

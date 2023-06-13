@@ -20,4 +20,6 @@ public interface ProjectService {
     ProjectDto deleteProject(String id);
 
     List<ProjectDto> findProjectByName(String projectName);
+
+    ProjectDto editProject(ProjectDto request, String projectId);
 }

@@ -9,6 +9,8 @@ import com.uit.crm.project.repository.ProjectEmployeeRepository;
 import com.uit.crm.project.repository.ProjectRepository;
 import com.uit.crm.role.model.Role;
 import com.uit.crm.role.repository.RoleRepository;
+import com.uit.crm.task.model.Task;
+import com.uit.crm.task.model.repository.TaskRepository;
 import com.uit.crm.user.dto.GetUserDto;
 import com.uit.crm.user.dto.UserDto;
 import com.uit.crm.user.model.User;
@@ -231,6 +233,35 @@ public class UserServiceImpl implements UserService {
         catch (Exception ex){
 
         }
+    }
+
+    @Override
+    public UserDto deleteUser(String userId) {
+        try{
+                User u=SpringBeanUtil.getBean(UserRepository.class).findById(Long.parseLong(userId)).orElse(null);
+                List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findAllByAssignedEmployeeId(u);
+                List<ProjectEmployee> lstProjectEmployee=SpringBeanUtil.getBean(ProjectEmployeeRepository.class).findByUser(u);
+                if(!lstTask.isEmpty())
+                    SpringBeanUtil.getBean(TaskRepository.class).deleteAll(lstTask);
+                if(u.getRole().getRoleName().equals("LEADER")){
+                    List<Project> lstProject=SpringBeanUtil.getBean(ProjectRepository.class).findByProjectLeader(u);
+                    for(Project p:lstProject){
+                        p.setProjectLeader(null);
+                        SpringBeanUtil.getBean(ProjectRepository.class).save(p);
+                    }
+                }
+
+                if(!lstProjectEmployee.isEmpty())
+                    SpringBeanUtil.getBean(ProjectEmployeeRepository.class).deleteAll(lstProjectEmployee);
+                if(u!=null){
+                    SpringBeanUtil.getBean(UserRepository.class).deleteById(Long.parseLong(userId));
+                    return mapper.map(u,UserDto.class);
+                }
+        }
+        catch (Exception ex){
+
+        }
+        return null;
     }
 
     private List<UserDto> getUserDtos(List<User> lstEmployee, List<UserDto> lstDto) {

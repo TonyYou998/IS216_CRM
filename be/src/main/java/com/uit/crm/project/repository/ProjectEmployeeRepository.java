@@ -9,4 +9,8 @@ import java.util.List;
 
 public interface ProjectEmployeeRepository extends JpaRepository<ProjectEmployee,Long> {
     List<ProjectEmployee> findByProject(Project p);
+
+    List<ProjectEmployee> deleteByUser(User u);
+
+    List<ProjectEmployee> findByUser(User u);
 }

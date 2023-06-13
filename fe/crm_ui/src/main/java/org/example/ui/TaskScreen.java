@@ -55,11 +55,11 @@ public class TaskScreen extends JDialog {
     private JLabel lb_pjname;
     private JPanel tp_dangXuat;
     private JButton SIGNOUTButton;
-    private JLabel lb_1;
-    private JLabel lb_2;
-    private JLabel lb_3;
-    private JLabel lb_4;
-    private JLabel lb_5;
+    private JLabel overdue;
+    private JLabel backlog;
+    private JLabel inProgress;
+    private JLabel done;
+    private JLabel myTasks;
     private JButton button1;
     private JLabel label_employees;
 
@@ -94,7 +94,11 @@ public class TaskScreen extends JDialog {
         color1 = new Color(227,231,241);
         color2 = new Color(198,203,239);
         color3 = new Color(73,76,162);
-
+//        myTasks.setText("0 Task");
+//        backlog.setText("0 Backlog");
+//        overdue.setText("0 Overdue");
+//        done.setText("0 done");
+//        inProgress.setText("0 In-progress");
         setColorTable(table1);
         setColorTable(table2);
         setColorTable(table3);
@@ -114,16 +118,13 @@ public class TaskScreen extends JDialog {
 
         cellRenderer = new DefaultTableCellRenderer();
         cellRenderer.setHorizontalAlignment(JLabel.CENTER);
-        // listAllTask= callApiTask(token,projectId);
-        // lstAllEmployee=callApiGetEmployeeInProject(token,projectId);
-
-//        callApiTask(token,projectId);
+        callApiTask(token,projectId);
         callApiGetEmployeeInProject(token,projectId);
-//        getTaskBackLog(token,projectId);
-//        getTaskInProgress(token,projectId);
-//        getMyTask(token, projectId);
-//        getTaskDone(token,projectId);
-
+        getTaskBackLog(token,projectId);
+        getTaskInProgress(token,projectId);
+        getMyTask(token, projectId);
+        getTaskDone(token,projectId);
+        updateData();
         BufferedImage backIcon = ImageIO.read(new File("D:\\courses\\IS216\\crm\\IS216_CRM\\fe\\crm_ui\\src\\image\\arrow_back_.png"));
         button1.setIcon(new ImageIcon(backIcon));
         button1.setBorder(BorderFactory.createEmptyBorder());
@@ -228,6 +229,13 @@ public class TaskScreen extends JDialog {
         System.out.println(userName);
 
     }
+    public void updateData(){
+        myTasks.setText(String.valueOf(listMyTask.size()+" Tasks"));
+        backlog.setText(String.valueOf(listTaskBacklog.size()+" Backlog"));
+        overdue.setText(String.valueOf(lstAllEmployee.size()+" Employee"));
+        done.setText(String.valueOf(listTaskDone.size()+" Done"));
+        inProgress.setText(String.valueOf(listTaskInProcess.size()+" In-progress"));
+    }
 
     private void setColorTable(JTable table) {
         table.setOpaque(true);
@@ -250,6 +258,7 @@ public class TaskScreen extends JDialog {
                     table1.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
                 }
             }
+            updateData();
         }
         catch (IOException e) {
             throw new RuntimeException(e);
@@ -269,7 +278,7 @@ public class TaskScreen extends JDialog {
                 }
 
 //                label_employees.setText(String.valueOf(lstAllEmployee.size())+" Employees");
-
+                updateData();
             }
         }
         catch (IOException e) {
@@ -291,7 +300,7 @@ public class TaskScreen extends JDialog {
                 }
 
 //                label_employees.setText(String.valueOf(lstAllEmployee.size())+" Employees");
-
+               updateData();
             }
         }
         catch (IOException e) {
@@ -315,7 +324,7 @@ public class TaskScreen extends JDialog {
                 }
 
 //                label_employees.setText(String.valueOf(lstAllEmployee.size())+" Employees");
-
+                updateData();
             }
         }
         catch (IOException e) {
@@ -339,7 +348,7 @@ public class TaskScreen extends JDialog {
                 }
 
 //                label_employees.setText(String.valueOf(lstAllEmployee.size())+" Employees");
-
+                updateData();
             }
         }
         catch (IOException e) {
@@ -373,6 +382,7 @@ public class TaskScreen extends JDialog {
 //                            listTaskDone.add(getTaskResponse);
 //                        }
                     }
+                    updateData();
                 }
             }
 

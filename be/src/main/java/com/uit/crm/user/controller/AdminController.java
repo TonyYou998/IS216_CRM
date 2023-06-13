@@ -68,6 +68,14 @@ public class AdminController {
         List<UserDto> response=SpringBeanUtil.getBean(UserService.class).findByName(username);
         return ResponseHandler.getResponse(response,HttpStatus.OK);
     }
+    @DeleteMapping(Constants.DELETE_EMPLOYEE)
+    public ResponseEntity<Object> deleteUser(@RequestParam("userId") String userId){
+        UserDto response=SpringBeanUtil.getBean(UserService.class).deleteUser(userId);
+        if(response!=null)
+            return ResponseHandler.getResponse(response,HttpStatus.OK);
+        return ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
 
 
 

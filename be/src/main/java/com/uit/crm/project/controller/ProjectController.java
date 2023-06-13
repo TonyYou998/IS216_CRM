@@ -27,6 +27,14 @@ public class ProjectController {
         return ResponseHandler.getResponse("An unexpected error occurred while processing your request. Please try again later or contact the support team for assistance.", HttpStatus.INTERNAL_SERVER_ERROR);
 
     }
+    @PatchMapping(Constants.EDIT_PROJECT)
+    public ResponseEntity<Object> editProject(@RequestBody ProjectDto request,@RequestParam("projectId")String projectId ) {
+        ProjectDto response = SpringBeanUtil.getBean(ProjectService.class).editProject(request,projectId);
+        if (response != null)
+            return ResponseHandler.getResponse(response, HttpStatus.OK);
+        return ResponseHandler.getResponse("An unexpected error occurred while processing your request. Please try again later or contact the support team for assistance.", HttpStatus.INTERNAL_SERVER_ERROR);
+
+    }
 
     @GetMapping(Constants.ADD_EMPLOYEE)
     public ResponseEntity<Object> addEmployee(@RequestParam("userId") String userId, @RequestParam("projectId") String projectId) {
@@ -37,7 +45,7 @@ public class ProjectController {
         return ResponseHandler.getResponse("An unexpected error occurred while processing your request. Please try again later or contact the support team for assistance.", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @DeleteMapping(Constants.DELETE_EMPLOYEE)
+    @DeleteMapping(Constants.DELETE_PROJECT)
     public ResponseEntity<Object> deleteProject(@RequestParam("id") String id) {
         ProjectDto response = SpringBeanUtil.getBean(ProjectService.class).deleteProject(id);
         if (response != null) {

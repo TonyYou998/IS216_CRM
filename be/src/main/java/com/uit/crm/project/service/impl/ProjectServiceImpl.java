@@ -191,4 +191,34 @@ public class ProjectServiceImpl implements ProjectService {
         }
         return null;
     }
+
+    @Override
+    public ProjectDto editProject(ProjectDto request, String projectId) {
+        Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
+        Assert.notNull(p,"Project not exist");
+        User leader= SpringBeanUtil.getBean(UserRepository.class).findById( Long.parseLong(request.getLeaderId())).orElse(null);
+        Assert.notNull(leader,"Leader not exist");
+        ProjectDto response=null;
+        try{
+            if(leader!=null && leader.getRole().getId()==3) {
+
+                p.setProjectLeader(leader);
+                p.setProjectName(request.getProjectName());
+                p.setStartDate(request.getStartDate());
+                p.setEndDate(request.getEndDate());
+                SpringBeanUtil.getBean(ProjectRepository.class).save(p);
+                response = mapper.map(p, ProjectDto.class);
+                response.setLeaderId(leader.getId().toString());
+                ProjectEmployee pE=new ProjectEmployee(p,leader);
+                SpringBeanUtil.getBean(ProjectEmployeeRepository.class).save(pE);
+            }
+            return  response;
+        }
+        catch (Exception e){
+            SpringBeanUtil.getBean(LoggerUtil.class).logger(ProjectServiceImpl.class).info(e.getMessage());
+        }
+
+
+        return response;
+    }
 }

@@ -20,4 +20,7 @@ public interface UserService {
 
     List<UserDto> findByName(String username);
     void sendEmailToUser(String userId,String taskName );
+
+
+   UserDto deleteUser(String userId);
 }
