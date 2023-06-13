@@ -52,7 +52,7 @@ public class ProjectsScreen extends JDialog {
                         if(projectId == projectResponse.getId()) {
                             try {
                                 dispose();
-                                new TaskScreen(null,token,projectResponse);
+                                new TaskScreen(null,token,projectResponse,username);
                             } catch (IOException ex) {
                                 throw new RuntimeException(ex);
                             }

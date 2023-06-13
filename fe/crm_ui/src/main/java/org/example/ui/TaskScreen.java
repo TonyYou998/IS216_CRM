@@ -60,6 +60,7 @@ public class TaskScreen extends JDialog {
     private JLabel lb_3;
     private JLabel lb_4;
     private JLabel lb_5;
+    private JButton button1;
     private JLabel label_employees;
 
     private static List<GetTaskResponse> listAllTask = new ArrayList<>();
@@ -83,7 +84,7 @@ public class TaskScreen extends JDialog {
 
     Color color1,color2,color3;
 
-    public TaskScreen(JFrame parent,String token, GetAllProjectResponse projectResponse) throws IOException {
+    public TaskScreen(JFrame parent,String token, GetAllProjectResponse projectResponse,String userName) throws IOException {
         super(parent);
 
         encode(token);
@@ -122,6 +123,11 @@ public class TaskScreen extends JDialog {
 //        getTaskInProgress(token,projectId);
 //        getMyTask(token, projectId);
 //        getTaskDone(token,projectId);
+
+        BufferedImage backIcon = ImageIO.read(new File("arrow_back_.png"));
+        button1.setIcon(new ImageIcon(backIcon));
+        button1.setBorder(BorderFactory.createEmptyBorder());
+        button1.setContentAreaFilled(false);
 
         tp_taskscreen.addTab("Employee",null,tp_employee,null);
         tp_taskscreen.addTab("All tasks",null,tp_alltask,null);
@@ -193,6 +199,18 @@ public class TaskScreen extends JDialog {
                         break;
                     default:
                         callApiGetEmployeeInProject(token,projectId);
+                }
+            }
+        });
+
+        button1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                try {
+                    new ProjectsScreen(null,token,userName);
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
                 }
             }
         });
