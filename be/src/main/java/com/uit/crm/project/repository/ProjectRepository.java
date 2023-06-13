@@ -19,7 +19,8 @@ public interface ProjectRepository extends JpaRepository<Project,Long> {
             "WHERE u.id = :uid", nativeQuery = true)
     List<Project> findByUser(@Param("uid") Integer uid);
 
-
+    @Query(value = "SELECT p.* \n FROM project p \n WHERE project_name LIKE CONCAT('%', :projectName, '%') ",nativeQuery = true)
+    List<Project> findByProjectNameContaining(String projectName);
 
 
 //    void deleteAll(List<ProjectEmployee> lstEmployee);

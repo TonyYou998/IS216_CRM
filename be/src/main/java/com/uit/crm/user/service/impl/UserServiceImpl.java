@@ -167,6 +167,26 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
+    @Override
+    public List<UserDto> findByName(String username) {
+        try{
+
+            List<User> lstUser=SpringBeanUtil.getBean(UserRepository.class).findByUserName(username);
+            List<UserDto> lstDto=new LinkedList<>();
+            for(User u:lstUser){
+                UserDto dto=mapper.map(u,UserDto.class);
+                dto.setRoleName(u.getRole().getRoleName());
+                dto.setRoleId(u.getRole().getId().toString());
+                lstDto.add(dto);
+            }
+            return lstDto;
+        }
+        catch (Exception ex){
+
+        }
+        return null;
+    }
+
     private List<UserDto> getUserDtos(List<User> lstEmployee, List<UserDto> lstDto) {
         for(User u:lstEmployee){
             UserDto dto=mapper.map(u, UserDto.class);

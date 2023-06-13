@@ -36,4 +36,6 @@ public class Constants {
     public static final String GET_IN_PROGRESS = "/get-inprogress";
     public static final String DONE = "/done";
     public static final String MY_TASK = "/my-task";
+    public static final String SEARCH_PROJECT = "/find-project";
+    public static final String FIND_USER = "/find-user";
 }

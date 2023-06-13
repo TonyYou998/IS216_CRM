@@ -2,6 +2,7 @@ package org.example.ui;
 
 import org.example.dto.GetAllProjectResponse;
 import org.example.dto.GetAllUserAccountResponse;
+import org.example.dto.MyResponse;
 import org.example.utils.ApiClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,6 +26,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class AdminScreen extends JDialog {
@@ -48,6 +50,7 @@ public class AdminScreen extends JDialog {
     private JScrollPane refreshBtn;
     private JPanel tp_dangxuat;
     private JButton SIGNOUTButton;
+    List<GetAllUserAccountResponse> lstFindUser=new LinkedList<>();
 
     String[] strColPj = {"Id","Name","Start date", "End date","Leader"};
     String[] strColUser = {"Id","Username","Role","Phone", "Fullname","Address","Email"};
@@ -65,6 +68,7 @@ public class AdminScreen extends JDialog {
     DateFormat dateFormat;
     DefaultTableCellRenderer cellRenderer;
     String token;
+    List<GetAllProjectResponse> lstFindProjectResponse=new LinkedList<>();
 
     TableRowSorter sorter;
 
@@ -152,14 +156,15 @@ public class AdminScreen extends JDialog {
         btn_pj_search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String text = tf_pj_search.getText().toLowerCase();
+                String projectName = tf_pj_search.getText().toLowerCase();
 
                 listTamPj.clear();
+                callApiFindProject(token,projectName);
 
                 listPj.size();
 
                 for(GetAllProjectResponse projectResponse : listPj) {
-                    if(projectResponse.getProjectName().toLowerCase().contains(text)) {
+                    if(projectResponse.getProjectName().toLowerCase().contains(projectName)) {
                         listTamPj.add(projectResponse);
                     }
                 }
@@ -175,13 +180,14 @@ public class AdminScreen extends JDialog {
         btn_user_search.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String text = tf_user_search.getText().toLowerCase();
+                String username = tf_user_search.getText().toLowerCase();
 
                 listTamUser.clear();
+                callApiFindUser(token,username);
                 listUser.size();
 
                 for(GetAllUserAccountResponse userAccountResponse : listUser) {
-                    if(userAccountResponse.getUsername().toLowerCase().contains(text)) {
+                    if(userAccountResponse.getUsername().toLowerCase().contains(username)) {
                         listTamUser.add(userAccountResponse);
                     }
                 }
@@ -232,6 +238,7 @@ public class AdminScreen extends JDialog {
         popup.show(component, x, y);
     }
 
+
     private String delete(String token, int pjId) {
         Call<String> call=ApiClient.callApi().deleteProject("Bearer "+token,String.valueOf(pjId));
         try{
@@ -248,6 +255,57 @@ public class AdminScreen extends JDialog {
         return null;
     }
 
+    public void callApiFindProject(String token,String projectName) {
+//        Call<java.util.List<GetAllProjectResponse>> response = ApiClient.callApi().findProjectByName("Bearer "+ token,projectName);
+        Call<MyResponse<List<GetAllProjectResponse>>> responses=ApiClient.callApi().findProjectByName("Bearer "+token,projectName);
+      responses.enqueue(new Callback<MyResponse<List<GetAllProjectResponse>>>() {
+          @Override
+          public void onResponse(Call<MyResponse<List<GetAllProjectResponse>>> call, Response<MyResponse<List<GetAllProjectResponse>>> response) {
+              if(response.isSuccessful()){
+                  lstFindProjectResponse = response.body().getContent();
+                  listTamPj = lstFindProjectResponse;
+                  ProjectTable projectTable = new ProjectTable();
+                  tablePj.setModel(projectTable);
+                  for (int i=0;i<5;i++) {
+                      tablePj.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                  }
+              }
+          }
+
+          @Override
+          public void onFailure(Call<MyResponse<List<GetAllProjectResponse>>> call, Throwable throwable) {
+
+          }
+      });
+    }
+    public void callApiFindUser(String token,String username) {
+//        Call<java.util.List<GetAllProjectResponse>> response = ApiClient.callApi().findProjectByName("Bearer "+ token,projectName);
+        Call<MyResponse<List<GetAllUserAccountResponse>>> responses=ApiClient.callApi().findUserByUsername("Bearer "+token,username);
+        responses.enqueue(new Callback<MyResponse<List<GetAllUserAccountResponse>>>() {
+            @Override
+            public void onResponse(Call<MyResponse<List<GetAllUserAccountResponse>>> call, Response<MyResponse<List<GetAllUserAccountResponse>>> response) {
+                if(response.isSuccessful()){
+                    lstFindUser = response.body().getContent();
+                    listTamUser = lstFindUser;
+                    for(int i=0;i<listTamUser.size();i++) {
+                        if(listTamUser.get(i).getRoleId().equals("1")) {listRole.add("Employee");}
+                        else if(listTamUser.get(i).getRoleId().equals("2")) {listRole.add("Admin");}
+                        else if(listTamUser.get(i).getRoleId().equals("3")) {listRole.add("Leader");}
+                    }
+                    UserTable userTable = new UserTable();
+                    tableUser.setModel(userTable);
+                    for (int i=0;i<7;i++) {
+                        tableUser.getColumnModel().getColumn(i).setCellRenderer( cellRenderer );
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MyResponse<List<GetAllUserAccountResponse>>> call, Throwable throwable) {
+
+            }
+        });
+    }
     public void callApiAllPj(String token) {
         Call<java.util.List<GetAllProjectResponse>> responese = ApiClient.callApi().getAllProjectForAdmin("Bearer "+token);
         responese.enqueue(new Callback<java.util.List<GetAllProjectResponse>>() {

@@ -171,4 +171,24 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
     }
+
+    @Override
+    public List<ProjectDto> findProjectByName(String projectName) {
+
+        try{
+            List<Project> lstProject=SpringBeanUtil.getBean(ProjectRepository.class).findByProjectNameContaining(projectName);
+            List<ProjectDto> lstDto=new LinkedList<>();
+            for(Project p:lstProject){
+                ProjectDto dto=mapper.map(p,ProjectDto.class);
+                dto.setLeaderName(p.getProjectLeader().getUsername());
+                dto.setLeaderId(p.getProjectLeader().getId().toString());
+                lstDto.add(dto);
+            }
+            return lstDto;
+        }
+        catch (Exception ex){
+
+        }
+        return null;
+    }
 }

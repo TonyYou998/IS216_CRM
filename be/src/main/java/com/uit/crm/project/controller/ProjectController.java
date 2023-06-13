@@ -14,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(Constants.BASE_URL+Constants.REQUEST_MAPPING)
 public class ProjectController {
@@ -43,4 +45,13 @@ public class ProjectController {
         }
         return ResponseHandler.getResponse("INTERNAL SERVER ERROR", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @GetMapping(Constants.SEARCH_PROJECT)
+    public ResponseEntity<Object> searchProjectByName(@RequestParam("projectName") String projectName){
+        List<ProjectDto> response=SpringBeanUtil.getBean(ProjectService.class).findProjectByName(projectName);
+        return ResponseHandler.getResponse(response,HttpStatus.OK);
+
+    }
+
+
 }

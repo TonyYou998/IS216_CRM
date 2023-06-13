@@ -63,6 +63,11 @@ public class AdminController {
             return  ResponseHandler.getResponse(response,HttpStatus.OK);
         return  ResponseHandler.getResponse("INTERNAL SERVER ERROR",HttpStatus.INTERNAL_SERVER_ERROR);
     }
+    @GetMapping(Constants.FIND_USER)
+    public ResponseEntity<Object> searchUser(@RequestParam("username") String username){
+        List<UserDto> response=SpringBeanUtil.getBean(UserService.class).findByName(username);
+        return ResponseHandler.getResponse(response,HttpStatus.OK);
+    }
 
 
 
