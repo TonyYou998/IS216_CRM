@@ -19,4 +19,5 @@ public interface UserService {
     List<UserDto> getAllEmployeeInProject(String projectId, String id);
 
     List<UserDto> findByName(String username);
+    void sendEmailToUser(String userId,String taskName );
 }

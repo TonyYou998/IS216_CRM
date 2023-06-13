@@ -17,9 +17,13 @@ import org.modelmapper.internal.util.Assert;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.uit.crm.common.utils.SpringBeanUtil.getBean;
 
 @Service
 @AllArgsConstructor
@@ -30,8 +34,8 @@ public class TaskServiceImpl implements TaskService {
     public TaskDto createTask(TaskDto request) {
         Task t=new Task();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        User u= SpringBeanUtil.getBean(UserRepository.class).findById(Long.parseLong(request.getAssigneeEmployeeId())).orElse(null);
-        Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(request.getProjectId())).orElse(null);
+        User u= getBean(UserRepository.class).findById(Long.parseLong(request.getAssigneeEmployeeId())).orElse(null);
+        Project p= getBean(ProjectRepository.class).findById(Long.parseLong(request.getProjectId())).orElse(null);
         TaskDto respones;
         if( p==null){
             return null;
@@ -44,7 +48,7 @@ public class TaskServiceImpl implements TaskService {
             t.setAssignedEmployeeId(u);
             t.setProject(p);
             t.setDescription(request.getDescription());
-            SpringBeanUtil.getBean(TaskRepository.class).save(t);
+            getBean(TaskRepository.class).save(t);
 
             respones= mapper.map(t,TaskDto.class);
             if(t.getAssignedEmployeeId()!=null)
@@ -63,13 +67,13 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskDto assignTask(TaskDto request) {
-            Task task=SpringBeanUtil.getBean(TaskRepository.class).findById(request.getId()).orElse(null);
+            Task task= getBean(TaskRepository.class).findById(request.getId()).orElse(null);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        User u=SpringBeanUtil.getBean(UserRepository.class).findById(Long.parseLong(request.getAssigneeEmployeeId())).orElse(null);
+        User u= getBean(UserRepository.class).findById(Long.parseLong(request.getAssigneeEmployeeId())).orElse(null);
             if(task==null || u==null)
                 return null;
             task.setAssignedEmployeeId(u);
-            SpringBeanUtil.getBean(TaskRepository.class).save(task);
+            getBean(TaskRepository.class).save(task);
         TaskDto response= mapper.map(task,TaskDto.class);
         response.setAssigneeEmployeeId(u.getId().toString());
         return response;
@@ -78,16 +82,16 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDto> getTaskByProjectId(String projectId, String authHeader) {
         try {
-            String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
-            String email=SpringBeanUtil.getBean(JwtUtils.class).getEmailFromToken(token);
-            Long userId= SpringBeanUtil.getBean(UserRepository.class).findByEmail(email).getId();
-            Project p= SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
+            String token= getBean(JwtUtils.class).getTokenFromHeader(authHeader);
+            String email= getBean(JwtUtils.class).getEmailFromToken(token);
+            Long userId= getBean(UserRepository.class).findByEmail(email).getId();
+            Project p= getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
 //            assert userId!=null:"UserId not found";
 //            assert p!=null:"Project not found";
             Assert.notNull(userId,"userId not found");
             Assert.notNull(p,"project not found");
 
-            List<Task>lstTask= SpringBeanUtil.getBean(TaskRepository.class).findAllByProject(p);
+            List<Task>lstTask= getBean(TaskRepository.class).findAllByProject(p);
             List<TaskDto> lstDto=new LinkedList<>();
             for(Task item:lstTask){
                 TaskDto dto=mapper.map(item,TaskDto.class);
@@ -115,11 +119,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDto> getTaskByUserId(String authHeader) {
         try {
-            String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
-            String username=SpringBeanUtil.getBean(JwtUtils.class).getEmailFromToken(token);
-            User u=SpringBeanUtil.getBean(UserRepository.class).findByEmail(username);
+            String token= getBean(JwtUtils.class).getTokenFromHeader(authHeader);
+            String username= getBean(JwtUtils.class).getEmailFromToken(token);
+            User u= getBean(UserRepository.class).findByEmail(username);
             Assert.notNull(u,"User not exist");
-            List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findAllByAssignedEmployeeId(u);
+            List<Task> lstTask= getBean(TaskRepository.class).findAllByAssignedEmployeeId(u);
             List<TaskDto> lstDto=new LinkedList<>();
             if(lstTask.size()>0){
                 TaskDto dto;
@@ -135,7 +139,7 @@ public class TaskServiceImpl implements TaskService {
                 return lstDto;
         }
         catch (Exception e){
-            SpringBeanUtil.getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(e.getMessage());
+            getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(e.getMessage());
 
         }
         return null;
@@ -144,14 +148,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskDto updateTask(String taskId, String authHeader,TaskDto request) {
         try {
-            Task t= SpringBeanUtil.getBean(TaskRepository.class).findById(Long.parseLong(taskId)).orElse(null);
+            Task t= getBean(TaskRepository.class).findById(Long.parseLong(taskId)).orElse(null);
             Assert.notNull(t,"Task not exist");
-            String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
-            String email=SpringBeanUtil.getBean(JwtUtils.class).getEmailFromToken(token);
-            User u=SpringBeanUtil.getBean(UserRepository.class).findByEmail(email);
+            String token= getBean(JwtUtils.class).getTokenFromHeader(authHeader);
+            String email= getBean(JwtUtils.class).getEmailFromToken(token);
+            User u= getBean(UserRepository.class).findByEmail(email);
 //            Assert.notNull(u,"User is not exist");
 
-                User user= SpringBeanUtil.getBean(UserRepository.class).findById(Long.parseLong(request.getAssigneeEmployeeId())).orElse(null);
+                User user= getBean(UserRepository.class).findById(Long.parseLong(request.getAssigneeEmployeeId())).orElse(null);
 //                Assert.notNull(user,"User not exist");
                 t.setAssignedEmployeeId(user);
 
@@ -162,7 +166,7 @@ public class TaskServiceImpl implements TaskService {
                 t.setEndDate(request.getEndDate());
                 t.setStatus(request.getStatus());
 
-                SpringBeanUtil.getBean(TaskRepository.class).save(t);
+                getBean(TaskRepository.class).save(t);
                 TaskDto dto= mapper.map(t,TaskDto.class);
                 dto.setProjectId(t.getProject().getId().toString());
                 dto.setAssigneeEmployeeId(t.getAssignedEmployeeId().getId().toString());
@@ -171,7 +175,7 @@ public class TaskServiceImpl implements TaskService {
 
         }
         catch (Exception ex){
-            SpringBeanUtil.getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(ex.getMessage());
+            getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(ex.getMessage());
 
 
         }
@@ -181,9 +185,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDto> getAllBackLog(String id, String authHeader) {
-        Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(id)).orElse(null);
+        Project p= getBean(ProjectRepository.class).findById(Long.parseLong(id)).orElse(null);
 
-       List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findByProjectAndStatus(p,"NOT START");
+       List<Task> lstTask= getBean(TaskRepository.class).findByProjectAndStatus(p,"NOT START");
        List<TaskDto> lstDto=new LinkedList<>();
        for(Task t:lstTask){
            TaskDto dto=mapper.map(t,TaskDto.class);
@@ -204,12 +208,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDto> getAllInProgress(String id, String authHeader) {
-        Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(id)).orElse(null);
+        Project p= getBean(ProjectRepository.class).findById(Long.parseLong(id)).orElse(null);
 
-        List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findByProjectAndStatus(p,"IN-PROGRESS");
-        if(lstTask.size()==0){
-            return null;
-        }
+        List<Task> lstTask= getBean(TaskRepository.class).findByProjectAndStatus(p,"IN-PROGRESS");
+
         List<TaskDto> lstDto=new LinkedList<>();
 
         for(Task t:lstTask){
@@ -229,8 +231,8 @@ public class TaskServiceImpl implements TaskService {
     public List<TaskDto> getTasksDone(String projectId, String authHeader) {
 
         try{
-            Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
-            List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findByProjectAndStatus(p,"DONE");
+            Project p= getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
+            List<Task> lstTask= getBean(TaskRepository.class).findByProjectAndStatus(p,"DONE");
             List<TaskDto> lstDto=new LinkedList<>();
             if(lstTask.size()==0){
                 return lstDto;
@@ -261,12 +263,12 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDto> getMyTasks(String projectId, String authHeader) {
         try{
-            Project p=SpringBeanUtil.getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
-            String token=SpringBeanUtil.getBean(JwtUtils.class).getTokenFromHeader(authHeader);
-            String username=SpringBeanUtil.getBean(JwtUtils.class).getUsernameFromToken(token);
-            User u=SpringBeanUtil.getBean(UserRepository.class).findByUsername(username);
+            Project p= getBean(ProjectRepository.class).findById(Long.parseLong(projectId)).orElse(null);
+            String token= getBean(JwtUtils.class).getTokenFromHeader(authHeader);
+            String username= getBean(JwtUtils.class).getUsernameFromToken(token);
+            User u= getBean(UserRepository.class).findByUsername(username);
             Assert.notNull(u,"User not found");
-            List<Task> lstTask=SpringBeanUtil.getBean(TaskRepository.class).findByProjectAndAssignedEmployeeId(p,u);
+            List<Task> lstTask= getBean(TaskRepository.class).findByProjectAndAssignedEmployeeId(p,u);
             List<TaskDto> lstDto=new LinkedList<>();
             if(lstTask.size()>0){
                 for(Task t:lstTask){
@@ -282,7 +284,23 @@ public class TaskServiceImpl implements TaskService {
             }
         }
         catch (Exception ex){
-            SpringBeanUtil.getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(ex.getMessage());
+            getBean(LoggerUtil.class).logger(TaskServiceImpl.class).info(ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public List<Task> getOverDueTask() {
+        try{
+            LocalDateTime currentDateTime=LocalDateTime.now();
+            List<Task>overdueTasks=  SpringBeanUtil.getBean(TaskRepository.class).findOverdueTasks();
+            if(!overdueTasks.isEmpty()){
+                return overdueTasks;
+            }
+            return null;
+        }
+        catch (Exception ex){
+
         }
         return null;
     }

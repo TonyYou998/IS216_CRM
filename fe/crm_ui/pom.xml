@@ -49,6 +49,7 @@
     </dependency>
     <!-- https://mvnrepository.com/artifact/com.squareup.okhttp/logging-interceptor -->
 
+    <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
 
 
     <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->

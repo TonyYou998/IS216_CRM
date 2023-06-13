@@ -1,6 +1,7 @@
 package com.uit.crm.task.service;
 
 import com.uit.crm.task.dto.TaskDto;
+import com.uit.crm.task.model.Task;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface TaskService {
     List<TaskDto> getTasksDone(String projectId, String authHeader);
 
     List<TaskDto> getMyTasks(String projectId, String authHeader);
+
+    List<Task> getOverDueTask();
 }

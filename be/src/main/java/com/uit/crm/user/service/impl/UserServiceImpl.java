@@ -16,6 +16,7 @@ import com.uit.crm.user.repository.UserRepository;
 import com.uit.crm.user.service.UserService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.internal.util.Assert;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,9 +25,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 @Service
 @AllArgsConstructor
@@ -185,6 +190,47 @@ public class UserServiceImpl implements UserService {
 
         }
         return null;
+    }
+
+    @Override
+    public void sendEmailToUser(String email,String taskName) {
+        try{
+//            User u=SpringBeanUtil.getBean(UserRepository.class).findById(Long.parseLong(userId)).orElse(null);
+            Assert.notNull(email,"email not exits");
+
+            String senderEmail="tanvuu998@gmail.com";
+            String senderPassword="mbthlabfyjaavrrx";
+            Properties props=new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
+            Session session = Session.getInstance(props, new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(senderEmail, senderPassword);
+                }
+            });
+            try {
+                // Create a new message
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress(senderEmail));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(email));
+                message.setSubject("Overdue task");
+                String notifycation=String.format("%s is overdue today",taskName);
+                message.setText(notifycation);
+
+                // Send the message
+                Transport.send(message);
+
+                System.out.println("Email sent successfully.");
+            } catch (MessagingException e) {
+                e.printStackTrace();
+            }
+
+        }
+        catch (Exception ex){
+
+        }
     }
 
     private List<UserDto> getUserDtos(List<User> lstEmployee, List<UserDto> lstDto) {
